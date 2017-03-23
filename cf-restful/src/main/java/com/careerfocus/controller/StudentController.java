@@ -1,5 +1,6 @@
 package com.careerfocus.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,7 +70,18 @@ public class StudentController {
 		// SchedulerConfig.createCronTrigger(detail, cronExpr);
 
 		// bean.
+		
+	
 
-		return studentService.getAllStudents();
+//		return studentService.getAllStudents();
+		
+		return new ArrayList<Student>() {
+			{
+				add(new Student(1, "john", 101));
+				add(new Student(2, "will", 102));
+				add(new Student(3, "jack", 103));
+				add(new Student(4, "bill", 104));
+			}
+		};
 	}
 }
