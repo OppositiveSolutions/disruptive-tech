@@ -76,6 +76,11 @@ public class StudentController {
 //		return studentService.getAllStudents();
 		
 		return new ArrayList<Student>() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			{
 				add(new Student(1, "john", 101));
 				add(new Student(2, "will", 102));
