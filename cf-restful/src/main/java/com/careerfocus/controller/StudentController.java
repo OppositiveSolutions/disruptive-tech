@@ -19,7 +19,7 @@ import com.careerfocus.service.StudentService;
 @RequestMapping("/students")
 public class StudentController {
 
-	private final Logger logger = Logger.getLogger(this.getClass().getSimpleName().trim());
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	@Autowired
 	StudentService studentService;
@@ -44,6 +44,8 @@ public class StudentController {
 				add(new Student(4, "bill", 104));
 			}
 		};
+		
+	
 		
 		Response r = Response.status(true).data(list).build();
 		

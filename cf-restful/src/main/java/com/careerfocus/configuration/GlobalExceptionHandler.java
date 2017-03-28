@@ -1,5 +1,6 @@
 package com.careerfocus.configuration;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,10 +11,13 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
+	
+	private final Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(value = RuntimeException.class)
 	public String handleBaseException(RuntimeException e) {
+		log.error(e);
 		return "12 " + e.getMessage();
 	}
 

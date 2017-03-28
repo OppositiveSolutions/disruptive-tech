@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -16,12 +17,17 @@ import com.careerfocus.response.Response;
 
 public class MainInterceptor extends HandlerInterceptorAdapter {
 
-	private Logger log = Logger.getLogger(Logger.class.getName());
+	private Logger log = LoggerFactory.getLogger(this.getClass()); 
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession(true);
+		
+		log.debug("DEBUG LOGGER");
+		log.info("INFO LOGGER");
+		log.trace("TRACE LOGGER");
+		log.error("ERROR LOGGER");
 
 		if (requestUriRequiresSession(request.getRequestURI()) && session.getAttribute("role") == null) {
 			setUnauthorizedResponse(response);
@@ -66,7 +72,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			PrintWriter out = response.getWriter();
 			out.println(unAuthorizedResponse.toJsonString());
 		} catch (IOException e) {
-			log.error(e);
+			log.error("Error", e);
 		}
 	}
 	
