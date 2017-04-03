@@ -1,10 +1,6 @@
 package com.careerfocus.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,21 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.session.SessionInformation;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
-import org.springframework.session.web.http.HttpSessionStrategy;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.entity.Student;
@@ -48,6 +39,7 @@ public class StudentController {
 	// @Autowired
 	// Scheduler scheduler;
 
+	@SuppressWarnings("rawtypes")
 	@Autowired
 	private FindByIndexNameSessionRepository sessionRepository;
 
@@ -116,9 +108,7 @@ public class StudentController {
 	public Response test(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") String id)
 			throws Exception {
 
-		HttpSession session = request.getSession();
-
-		SpringSessionBackedSessionRegistry sessionRegistry = new SpringSessionBackedSessionRegistry(sessionRepository);
+//		SpringSessionBackedSessionRegistry sessionRegistry = new SpringSessionBackedSessionRegistry(sessionRepository);
 
 		Collection<? extends ExpiringSession> usersSessions = sessions.findByIndexNameAndIndexValue(
 				FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, "sarathnagesh@gmail.com").values();
@@ -151,6 +141,7 @@ public class StudentController {
 	@RequestMapping(value = "/logoutalldevices", method = RequestMethod.GET)
 	public Response test(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		@SuppressWarnings("unchecked")
 		SpringSessionBackedSessionRegistry sessionRegistry = new SpringSessionBackedSessionRegistry(sessionRepository);
 
 		Collection<? extends ExpiringSession> usersSessions = sessions.findByIndexNameAndIndexValue(

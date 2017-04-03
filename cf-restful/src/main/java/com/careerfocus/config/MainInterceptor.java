@@ -19,7 +19,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private static String EXPIRED_KEY = "org.springframework.session.security.SpringSessionBackedSessionInformation.EXPIRED";
+//	private static String EXPIRED_KEY = "org.springframework.session.security.SpringSessionBackedSessionInformation.EXPIRED";
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

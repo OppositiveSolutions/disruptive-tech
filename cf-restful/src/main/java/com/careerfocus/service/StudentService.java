@@ -28,9 +28,6 @@ public class StudentService {
 		student.setName("Sini");
 		student.setRank(21);
 
-		if (1 + 1 == 2)
-			throw new Exception("FUCK YOU");
-
 		return studentDAO.save(student);
 	}
 

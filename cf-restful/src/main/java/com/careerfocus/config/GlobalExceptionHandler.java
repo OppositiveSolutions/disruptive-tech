@@ -10,7 +10,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.careerfocus.response.Error;
 import com.careerfocus.response.Response;
-import com.careerfocus.response.ResponseError;
 
 @ControllerAdvice
 @RestController

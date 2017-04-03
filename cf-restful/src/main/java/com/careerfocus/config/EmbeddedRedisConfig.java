@@ -18,8 +18,8 @@ public class EmbeddedRedisConfig {
 	@Bean
 	JedisConnectionFactory jedisConnectionFactory() {
 		JedisConnectionFactory jedisConFactory = new JedisConnectionFactory();
-		jedisConFactory.setHostName("localhost");
-		jedisConFactory.setPort(6379);
+		jedisConFactory.setHostName(HOST);
+		jedisConFactory.setPort(PORT);
 		jedisConFactory.afterPropertiesSet();
 		return jedisConFactory;
 	}
