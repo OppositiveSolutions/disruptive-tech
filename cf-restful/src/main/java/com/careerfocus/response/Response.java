@@ -10,7 +10,7 @@ public abstract class Response {
 
 	public abstract Object getData();
 
-	public abstract boolean getStatus();
+	public abstract int getStatus();
 
 	public abstract ResponseError getError();
 
@@ -43,7 +43,7 @@ public abstract class Response {
 		return builder;
 	}
 	
-	public static ResponseBuilder status(boolean status) {
+	public static ResponseBuilder status(int status) {
 		ResponseBuilder builder = ResponseBuilder.newInstance();
 		builder.status(status);
 		return builder;

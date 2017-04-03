@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseImpl extends Response {
 
-	private boolean status;
+	private int status;
 
 	private Object data;
 
@@ -16,18 +16,18 @@ public class ResponseImpl extends Response {
 	private ResponseError error;
 	
 	
-	protected ResponseImpl(boolean status, Object data, String message, ResponseError error) {
+	protected ResponseImpl(int status, Object data, String message, ResponseError error) {
         this.status = status;
         this.data = data;
         this.message = message;
         this.error = error;
     }
 
-	public boolean isStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(boolean status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
@@ -54,11 +54,6 @@ public class ResponseImpl extends Response {
 	@Override
 	public Object getData() {
 		return data;
-	}
-
-	@Override
-	public boolean getStatus() {
-		return status;
 	}
 	
 	@Override

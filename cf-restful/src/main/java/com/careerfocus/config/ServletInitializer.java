@@ -1,4 +1,4 @@
-package com.careerfocus;
+package com.careerfocus.config;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;

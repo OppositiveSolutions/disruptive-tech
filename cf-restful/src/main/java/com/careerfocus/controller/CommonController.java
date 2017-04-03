@@ -15,6 +15,7 @@ public class CommonController {
 
 	@Autowired
 	CommonService commonService;
+	
 
 	@RequestMapping(value = "/log4j/{level}", method = RequestMethod.GET)
 	public Response setLogLevel(@PathVariable("level") int level) throws Exception {

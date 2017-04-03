@@ -11,4 +11,5 @@ public class ResponseError extends Error {
 		this.details = details;
 	}
 	
+	
 }

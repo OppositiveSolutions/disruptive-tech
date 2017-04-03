@@ -2,9 +2,11 @@ package com.careerfocus.response;
 
 import java.util.List;
 
+import com.careerfocus.response.Response.Status;
+
 public final class ResponseBuilderImpl extends ResponseBuilder {
 
-	private boolean status;
+	private int status;
 
 	private Object data;
 
@@ -13,7 +15,7 @@ public final class ResponseBuilderImpl extends ResponseBuilder {
 	private ResponseError error;
 	
 	@Override
-	public ResponseBuilder status(boolean status) {
+	public ResponseBuilder status(int status) {
 		this.status = status;
 		return this;
 	}
@@ -38,7 +40,7 @@ public final class ResponseBuilderImpl extends ResponseBuilder {
     }
 	
 	private void reset() {
-        status = false;
+        status = Status.OK.getStatusCode();
         data = null;
         message = null;
         error = null;
@@ -46,31 +48,31 @@ public final class ResponseBuilderImpl extends ResponseBuilder {
 
 	@Override
 	public ResponseBuilder ok() {
-		this.status = true;
+		this.status = Status.OK.getStatusCode();
 		return this;
 	}
 
 	@Override
 	public ResponseBuilder ok(Object data) {
-		this.status = true;
+		this.status = Status.OK.getStatusCode();
 		this.data = data;
 		return this;
 	}
 
 	@Override
 	public ResponseBuilder ok(Object data, String message) {
-		this.status = true;
+		this.status = Status.OK.getStatusCode();
 		this.data = data;
 		this.message = message;
 		return this;
 	}
 
-	@Override
-	public ResponseBuilder ok(String message) {
-		this.status = true;
-		this.message = message;
-		return this;
-	}
+//	@Override
+//	public ResponseBuilder ok(String message) {
+//		this.status = true;
+//		this.message = message;
+//		return this;
+//	}
 
 	@Override
 	public ResponseBuilder error(ResponseError error) {
@@ -86,7 +88,7 @@ public final class ResponseBuilderImpl extends ResponseBuilder {
 
 	@Override
 	public ResponseBuilder unauthorized() {
-		this.status = false;
+		this.status = 401;
 		this.error = new ResponseError(new Error(401, "Invalid authentication"), null);
 		return null;
 	}

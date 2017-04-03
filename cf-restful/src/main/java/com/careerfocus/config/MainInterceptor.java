@@ -1,4 +1,4 @@
-package com.careerfocus.configuration;
+package com.careerfocus.config;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,19 +17,24 @@ import com.careerfocus.response.Response;
 
 public class MainInterceptor extends HandlerInterceptorAdapter {
 
-	private Logger log = LoggerFactory.getLogger(this.getClass()); 
+	private Logger log = LoggerFactory.getLogger(this.getClass());
+
+	private static String EXPIRED_KEY = "org.springframework.session.security.SpringSessionBackedSessionInformation.EXPIRED";
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession(true);
-		
+
+		log.info("MaxInactiveInterval" + session.getMaxInactiveInterval());
+
 		log.debug("DEBUG LOGGER");
 		log.info("INFO LOGGER");
 		log.trace("TRACE LOGGER");
 		log.error("ERROR LOGGER");
 
-		if (requestUriRequiresSession(request.getRequestURI()) && session.getAttribute("role") == null) {
+		if (requestUriRequiresSession(request.getRequestURI())
+				&& (session.getAttribute("role") == null)) {// || (Boolean) session.getAttribute(EXPIRED_KEY))) {
 			setUnauthorizedResponse(response);
 			return false;
 		}
@@ -59,7 +64,9 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 
 	private boolean requestUriRequiresSession(String uri) {
 		// api's which can be accessed without session goes here.
-		if (uri.equals("/cf-restful/students/login")) {
+		log.info(uri);
+		
+		if (uri.equals("/cf-restful/student/login")) {
 			return false;
 		}
 		return true;
@@ -75,11 +82,11 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			log.error("Error", e);
 		}
 	}
-	
+
 	private void setResponseHeaders(HttpServletResponse response) {
 		response.setHeader("Pragma", "No-cache");
 		response.setHeader("Cache-Control", "no-cache");
-		response.setDateHeader("Expires", 0);
+		response.setDateHeader("Expires", 3600);
 	}
 
 }

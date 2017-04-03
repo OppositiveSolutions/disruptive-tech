@@ -15,9 +15,9 @@ public abstract class ResponseBuilder {
 	
 	public abstract ResponseBuilder ok(Object data, String message);
 	
-	public abstract ResponseBuilder ok(String message);
+//	public abstract ResponseBuilder ok(String message);
 	
-	public abstract ResponseBuilder status(boolean status);
+	public abstract ResponseBuilder status(int status);
 	
 	public abstract ResponseBuilder data(Object data);
 	
