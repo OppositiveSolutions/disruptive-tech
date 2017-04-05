@@ -20,4 +20,9 @@ public interface StudentDAO extends JpaRepository<Student, Integer> {
 //        );
 //	}
 	
+	
+	default void getStudents() {
+		
+	}
+	
 }
