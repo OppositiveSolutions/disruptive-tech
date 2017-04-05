@@ -1,11 +1,16 @@
 package com.careerfocus.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "student")
@@ -13,32 +18,46 @@ public class Student {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", unique = true, nullable = false)
-	int id;
+	@Column(name = "student_id", unique = true, nullable = false)
+	int studentId;
 
 	@Column(name = "name")
 	String name;
-	
+
 	@Column(name = "rank")
 	int rank;
-	
+
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "student_id")
+	Address address;
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+		this.address.setStudent(this);
+	}
+
 	public Student() {
-		
+
 	}
 
 	public Student(int id, String name, int rank) {
 		super();
-		this.id = id;
+		this.studentId = id;
 		this.name = name;
 		this.rank = rank;
 	}
 
 	public int getId() {
-		return id;
+		return studentId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.studentId = id;
 	}
 
 	public String getName() {
