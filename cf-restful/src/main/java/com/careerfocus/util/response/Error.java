@@ -1,4 +1,4 @@
-package com.careerfocus.response;
+package com.careerfocus.util.response;
 
 public class Error {
 

@@ -1,4 +1,4 @@
-package com.careerfocus.response;
+package com.careerfocus.util.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;

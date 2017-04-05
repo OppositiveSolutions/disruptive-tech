@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.entity.Student;
-import com.careerfocus.response.Response;
 import com.careerfocus.service.StudentService;
+import com.careerfocus.util.response.Response;
 
 @RestController
 @RequestMapping("/student")

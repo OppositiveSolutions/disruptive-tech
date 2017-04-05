@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.careerfocus.response.Response;
+import com.careerfocus.util.response.Response;
 
 public class MainInterceptor extends HandlerInterceptorAdapter {
 

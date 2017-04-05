@@ -1,8 +1,8 @@
-package com.careerfocus.response;
+package com.careerfocus.util.response;
 
 import java.util.List;
 
-import com.careerfocus.response.Response.Status;
+import com.careerfocus.util.response.Response.Status;
 
 public final class ResponseBuilderImpl extends ResponseBuilder {
 

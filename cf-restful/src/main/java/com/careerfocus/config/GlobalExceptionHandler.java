@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.careerfocus.response.Error;
-import com.careerfocus.response.Response;
+import com.careerfocus.util.response.Error;
+import com.careerfocus.util.response.Response;
 
 @ControllerAdvice
 @RestController
