@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.careerfocus.entity.Student;
 
-@Repository
 public interface StudentDAO extends JpaRepository<Student, Integer> {
 
 //	@Autowired
