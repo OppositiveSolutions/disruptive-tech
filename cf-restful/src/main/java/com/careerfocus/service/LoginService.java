@@ -61,8 +61,8 @@ public class LoginService {
 
 		Collection<? extends ExpiringSession> usersSessions = sessions.findByIndexNameAndIndexValue(
 				FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, "sarathnagesh@gmail.com").values();
-		usersSessions.forEach((temp) -> {
-			String sessionId = temp.getId();
+		usersSessions.forEach(session -> {
+			String sessionId = session.getId();
 			sessionRegistry.removeSessionInformation(sessionId);
 			SessionInformation info = sessionRegistry.getSessionInformation(sessionId);
 			info.expireNow();

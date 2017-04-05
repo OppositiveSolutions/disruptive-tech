@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan({"com.careerfocus"})
-@EnableJpaRepositories("com.careerfocus.dao")
+@EnableJpaRepositories("com.careerfocus.repository")
 @EntityScan("com.careerfocus.entity")
 public class CfRestfulApplication {
 
