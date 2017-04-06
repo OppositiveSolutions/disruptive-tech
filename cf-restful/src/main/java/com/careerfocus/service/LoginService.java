@@ -9,12 +9,17 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 import org.springframework.stereotype.Service;
 
+import com.careerfocus.constants.Constants;
+import com.careerfocus.entity.User;
+import com.careerfocus.repository.UserRepository;
 import com.careerfocus.util.response.Response;
 
 @Service
@@ -32,22 +37,26 @@ public class LoginService {
 	@Autowired
 	RedisTemplate<String, String> redisTemplate;
 
+	@Autowired
+	UserRepository userRepository;
+
 	public Response performLogin(String username, String password, HttpServletRequest request) {
 		logger.info("uesrname: " + username);
 		logger.info("password: " + password);
 
+		User user = userRepository.findByUsernameAndPassword(username, password);
+		if (user == null || user.getUserId() == Constants.FALSE) {
+			throw new AuthenticationCredentialsNotFoundException("");
+		}
+
+		logger.info("user: " + user.toString());
+
 		HttpSession session = request.getSession();
-
-		session.setMaxInactiveInterval(-1);
-
-		session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, "sarathnagesh@gmail.com");
-		session.setAttribute("role", 1);
-		session.setAttribute("firstName", "Sarath");
-		session.setAttribute("lastName", "Nagesh");
+		initSessionAtrributes(session, user);
 
 		logger.info("LOGGING IN...");
 
-		return Response.status(200).build();
+		return Response.status(200).data(user).build();
 	}
 
 	public void logout(HttpServletRequest request) {
@@ -56,11 +65,17 @@ public class LoginService {
 	}
 
 	public void logoutAllDevices(HttpServletRequest request) {
+
+		HttpSession currentSession = request.getSession();
+		String userId = currentSession.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME)
+				.toString();
+
 		@SuppressWarnings("unchecked")
 		SpringSessionBackedSessionRegistry sessionRegistry = new SpringSessionBackedSessionRegistry(sessionRepository);
 
-		Collection<? extends ExpiringSession> usersSessions = sessions.findByIndexNameAndIndexValue(
-				FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, "sarathnagesh@gmail.com").values();
+		Collection<? extends ExpiringSession> usersSessions = sessions
+				.findByIndexNameAndIndexValue(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, userId)
+				.values();
 		usersSessions.forEach(session -> {
 			String sessionId = session.getId();
 			sessionRegistry.removeSessionInformation(sessionId);
@@ -72,6 +87,16 @@ public class LoginService {
 			// redisTemplate.delete("spring:session:sessions:" + sessionId);
 			redisTemplate.expire("spring:session:sessions:" + sessionId, 60, TimeUnit.SECONDS);
 		});
+	}
+
+	public void initSessionAtrributes(HttpSession session, User user) {
+		session.setMaxInactiveInterval(-1);
+
+		session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, user.getUserId() + "");
+		session.setAttribute("role", user.getRole());
+		session.setAttribute("firstName", user.getFirstName());
+		session.setAttribute("lastName", user.getLastName());
+		user.setPassword(null);
 	}
 
 }

@@ -2,6 +2,7 @@ package com.careerfocus.config;
 
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -14,6 +15,11 @@ import com.careerfocus.util.response.Response;
 @ControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
+	
+	
+	private static int ERROR_INVALID_CREDENTIALS_CODE = 49;
+	
+	private static String ERROR_INVALID_CREDENTIALS_MSG = "The username or password you've entered is incorrect.";
 
 	private final Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
@@ -33,11 +39,18 @@ public class GlobalExceptionHandler {
 		return Response.status(HttpStatus.NOT_FOUND.value()).error(error, null).build();
 	}
 
+	@ExceptionHandler(value = AuthenticationCredentialsNotFoundException.class)
+	public Response handleException(AuthenticationCredentialsNotFoundException e) {		
+		log.error("Error", e);
+		Error error = new Error(ERROR_INVALID_CREDENTIALS_CODE, ERROR_INVALID_CREDENTIALS_MSG);
+		return Response.status(ERROR_INVALID_CREDENTIALS_CODE).error(error, null).build();
+	}
+	
 	@ExceptionHandler(value = Exception.class)
 	public String handleException(Exception e) {
 		log.error("Error", e);
-		e.printStackTrace();
 		return e.getClass().getName() + " 14" + e.getMessage();
 	}
+	
 
 }
