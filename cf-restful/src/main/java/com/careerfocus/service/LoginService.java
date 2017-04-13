@@ -1,15 +1,12 @@
 package com.careerfocus.service;
 
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.session.ExpiringSession;
@@ -35,7 +32,7 @@ public class LoginService {
 	FindByIndexNameSessionRepository<? extends ExpiringSession> sessions;
 
 	@Autowired
-	RedisTemplate<String, String> redisTemplate;
+	RedisTemplate<String, ExpiringSession> redisTemplate;
 
 	@Autowired
 	UserRepository userRepository;
@@ -51,7 +48,8 @@ public class LoginService {
 
 		logger.info("user: " + user.toString());
 
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(true);
+		
 		initSessionAtrributes(session, user);
 
 		logger.info("LOGGING IN...");
@@ -60,13 +58,15 @@ public class LoginService {
 	}
 
 	public void logout(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		session.invalidate();
 	}
 
 	public void logoutAllDevices(HttpServletRequest request) {
 
-		HttpSession currentSession = request.getSession();
+		HttpSession currentSession = request.getSession(false);
+		if (currentSession == null || !request.isRequestedSessionIdValid())
+			return;
 		String userId = currentSession.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME)
 				.toString();
 
@@ -75,17 +75,18 @@ public class LoginService {
 
 		Collection<? extends ExpiringSession> usersSessions = sessions
 				.findByIndexNameAndIndexValue(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, userId)
-				.values();
-		usersSessions.forEach(session -> {
+				.values(); // gets all sessions of the user
+
+		usersSessions.forEach(session -> { // expiring/removing each session
 			String sessionId = session.getId();
-			sessionRegistry.removeSessionInformation(sessionId);
+//			sessionRegistry.removeSessionInformation(sessionId);
+			
 			SessionInformation info = sessionRegistry.getSessionInformation(sessionId);
 			info.expireNow();
-			logger.info("sessionId: " + sessionId);
+			// logger.info("sessionId: " + sessionId);
+			// redisTemplate.delete("spring:session:sessions:" + sessionId);
 			// redisTemplate.delete("spring:session:sessions:expires:" +
 			// sessionId);
-			// redisTemplate.delete("spring:session:sessions:" + sessionId);
-			redisTemplate.expire("spring:session:sessions:" + sessionId, 60, TimeUnit.SECONDS);
 		});
 	}
 

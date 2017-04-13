@@ -2,8 +2,6 @@ package com.careerfocus.config;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,33 +17,17 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-//	private static String EXPIRED_KEY = "org.springframework.session.security.SpringSessionBackedSessionInformation.EXPIRED";
+	// private static String EXPIRED_KEY =
+	// "org.springframework.session.security.SpringSessionBackedSessionInformation.EXPIRED";
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		HttpSession session = request.getSession(true);
 
-		log.info("MaxInactiveInterval" + session.getMaxInactiveInterval());
-
-		log.debug("DEBUG LOGGER");
-		log.info("INFO LOGGER");
-		log.trace("TRACE LOGGER");
-		log.error("ERROR LOGGER");
-
-		if (requestUriRequiresSession(request.getRequestURI())
-				&& (session.getAttribute("role") == null)) {// || (Boolean) session.getAttribute(EXPIRED_KEY))) {
-			setUnauthorizedResponse(response);
+		if (!hasAuthorisation(request, response))
 			return false;
-		}
 
 		setResponseHeaders(response);
-
-		Enumeration<String> e = session.getAttributeNames();
-		while (e.hasMoreElements()) {
-			String name = (String) e.nextElement();
-			log.info(name + ": " + session.getAttribute(name));
-		}
 
 		return true;
 	}
@@ -55,6 +37,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		super.postHandle(request, response, handler, modelAndView);
 	}
+	
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
@@ -62,11 +45,21 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 		super.afterCompletion(request, response, handler, ex);
 	}
 
+	private boolean hasAuthorisation(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession(false);
+		if (requestUriRequiresSession(request.getRequestURI())
+				&& (session == null || !request.isRequestedSessionIdValid() || session.getAttribute("role") == null)) {
+			setUnauthorizedResponse(response);
+			return false;
+		}
+		return true;
+	}
+
 	private boolean requestUriRequiresSession(String uri) {
 		// api's which can be accessed without session goes here.
 		log.info(uri);
-		
-		if (uri.equals("/cf-restful/student/login")) {
+
+		if (uri.equals("/cf-restful/login")) {
 			return false;
 		}
 		return true;
@@ -86,7 +79,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 	private void setResponseHeaders(HttpServletResponse response) {
 		response.setHeader("Pragma", "No-cache");
 		response.setHeader("Cache-Control", "no-cache");
-		response.setDateHeader("Expires", 3600);
+		// response.setDateHeader("Expires", 3600);
 	}
 
 }
