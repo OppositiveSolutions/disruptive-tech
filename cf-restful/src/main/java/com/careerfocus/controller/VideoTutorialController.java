@@ -54,7 +54,7 @@ public class VideoTutorialController {
 	@RequestMapping(value = "/page-size/{pageSize}/page-no/{pageNo}", method = RequestMethod.GET)
 	public Response getTutorialsForPage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") Integer pageSize, @PathVariable("pageNo") Integer pageNo) throws Exception {
-		return Response.ok(service.getVideoTutorials(pageSize, pageNo)).build();
+		return Response.ok(service.getVideoTutorials(pageSize, pageNo)).build(); //
 	}
 
 }
