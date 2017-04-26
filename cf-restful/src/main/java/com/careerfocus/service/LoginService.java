@@ -37,7 +37,7 @@ public class LoginService {
 	@Autowired
 	UserRepository userRepository;
 
-	public Response performLogin(String username, String password, HttpServletRequest request) {
+	public User performLogin(String username, String password, HttpServletRequest request) {
 		logger.info("uesrname: " + username);
 		logger.info("password: " + password);
 
@@ -54,7 +54,7 @@ public class LoginService {
 
 		logger.info("LOGGING IN...");
 
-		return Response.status(200).data(user).build();
+		return user;
 	}
 
 	public void logout(HttpServletRequest request) {
