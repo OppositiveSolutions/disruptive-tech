@@ -9,4 +9,8 @@ public class Constants {
 	public static final int SESSION_MAX_INACTIVE_TIMEOUT_MOBILEAPP = 0*60; // never expires
 	
 	public static final String RESTFUL_PATH_PREFIX = "/cf-restful";
+	
+	public static final int ROLE_STUDENT = 1;
+	public static final int ROLE_SUPER_ADMIN = 2;
+	public static final int ROLE_BRANCH_ADMIN = 3;
 }
