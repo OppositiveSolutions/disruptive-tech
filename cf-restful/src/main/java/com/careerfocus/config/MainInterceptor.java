@@ -8,9 +8,12 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.careerfocus.constants.Constants;
 import com.careerfocus.util.response.Response;
 
 public class MainInterceptor extends HandlerInterceptorAdapter {
@@ -23,7 +26,6 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
 		if (!hasAuthorisation(request, response))
 			return false;
 
@@ -37,7 +39,6 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		super.postHandle(request, response, handler, modelAndView);
 	}
-	
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
@@ -52,13 +53,20 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			setUnauthorizedResponse(response);
 			return false;
 		}
+
+		if (session != null && session.getAttribute("role") != null) {
+			int role = (Integer) session.getAttribute("role");
+			if (!roleHasAuthorisation(role, request.getRequestURI())) {
+				setUnauthorizedResponse(response);
+				return false;
+			}
+		}
 		return true;
 	}
 
 	private boolean requestUriRequiresSession(String uri) {
-		// api's which can be accessed without session goes here.
 		log.info(uri);
-
+		// api's which can be accessed without session goes here.
 		if (uri.equals("/cf-restful/login")) {
 			return false;
 		}
@@ -74,6 +82,39 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 		} catch (IOException e) {
 			log.error("Error", e);
 		}
+	}
+
+	private boolean roleHasAuthorisation(int role, String uri) {
+		switch (role) {
+		case Constants.ROLE_STUDENT:
+			return checkAutorisationForStudent(uri);
+		case Constants.ROLE_SUPER_ADMIN:
+			return checkAutorizationForSuperAdmin(uri);
+		case Constants.ROLE_BRANCH_ADMIN:
+			return checkAutorisationForBranchAdmin(uri);
+		}
+		return false;
+	}
+
+	private boolean checkAutorisationForStudent(String uri) {
+		PathMatcher pathMatcher = new AntPathMatcher();
+		if (pathMatcher.match("/cf-restful/video-tutorial*", uri))
+			return true;
+		return false;
+	}
+
+	private boolean checkAutorizationForSuperAdmin(String uri) {
+		PathMatcher pathMatcher = new AntPathMatcher();
+		if (pathMatcher.match("/cf-restful/category*", uri) || pathMatcher.match("/cf-restful/common*", uri))
+			return true;
+		return false;
+	}
+
+	private boolean checkAutorisationForBranchAdmin(String uri) {
+		// PathMatcher pathMatcher = new AntPathMatcher();
+		// if (pathMatcher.match("/cf-restful/video-tutorial*", uri))
+		return true;
+		// return false;
 	}
 
 	private void setResponseHeaders(HttpServletResponse response) {

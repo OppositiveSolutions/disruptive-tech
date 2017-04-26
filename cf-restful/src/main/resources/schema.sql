@@ -23,21 +23,24 @@ USE `career_focus` ;
 -- -----------------------------------------------------
 -- Table `career_focus`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`user` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `created_date` DATETIME NOT NULL,
-  `role` INT(2) NOT NULL,
-  `dob` DATE NULL,
-  `gender` VARCHAR(11) NULL,
-  `first_name` VARCHAR(46) NOT NULL,
-  `last_name` VARCHAR(46) NOT NULL,
-  `status` INT(2) NOT NULL COMMENT 'Indicates whether user is enabled or not.',
-  `center_id` VARCHAR(12) NOT NULL,
-  `fee_status` VARCHAR(45) NOT NULL COMMENT 'reserved\n',
-  PRIMARY KEY (`user_id`))
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '1 - student\n2 - super admin\n3 - branch admin',
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `created_date` datetime NOT NULL,
+  `role` int(2) NOT NULL,
+  `dob` date DEFAULT NULL,
+  `gender` varchar(11) DEFAULT NULL,
+  `first_name` varchar(46) NOT NULL,
+  `last_name` varchar(46) NOT NULL,
+  `status` int(2) NOT NULL COMMENT 'Indicates whether user is enabled or not.',
+  `center_id` varchar(12) NOT NULL,
+  `fee_status` varchar(45) NOT NULL COMMENT 'reserved\n',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+
+
 
 
 -- -----------------------------------------------------
