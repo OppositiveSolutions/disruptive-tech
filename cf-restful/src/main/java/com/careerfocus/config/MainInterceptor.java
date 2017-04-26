@@ -54,13 +54,13 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 
-		if (session != null && session.getAttribute("role") != null) {
-			int role = (Integer) session.getAttribute("role");
-			if (!roleHasAuthorisation(role, request.getRequestURI())) {
-				setUnauthorizedResponse(response);
-				return false;
-			}
-		}
+//		if (session != null && session.getAttribute("role") != null) {
+//			int role = (Integer) session.getAttribute("role");
+//			if (!roleHasAuthorisation(role, request.getRequestURI())) {
+//				setUnauthorizedResponse(response);
+//				return false;
+//			}
+//		}
 		return true;
 	}
 
