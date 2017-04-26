@@ -54,20 +54,20 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 
-//		if (session != null && session.getAttribute("role") != null) {
-//			int role = (Integer) session.getAttribute("role");
-//			if (!roleHasAuthorisation(role, request.getRequestURI())) {
-//				setUnauthorizedResponse(response);
-//				return false;
-//			}
-//		}//
+		// if (session != null && session.getAttribute("role") != null) {
+		// int role = (Integer) session.getAttribute("role");
+		// if (!roleHasAuthorisation(role, request.getRequestURI())) {
+		// setUnauthorizedResponse(response);
+		// return false;
+		// }
+		// }//
 		return true;
 	}
 
 	private boolean requestUriRequiresSession(String uri) {
 		log.info(uri);
 		// api's which can be accessed without session goes here.
-		if (uri.equals("/cf-restful/login")) {
+		if (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/login")) {
 			return false;
 		}
 		return true;
@@ -98,14 +98,15 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 
 	private boolean checkAutorisationForStudent(String uri) {
 		PathMatcher pathMatcher = new AntPathMatcher();
-		if (pathMatcher.match("/cf-restful/video-tutorial*", uri))
+		if (pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial*", uri))
 			return true;
 		return false;
 	}
 
 	private boolean checkAutorizationForSuperAdmin(String uri) {
 		PathMatcher pathMatcher = new AntPathMatcher();
-		if (pathMatcher.match("/cf-restful/category*", uri) || pathMatcher.match("/cf-restful/common*", uri))
+		if (pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/category*", uri)
+				|| pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/common*", uri))
 			return true;
 		return false;
 	}
