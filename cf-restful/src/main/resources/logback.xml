@@ -12,7 +12,7 @@
 		<appender-ref ref="STDOUT" />
 	</logger>
 
-	<logger name="com.careerfocus" level="INFO" additivity="false">
+	<logger name="com.careerfocus" level="DEBUG" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 

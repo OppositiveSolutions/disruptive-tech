@@ -14,7 +14,7 @@ import com.careerfocus.repository.CategoryRepository;
 
 @Service
 public class CategoryService {
-
+	
 	@Autowired
 	CategoryRepository repository;
 	
