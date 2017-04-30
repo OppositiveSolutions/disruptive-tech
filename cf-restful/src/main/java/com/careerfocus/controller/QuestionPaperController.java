@@ -42,9 +42,10 @@ public class QuestionPaperController {
 	public Response getAllQuestionPapers(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return Response.ok(qPaperService.getAllQuestionPapers()).build();
 	}
-	
+
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public Response getAllQuestionPapersFullDetails(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public Response getAllQuestionPapersFullDetails(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		return Response.ok(qPaperService.getAllQuestionPapersWithFullDetails()).build();
 	}
 
@@ -59,36 +60,35 @@ public class QuestionPaperController {
 			@RequestBody List<QuestionPaperCategory> categoryList) throws Exception {
 		return Response.ok(qPaperService.saveQuestionPaperCategories(categoryList)).build();
 	}
-	
+
 	@RequestMapping(value = "/category", method = RequestMethod.PUT)
 	public Response editQuestionPaperCategory(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody List<QuestionPaperCategory> categoryList) throws Exception {
 		return Response.ok(qPaperService.saveQuestionPaperCategories(categoryList)).build();
 	}
-	
+
 	@RequestMapping(value = "/{questionPaperId}/category", method = RequestMethod.GET)
 	public Response getQuestionPaperCategory(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("questionPaperId") Integer questionPaperId) throws Exception {
 		return Response.ok(qPaperService.getQuestionPaperCategories(questionPaperId)).build();
 	}
-	
+
 	@RequestMapping(value = "/sub-category", method = RequestMethod.POST)
 	public Response saveQuestionPaperSubCategory(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody List<QuestionPaperSubCategory> subCategoryList) throws Exception {
 		return Response.ok(qPaperService.saveQuestionPaperSubCategory(subCategoryList)).build();
 	}
-	
+
 	@RequestMapping(value = "/sub-category", method = RequestMethod.PUT)
 	public Response editQuestionPaperSubCategory(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody List<QuestionPaperSubCategory> subCategoryList) throws Exception {
 		return Response.ok(qPaperService.saveQuestionPaperSubCategory(subCategoryList)).build();
 	}
-	
+
 	@RequestMapping(value = "/question", method = RequestMethod.POST)
 	public Response saveQuestion(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody List<QuestionVO> qList) throws Exception {
-		qPaperService.saveQuestion(qList);
-		return Response.ok().build();
+		return Response.ok(qPaperService.saveQuestion(qList)).build();
 	}
-	
+
 }

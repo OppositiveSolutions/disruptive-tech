@@ -82,7 +82,7 @@ public class QuestionPaperService {
 	}
 
 	@Transactional
-	public void saveQuestion(List<QuestionVO> qList) {
+	public List<QuestionVO> saveQuestion(List<QuestionVO> qList) {
 		qList.forEach(qstn -> {
 
 			Question question = new Question(qstn.getQuestion(), qstn.getCorrectOptionNo());
@@ -98,8 +98,10 @@ public class QuestionPaperService {
 
 			questionPaperQuestionRepository.save(new QuestionPaperQuestion(qstn.getQuestionPaperSubCategoryId(),
 					qstn.getQuestionNo(), savedQuestion));
+			
+			qstn.setQuestionId(savedQuestion.getQuestionId());
 		});
-
+		return qList;
 	}
 
 }
