@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.careerfocus.constants.Constants;
+import com.careerfocus.util.CommonUtils;
 import com.careerfocus.util.response.Response;
 
 public class MainInterceptor extends HandlerInterceptorAdapter {
@@ -52,14 +53,14 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 		HttpSession session = request.getSession(false);
 		if (requestUriRequiresSession(request.getRequestURI())
 				&& (session == null || !request.isRequestedSessionIdValid() || session.getAttribute("role") == null)) {
-			setUnauthorizedResponse(response);
+			CommonUtils.setUnauthorizedResponse(response);
 			return false;
 		}
 
 		if (session != null && session.getAttribute("role") != null) {
 			int role = (Integer) session.getAttribute("role");
 			if (!roleHasAuthorisation(role, request.getRequestURI(), request.getMethod())) {
-				setUnauthorizedResponse(response);
+				CommonUtils.setUnauthorizedResponse(response);
 				return false;
 			}
 		} //
@@ -73,19 +74,6 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 		return true;
-	}
-
-	private void setUnauthorizedResponse(HttpServletResponse response) {
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		response.setContentType("application/json");
-		Response unAuthorizedResponse = Response.unauthorized().build();
-		try {
-			PrintWriter out = response.getWriter();
-			out.println(unAuthorizedResponse.toJsonString());
-		} catch (IOException e) {
-			log.error("Error", e);
-		}
-
 	}
 
 	private boolean roleHasAuthorisation(int role, String uri, String requestMethod) {

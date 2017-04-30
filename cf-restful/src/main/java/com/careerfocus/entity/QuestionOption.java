@@ -6,22 +6,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "question_option")
+@Entity
+@Table(name = "question_option")
+@IdClass(QuestionOptionId.class)
 public class QuestionOption {
 
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
-//	@Column(name = "question_option_id", columnDefinition = "INT")
-//	private int questionOptionId;
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	// @Column(name = "question_option_id", columnDefinition = "INT")
+	// private int questionOptionId;
 
-	@Basic
-	@Column(name = "question_id", columnDefinition = "INT")
+	@Id
+	@Column(name = "question_id", columnDefinition = "INT", nullable = false)
 	private int questionId;
 
-	@Basic
+	@Id
 	@Column(name = "option_no", nullable = false, columnDefinition = "INT")
 	private int optionNo;
 
@@ -32,20 +34,20 @@ public class QuestionOption {
 	public QuestionOption() {
 
 	}
-	
+
 	public QuestionOption(int questionId, int optionNo, String option) {
 		this.questionId = questionId;
 		this.optionNo = optionNo;
 		this.option = option;
 	}
 
-//	public int getQuestionOptionId() {
-//		return questionOptionId;
-//	}
-//
-//	public void setQuestionOptionId(int questionOptionId) {
-//		this.questionOptionId = questionOptionId;
-//	}
+	// public int getQuestionOptionId() {
+	// return questionOptionId;
+	// }
+	//
+	// public void setQuestionOptionId(int questionOptionId) {
+	// this.questionOptionId = questionOptionId;
+	// }
 
 	public int getQuestionId() {
 		return questionId;

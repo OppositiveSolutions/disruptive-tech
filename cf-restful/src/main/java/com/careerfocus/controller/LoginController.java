@@ -25,11 +25,18 @@ public class LoginController {
 		return Response.ok(loginService.performLogin(username, password, request)).build();
 	}
 	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public @ResponseBody Response getLoginedInUser(HttpServletRequest request) throws Exception {
+		return Response.ok(loginService.getUserDetails(request)).build();
+	}
+	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public Response logout(HttpServletRequest request) throws Exception {
 		loginService.logout(request);
 		return Response.ok().build();
 	}
+	
+	
 	
 	@RequestMapping(value = "/logout-all-devices", method = RequestMethod.GET)
 	public Response logoutAllDevices(HttpServletRequest request) throws Exception {

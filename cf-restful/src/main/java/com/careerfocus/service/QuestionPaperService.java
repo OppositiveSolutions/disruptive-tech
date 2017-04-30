@@ -18,7 +18,7 @@ import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.entity.QuestionPaperCategory;
 import com.careerfocus.entity.QuestionPaperSubCategory;
 import com.careerfocus.model.request.QuestionVO;
-//import com.careerfocus.repository.QuestionOptionsRepository;
+import com.careerfocus.repository.QuestionOptionsRepository;
 import com.careerfocus.repository.QuestionPaperCategoryRepository;
 import com.careerfocus.repository.QuestionPaperRepository;
 import com.careerfocus.repository.QuestionPaperSubCategoryRepository;
@@ -44,8 +44,8 @@ public class QuestionPaperService {
 	@Autowired
 	QuestionsRepository questionsRepository;
 	
-//	@Autowired
-//	QuestionOptionsRepository questionsOptionsRepository;
+	@Autowired
+	QuestionOptionsRepository questionsOptionsRepository;
 
 	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
 		return qPaperRepository.save(qPaper);
@@ -86,11 +86,12 @@ public class QuestionPaperService {
 			question.getOptions().forEach(option -> {
 				oList.add(new QuestionOption(savedQuestion.getQuestionId(), option.getOptionNo(), option.getOption()));
 			});
-//			questionsOptionsRepository.save(oList);
+			questionsOptionsRepository.save(oList);
 			
-
+			
 		});
 
+		
 	}
 
 }

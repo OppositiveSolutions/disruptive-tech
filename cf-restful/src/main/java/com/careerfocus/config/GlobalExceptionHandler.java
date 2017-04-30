@@ -1,5 +1,8 @@
 package com.careerfocus.config;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.NotAuthorizedException;
+
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -45,6 +48,15 @@ public class GlobalExceptionHandler {
 		Error error = new Error(ERROR_INVALID_CREDENTIALS_CODE, ERROR_INVALID_CREDENTIALS_MSG);
 		return Response.status(ERROR_INVALID_CREDENTIALS_CODE).error(error, null).build();
 	}
+	
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	@ExceptionHandler(value = NotAuthorizedException.class)
+	public Response handleNotAuthorizedExceptionException(NotAuthorizedException e) {		
+//		log.error("Error", e);
+		return Response.unauthorized().build();
+	}
+	
+	
 	
 	@ExceptionHandler(value = Exception.class)
 	public String handleException(Exception e) {

@@ -2,7 +2,9 @@ package com.careerfocus.service;
 
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.NotAuthorizedException;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +51,24 @@ public class LoginService {
 		logger.info("user: " + user.toString());
 
 		HttpSession session = request.getSession(true);
-		
+
 		initSessionAtrributes(session, user);
 
 		logger.info("LOGGING IN...");
 
+		return user;
+	}
+
+	public User getUserDetails(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session == null || session.getAttribute("role") == null
+				|| session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME) == null) {
+			throw new NotAuthorizedException("");
+		}
+		
+		String userId = session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME).toString();
+		User user = userRepository.findOne(Integer.valueOf(userId));
+		user.setPassword(null);
 		return user;
 	}
 
@@ -79,8 +94,8 @@ public class LoginService {
 
 		usersSessions.forEach(session -> { // expiring/removing each session
 			String sessionId = session.getId();
-//			sessionRegistry.removeSessionInformation(sessionId);
-			
+			// sessionRegistry.removeSessionInformation(sessionId);
+
 			SessionInformation info = sessionRegistry.getSessionInformation(sessionId);
 			info.expireNow();
 			// logger.info("sessionId: " + sessionId);
