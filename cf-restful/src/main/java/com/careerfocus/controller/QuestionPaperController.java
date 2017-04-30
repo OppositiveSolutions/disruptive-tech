@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.entity.QuestionPaperCategory;
 import com.careerfocus.entity.QuestionPaperSubCategory;
+import com.careerfocus.model.request.QuestionVO;
 import com.careerfocus.service.QuestionPaperService;
 import com.careerfocus.util.response.Response;
 
@@ -81,6 +82,12 @@ public class QuestionPaperController {
 	public Response editQuestionPaperSubCategory(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody List<QuestionPaperSubCategory> subCategoryList) throws Exception {
 		return Response.ok(qPaperService.saveQuestionPaperSubCategory(subCategoryList)).build();
+	}
+	
+	@RequestMapping(value = "/question", method = RequestMethod.PUT)
+	public Response saveQuestion(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody List<QuestionVO> qList) throws Exception {
+		return Response.ok().build();
 	}
 	
 }

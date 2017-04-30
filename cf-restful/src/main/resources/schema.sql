@@ -233,58 +233,38 @@ CREATE TABLE IF NOT EXISTS `question_paper_sub_category` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 
-
 -- -----------------------------------------------------
 -- Table `career_focus`.`question_option`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`question_option` (
-  `question_option_id` INT NOT NULL,
-  `question_id` INT NOT NULL,
-  `option` VARCHAR(1000) NOT NULL,
-  PRIMARY KEY (`question_option_id`))
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `question_option` (
+  `question_id` int(11) NOT NULL,
+  `option_no` int(11) NOT NULL,
+  `option` varchar(1000) NOT NULL,
+  PRIMARY KEY (`question_id`,`option_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`question`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`question` (
-  `question_id` INT NOT NULL AUTO_INCREMENT,
-  `question` INT NOT NULL,
-  `correct_option_id` INT NOT NULL,
-  PRIMARY KEY (`question_id`),
-  INDEX `fk_question_question_option1_idx` (`correct_option_id` ASC),
-  CONSTRAINT `fk_question_question_option1`
-    FOREIGN KEY (`correct_option_id`)
-    REFERENCES `career_focus`.`question_option` (`question_option_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `question` (
+  `question_id` int(11) NOT NULL AUTO_INCREMENT,
+  `question` varchar(2000) NOT NULL,
+  `correct_option_no` int(11) NOT NULL,
+  PRIMARY KEY (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`question_paper_question`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`question_paper_question` (
-  `question_paper_question_id` INT NOT NULL AUTO_INCREMENT,
-  `question_paper_subsection_id` INT NOT NULL,
-  `question_no` INT(3) NOT NULL COMMENT 'indicates the question number in the question paper\n',
-  `question_id` INT NOT NULL,
-  PRIMARY KEY (`question_paper_question_id`),
-  INDEX `fk_question_paper_question_question_paper_subsection1_idx` (`question_paper_subsection_id` ASC),
-  INDEX `fk_question_paper_question_question1_idx` (`question_id` ASC),
-  CONSTRAINT `fk_question_paper_question_question_paper_subsection1`
-    FOREIGN KEY (`question_paper_subsection_id`)
-    REFERENCES `career_focus`.`question_paper_subsection` (`question_paper_subsection_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_question_paper_question_question1`
-    FOREIGN KEY (`question_id`)
-    REFERENCES `career_focus`.`question` (`question_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+CREATE TABLE IF NOT EXISTS `question_paper_question` (
+  `question_paper_sub_category_id` int(11) NOT NULL,
+  `question_no` int(3) NOT NULL COMMENT 'indicates the question number in the question paper\n',
+  `question_id` int(11) NOT NULL,
+  PRIMARY KEY (`question_paper_sub_category_id`,`question_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`question_paper_demo`
@@ -514,31 +494,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `career_focus`.`user_question_paper_answer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`user_question_paper_answer` (
-  `user_question_paper_answer_id` INT NOT NULL,
-  `user_id` INT NOT NULL,
-  `question_question_id` INT NOT NULL,
-  `question_option_question_option_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `user_question_paper_answer` (
+  `user_question_paper_answer_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `question_question_id` int(11) NOT NULL,
+  `question_option_question_option_id` int(11) NOT NULL,
   PRIMARY KEY (`user_question_paper_answer_id`),
-  INDEX `fk_user_question_paper_answer_user1_idx` (`user_id` ASC),
-  INDEX `fk_user_question_paper_answer_question1_idx` (`question_question_id` ASC),
-  INDEX `fk_user_question_paper_answer_question_option1_idx` (`question_option_question_option_id` ASC),
-  CONSTRAINT `fk_user_question_paper_answer_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `career_focus`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_question_paper_answer_question1`
-    FOREIGN KEY (`question_question_id`)
-    REFERENCES `career_focus`.`question` (`question_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_question_paper_answer_question_option1`
-    FOREIGN KEY (`question_option_question_option_id`)
-    REFERENCES `career_focus`.`question_option` (`question_option_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  KEY `fk_user_question_paper_answer_user1_idx` (`user_id`),
+  CONSTRAINT `fk_user_question_paper_answer_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------
