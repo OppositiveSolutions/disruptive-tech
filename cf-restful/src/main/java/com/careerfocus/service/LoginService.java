@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.careerfocus.constants.Constants;
 import com.careerfocus.entity.User;
+import com.careerfocus.exception.UnauthorisedException;
 import com.careerfocus.repository.UserRepository;
 import com.careerfocus.util.response.Response;
 
@@ -63,10 +64,11 @@ public class LoginService {
 		HttpSession session = request.getSession(false);
 		if (session == null || session.getAttribute("role") == null
 				|| session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME) == null) {
-			throw new NotAuthorizedException("");
+			throw new UnauthorisedException("");
 		}
 		
 		String userId = session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME).toString();
+		logger.info("userId: " + userId);
 		User user = userRepository.findOne(Integer.valueOf(userId));
 		user.setPassword(null);
 		return user;

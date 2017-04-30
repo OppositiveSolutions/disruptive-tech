@@ -36,8 +36,6 @@ public class LoginController {
 		return Response.ok().build();
 	}
 	
-	
-	
 	@RequestMapping(value = "/logout-all-devices", method = RequestMethod.GET)
 	public Response logoutAllDevices(HttpServletRequest request) throws Exception {
 		loginService.logoutAllDevices(request);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import com.careerfocus.exception.UnauthorisedException;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
 
@@ -50,8 +51,8 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	@ExceptionHandler(value = NotAuthorizedException.class)
-	public Response handleNotAuthorizedExceptionException(NotAuthorizedException e) {		
+	@ExceptionHandler(value = UnauthorisedException.class)
+	public Response handleNotAuthorizedExceptionException(UnauthorisedException e) {		
 //		log.error("Error", e);
 		return Response.unauthorized().build();
 	}

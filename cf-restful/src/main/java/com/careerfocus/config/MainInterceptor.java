@@ -98,7 +98,9 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 	private boolean checkAutorizationForSuperAdmin(String uri, String requestMethod) {
 
 		PathMatcher pathMatcher = new AntPathMatcher();
-		if (pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/category*", uri)
+		if (pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
+				|| pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
+				|| pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/category*", uri)
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper"))
 			return true;
