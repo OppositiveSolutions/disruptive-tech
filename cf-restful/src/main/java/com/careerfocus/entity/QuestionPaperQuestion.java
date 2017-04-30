@@ -1,9 +1,13 @@
 package com.careerfocus.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,17 +23,22 @@ public class QuestionPaperQuestion {
 	@Column(name = "question_no", nullable = false, columnDefinition = "INT")
 	private int questionNo;
 
-	@Column(name = "question_id", nullable = false, columnDefinition = "INT")
-	private int questionId;
+//	@Column(name = "question_id", nullable = false, columnDefinition = "INT")
+//	private int questionId;
+	
+	@ManyToOne(cascade = CascadeType.MERGE, fetch= FetchType.EAGER)
+	@JoinColumn(name = "question_id", columnDefinition="INT", nullable=false)
+	private Question question;
 
 	public QuestionPaperQuestion() {
 
 	}
 
-	public QuestionPaperQuestion(int questionPaperSubCategoryId, int questionNo, int questionId) {
+	public QuestionPaperQuestion(int questionPaperSubCategoryId, int questionNo, Question question) {
 		this.questionPaperSubCategoryId = questionPaperSubCategoryId;
 		this.questionNo = questionNo;
-		this.questionId = questionId;
+		this.question = question;
+//		this.questionId = questionId;
 	}
 
 	public int getQuestionPaperSubCategoryId() {
@@ -48,12 +57,20 @@ public class QuestionPaperQuestion {
 		this.questionNo = questionNo;
 	}
 
-	public int getQuestionId() {
-		return questionId;
+//	public int getQuestionId() {
+//		return questionId;
+//	}
+//
+//	public void setQuestionId(int questionId) {
+//		this.questionId = questionId;
+//	}
+	
+	public Question getQuestion() {
+		return question;
 	}
 
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
 
 }

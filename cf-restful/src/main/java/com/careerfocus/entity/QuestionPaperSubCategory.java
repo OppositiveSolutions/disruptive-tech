@@ -1,5 +1,8 @@
 package com.careerfocus.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 /**
@@ -33,10 +36,15 @@ public class QuestionPaperSubCategory {
 	@Basic
 	@Column(name="r_order", columnDefinition="INT")
 	private int order;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
+	@JoinColumn(name = "question_paper_sub_category_id")
+	private Set<QuestionPaperQuestion> questions = new HashSet<QuestionPaperQuestion>();
 
 //	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
 //	@JoinColumn(name="question_paper_category_id", columnDefinition="INT", nullable=false)
 //	private QuestionPaperCategory questionPaperCategory;
+
 
 	public QuestionPaperSubCategory() {
 	}
@@ -99,5 +107,13 @@ public class QuestionPaperSubCategory {
 
 	public void setOrder(int order) {
 		this.order = order;
+	}
+	
+	public Set<QuestionPaperQuestion> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(Set<QuestionPaperQuestion> questions) {
+		this.questions = questions;
 	}
 }

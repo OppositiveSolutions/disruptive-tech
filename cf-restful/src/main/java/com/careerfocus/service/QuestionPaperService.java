@@ -97,7 +97,7 @@ public class QuestionPaperService {
 			questionsOptionsRepository.save(oList);
 
 			questionPaperQuestionRepository.save(new QuestionPaperQuestion(qstn.getQuestionPaperSubCategoryId(),
-					qstn.getQuestionNo(), savedQuestion.getQuestionId()));
+					qstn.getQuestionNo(), savedQuestion));
 		});
 
 	}
