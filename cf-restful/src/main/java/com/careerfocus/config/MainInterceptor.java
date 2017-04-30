@@ -111,8 +111,8 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 
 		PathMatcher pathMatcher = new AntPathMatcher();
 		if (pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/category*", uri)
-				|| pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/common*", uri)
-				|| pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/question-paper*", uri))
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper"))
 			return true;
 		return false;
 	}

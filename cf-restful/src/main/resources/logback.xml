@@ -8,15 +8,19 @@
 		</encoder>
 	</appender>
 
-	<logger name="org.springframework.web" level="ERROR" additivity="false">
+	<logger name="org.springframework.web" level="DEBUG" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
 
 	<logger name="com.careerfocus" level="DEBUG" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
+	
+	<logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
 
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>
