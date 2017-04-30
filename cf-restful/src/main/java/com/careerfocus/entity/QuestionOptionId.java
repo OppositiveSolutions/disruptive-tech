@@ -13,6 +13,10 @@ public class QuestionOptionId implements Serializable {
 	
 	private int optionNo;
 	
+	public QuestionOptionId() {
+		
+	}
+	
 	public QuestionOptionId (int questionId, int optionNo) {
 		this.questionId = questionId;
 		this.optionNo = optionNo;

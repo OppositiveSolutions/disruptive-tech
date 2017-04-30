@@ -16,10 +16,12 @@ import com.careerfocus.entity.Question;
 import com.careerfocus.entity.QuestionOption;
 import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.entity.QuestionPaperCategory;
+import com.careerfocus.entity.QuestionPaperQuestion;
 import com.careerfocus.entity.QuestionPaperSubCategory;
 import com.careerfocus.model.request.QuestionVO;
 import com.careerfocus.repository.QuestionOptionsRepository;
 import com.careerfocus.repository.QuestionPaperCategoryRepository;
+import com.careerfocus.repository.QuestionPaperQuestionRepository;
 import com.careerfocus.repository.QuestionPaperRepository;
 import com.careerfocus.repository.QuestionPaperSubCategoryRepository;
 import com.careerfocus.repository.QuestionsRepository;
@@ -43,9 +45,12 @@ public class QuestionPaperService {
 
 	@Autowired
 	QuestionsRepository questionsRepository;
-	
+
 	@Autowired
 	QuestionOptionsRepository questionsOptionsRepository;
+
+	@Autowired
+	QuestionPaperQuestionRepository questionPaperQuestionRepository;
 
 	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
 		return qPaperRepository.save(qPaper);
@@ -78,20 +83,23 @@ public class QuestionPaperService {
 
 	@Transactional
 	public void saveQuestion(List<QuestionVO> qList) {
-		qList.forEach(question -> {
-			Question savedQuestion = questionsRepository
-					.save(new Question(question.getQuestion(), question.getCorrectOptionNo()));
-			
+		qList.forEach(qstn -> {
+
+			Question question = new Question(qstn.getQuestion(), qstn.getCorrectOptionNo());
+			if (qstn.getQuestionId() != 0)
+				question.setQuestionId(qstn.getQuestionId());
+			Question savedQuestion = questionsRepository.save(question);
+
 			List<QuestionOption> oList = new ArrayList<QuestionOption>();
-			question.getOptions().forEach(option -> {
+			qstn.getOptions().forEach(option -> {
 				oList.add(new QuestionOption(savedQuestion.getQuestionId(), option.getOptionNo(), option.getOption()));
 			});
 			questionsOptionsRepository.save(oList);
-			
-			
+
+			questionPaperQuestionRepository.save(new QuestionPaperQuestion(qstn.getQuestionPaperSubCategoryId(),
+					qstn.getQuestionNo(), savedQuestion.getQuestionId()));
 		});
 
-		
 	}
 
 }

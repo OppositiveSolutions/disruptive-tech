@@ -144,7 +144,6 @@ public class QuestionPaper {
 	}
 
 	public Set<QuestionPaperCategory> getQuestionPaperCategorys() {
-		System.out.print("CHECKPOINT 1");
 		return questionPaperCategorys;
 	}
 

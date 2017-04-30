@@ -84,9 +84,10 @@ public class QuestionPaperController {
 		return Response.ok(qPaperService.saveQuestionPaperSubCategory(subCategoryList)).build();
 	}
 	
-	@RequestMapping(value = "/question", method = RequestMethod.PUT)
+	@RequestMapping(value = "/question", method = RequestMethod.POST)
 	public Response saveQuestion(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody List<QuestionVO> qList) throws Exception {
+		qPaperService.saveQuestion(qList);
 		return Response.ok().build();
 	}
 	

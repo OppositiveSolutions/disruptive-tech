@@ -28,7 +28,7 @@ public class QuestionOption {
 	private int optionNo;
 
 	@Basic
-	@Column(nullable = false, length = 1000)
+	@Column(name = "q_option", nullable = false, length = 1000)
 	private String option;
 
 	public QuestionOption() {

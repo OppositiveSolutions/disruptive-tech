@@ -1,19 +1,36 @@
 package com.careerfocus.model.request;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class QuestionVO {
+public class QuestionVO implements Serializable {
+	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private int questionPaperSubCategoryId;
 
 	private int questionNo;
 	
-	private ArrayList<Option> options;
+	private ArrayList<OptionVO> options;
 	
 	private String question;
 	
 	private int correctOptionNo;
 	
+	private int questionId;
+	
+	public int getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
+
 	public int getQuestionPaperSubCategoryId() {
 		return this.questionPaperSubCategoryId;
 	}
@@ -38,11 +55,11 @@ public class QuestionVO {
 		this.question = question;
 	}
 
-	public ArrayList<Option> getOptions() {
+	public ArrayList<OptionVO> getOptions() {
 		return this.options;
 	}
 
-	public void setOptions(ArrayList<Option> options) {
+	public void setOptions(ArrayList<OptionVO> options) {
 		this.options = options;
 	}
 
@@ -54,25 +71,4 @@ public class QuestionVO {
 		this.correctOptionNo = correctOptionNo;
 	}
 
-	public class Option {
-		private int optionNo;
-
-		public int getOptionNo() {
-			return this.optionNo;
-		}
-
-		public void setOptionNo(int optionNo) {
-			this.optionNo = optionNo;
-		}
-
-		private String option;
-
-		public String getOption() {
-			return this.option;
-		}
-
-		public void setOption(String option) {
-			this.option = option;
-		}
-	}
 }

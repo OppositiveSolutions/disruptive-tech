@@ -57,8 +57,6 @@ public class GlobalExceptionHandler {
 		return Response.unauthorized().build();
 	}
 	
-	
-	
 	@ExceptionHandler(value = Exception.class)
 	public String handleException(Exception e) {
 		log.error("Error", e);
