@@ -48,12 +48,14 @@ public class QuestionPaper {
 	private int noOfOptions;
 	
 	@Basic
-	@Column(name="correct_answer_mark", columnDefinition="FLOAT")
-	private float correctAnswerMark;
+	@Column(name="created_date", columnDefinition="DATETIME DEFAULT CURRENT_TIMESTAMP")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdDate;
 
 	@Basic
-	@Column(name="negative_mark", columnDefinition="FLOAT")
-	private float negativeMark;
+	@Column(name="last_modified", columnDefinition="DATETIME DEFAULT CURRENT_TIMESTAMP")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastModified;
 
 	@Basic
 	@Column(name="is_demo")
@@ -69,14 +71,6 @@ public class QuestionPaper {
 
 	public QuestionPaper(int questionPaperId) {
 		this.questionPaperId = questionPaperId;
-	}
-
-	public float getCorrectAnswerMark() {
-		return correctAnswerMark;
-	}
-
-	public void setCorrectAnswerMark(float correctAnswerMark) {
-		this.correctAnswerMark = correctAnswerMark;
 	}
 
 	public String getCourseName() {
@@ -119,14 +113,6 @@ public class QuestionPaper {
 		this.name = name;
 	}
 
-	public float getNegativeMark() {
-		return negativeMark;
-	}
-
-	public void setNegativeMark(float negativeMark) {
-		this.negativeMark = negativeMark;
-	}
-
 	public int getNoOfOptions() {
 		return noOfOptions;
 	}
@@ -158,4 +144,30 @@ public class QuestionPaper {
 	public void setQuestionPaperId(int questionPaperId) {
 		this.questionPaperId = questionPaperId;
 	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(Date lastModified) {
+		this.lastModified = lastModified;
+	}
+
+//	public boolean isDemo() {
+//		return isDemo;
+//	}
+//
+//	public void setDemo(boolean isDemo) {
+//		this.isDemo = isDemo;
+//	}
+	
+	
 }

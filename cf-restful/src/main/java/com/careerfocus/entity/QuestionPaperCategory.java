@@ -55,12 +55,12 @@ public class QuestionPaperCategory {
 	private Set<QuestionPaperSubCategory> questionPaperSubCategorys = new HashSet<QuestionPaperSubCategory>();
 
 	@Basic
-	@Column(columnDefinition="INT")
-	private int weightage;
+	@Column(name = "correct_answer_mark", columnDefinition="INT")
+	private float correctAnswerMark;
 	
 	@Basic
-	@Column(name="negative_mark", columnDefinition="INT")
-	private int negativeMark;
+	@Column(name="negative_mark", columnDefinition="FLOAT")
+	private float negativeMark;
 	
 	@Basic
 	@Column(name="r_order", columnDefinition="INT")
@@ -90,7 +90,7 @@ public class QuestionPaperCategory {
 		this.category = category;
 	}
 
-	public int getNegativeMark() {
+	public float getNegativeMark() {
 		return negativeMark;
 	}
 
@@ -130,11 +130,16 @@ public class QuestionPaperCategory {
 		this.questionPaperSubCategorys = questionPaperSubCategorys;
 	}
 
-	public int getWeightage() {
-		return weightage;
+	public float getCorrectAnswerMark() {
+		return correctAnswerMark;
 	}
 
-	public void setWeightage(int weightage) {
-		this.weightage = weightage;
+	public void setCorrectAnswerMark(float correctAnswerMark) {
+		this.correctAnswerMark = correctAnswerMark;
 	}
+
+	public void setNegativeMark(float negativeMark) {
+		this.negativeMark = negativeMark;
+	}
+	
 }

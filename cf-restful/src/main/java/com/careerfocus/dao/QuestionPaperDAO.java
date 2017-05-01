@@ -28,11 +28,11 @@ public class QuestionPaperDAO {
 				qPaper.setName(result.getString("name"));
 				qPaper.setExamCode(result.getString("exam_code"));
 				qPaper.setCourseName(result.getString("course_name"));
-				qPaper.setDuration(180);
+				qPaper.setDuration(result.getInt("duration"));
 				qPaper.setNoOfQuestions(result.getInt("no_of_questions"));
 				qPaper.setNoOfOptions(result.getInt("no_of_options"));
-				qPaper.setCorrectAnswerMark(result.getInt("correct_answer_mark"));
-				qPaper.setNegativeMark(result.getFloat("negative_mark"));
+				qPaper.setCreatedDate(result.getTimestamp("created_date"));
+				qPaper.setLastModified(result.getTimestamp("last_modified"));
 				qPaper.setIsDemo(result.getBoolean("is_demo"));
 				qPaper.setQuestionPaperCategorys(null);
 				return qPaper;

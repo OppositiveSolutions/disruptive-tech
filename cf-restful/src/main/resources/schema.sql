@@ -174,7 +174,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `career_focus`.`question_paper`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `question_paper` (
+CREATE TABLE `question_paper` (
   `question_paper_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(150) NOT NULL,
   `exam_code` varchar(45) NOT NULL,
@@ -182,11 +182,12 @@ CREATE TABLE IF NOT EXISTS `question_paper` (
   `duration` int(11) NOT NULL COMMENT 'minutes',
   `no_of_questions` int(11) NOT NULL,
   `no_of_options` int(2) NOT NULL,
-  `correct_answer_mark` float NOT NULL,
-  `negative_mark` float NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_demo` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`question_paper_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
 
 
 -- -----------------------------------------------------
@@ -199,22 +200,21 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`sections` (
 ENGINE = InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `question_paper_category` (
+CREATE TABLE `question_paper_category` (
   `question_paper_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_paper_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `no_of_questions` int(11) NOT NULL,
   `no_of_sub_category` int(11) NOT NULL,
-  `weightage` int(4) NOT NULL,
-  `negative_mark` int(2) NOT NULL,
+  `correct_answer_mark` float NOT NULL,
+  `negative_mark` float NOT NULL,
   `r_order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`question_paper_category_id`),
   KEY `FK1u18p6vxpcfrbptvvjpk6cr53` (`category_id`),
   KEY `FKe3h7gf2fchw73pyeriowtbfxi` (`question_paper_id`),
   CONSTRAINT `FK1u18p6vxpcfrbptvvjpk6cr53` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`),
   CONSTRAINT `FKe3h7gf2fchw73pyeriowtbfxi` FOREIGN KEY (`question_paper_id`) REFERENCES `question_paper` (`question_paper_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------

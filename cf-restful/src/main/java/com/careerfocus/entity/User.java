@@ -19,6 +19,7 @@ public class User {
 
 	@Basic
 	@Column(name="created_date", nullable=false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
 	@Basic
