@@ -48,12 +48,12 @@ public class QuestionPaper {
 	private int noOfOptions;
 
 	@Basic
-	@Column(name = "created_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false)
+	@Column(name = "created_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
 	@Basic
-	@Column(name = "last_modified", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = true)
+	@Column(name = "last_modified", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastModified;
 

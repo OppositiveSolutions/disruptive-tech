@@ -2,7 +2,10 @@ package com.careerfocus.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -53,6 +56,7 @@ public class QuestionPaperService {
 	QuestionPaperQuestionRepository questionPaperQuestionRepository;
 
 	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
+		qPaper.setLastModified(new Date());
 		return qPaperRepository.save(qPaper);
 	}
 
@@ -68,7 +72,10 @@ public class QuestionPaperService {
 		return qPaperRepository.findOne(questionPaperId);
 	}
 
+	@Transactional
 	public List<QuestionPaperCategory> saveQuestionPaperCategories(List<QuestionPaperCategory> categoryList) {
+		categoryList = categoryRepository.save(categoryList);
+		updateLastModified(categoryList);
 		return categoryRepository.save(categoryList);
 	}
 
@@ -76,13 +83,19 @@ public class QuestionPaperService {
 		return categoryRepository.findByQuestionPaperId(questionPaperId);
 	}
 
+	@Transactional
 	public List<QuestionPaperSubCategory> saveQuestionPaperSubCategory(
 			List<QuestionPaperSubCategory> qPaperSubCategoryList) {
+		qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
+		updateLastModifiedBySubCategorys(qPaperSubCategoryList);
 		return subCategoryRepository.save(qPaperSubCategoryList);
 	}
 
 	@Transactional
 	public List<QuestionVO> saveQuestion(List<QuestionVO> qList) {
+		
+		
+		Set<Integer> subCatIds = new HashSet<Integer>();
 		qList.forEach(qstn -> {
 
 			Question question = new Question(qstn.getQuestion(), qstn.getCorrectOptionNo());
@@ -98,10 +111,30 @@ public class QuestionPaperService {
 
 			questionPaperQuestionRepository.save(new QuestionPaperQuestion(qstn.getQuestionPaperSubCategoryId(),
 					qstn.getQuestionNo(), savedQuestion));
-			
+
 			qstn.setQuestionId(savedQuestion.getQuestionId());
+			subCatIds.add(qstn.getQuestionPaperSubCategoryId());
 		});
+		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<Integer>(subCatIds));
 		return qList;
+	}
+
+	private void updateLastModified(List<QuestionPaperCategory> categoryList) {
+		Set<Integer> qIds = new HashSet<Integer>();
+		categoryList.forEach(category -> {
+			int questionPaperId = category.getQuestionPaperId();
+			qIds.add(questionPaperId);
+		});
+		qPaperDAO.updateLastModified(new ArrayList<Integer>(qIds));
+	}
+	
+	private void updateLastModifiedBySubCategorys(List<QuestionPaperSubCategory> subCategoryList) {
+		Set<Integer> qIds = new HashSet<Integer>();
+		subCategoryList.forEach(category -> {
+			int id = category.getQuestionPaperSubCategoryId();
+			qIds.add(id);
+		});
+		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<Integer>(qIds));
 	}
 
 }
