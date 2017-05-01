@@ -1,8 +1,5 @@
 package com.careerfocus.config;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.NotAuthorizedException;
-
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

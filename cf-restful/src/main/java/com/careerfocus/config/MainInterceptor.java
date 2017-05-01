@@ -1,7 +1,5 @@
 package com.careerfocus.config;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -10,13 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.careerfocus.constants.Constants;
 import com.careerfocus.util.CommonUtils;
-import com.careerfocus.util.response.Response;
 
 public class MainInterceptor extends HandlerInterceptorAdapter {
 

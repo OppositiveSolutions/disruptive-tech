@@ -12,4 +12,8 @@ public interface QuestionPaperRepository extends JpaRepository<QuestionPaper, In
 	@Query("UPDATE QuestionPaper q SET q.lastModified = CURRENT_TIMESTAMP WHERE q.questionPaperId = ?1")
 	void updateTimeStampByQuestionPaperId(int questionPaperId);
 	
+	@Modifying
+	@Query("UPDATE QuestionPaper q SET q.isDemo = ?1 WHERE q.questionPaperId = ?2")
+	void updateIsDemo(boolean isDemo, int questionPaperId);
+	
 }

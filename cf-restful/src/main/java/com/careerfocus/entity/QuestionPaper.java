@@ -3,10 +3,6 @@ package com.careerfocus.entity;
 import java.util.*;
 import javax.persistence.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -160,13 +156,5 @@ public class QuestionPaper {
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
 	}
-
-	// public boolean isDemo() {
-	// return isDemo;
-	// }
-	//
-	// public void setDemo(boolean isDemo) {
-	// this.isDemo = isDemo;
-	// }
 
 }

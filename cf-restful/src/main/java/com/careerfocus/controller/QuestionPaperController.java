@@ -90,5 +90,13 @@ public class QuestionPaperController {
 			@RequestBody List<QuestionVO> qList) throws Exception {
 		return Response.ok(qPaperService.saveQuestion(qList)).build();
 	}
-	
+
+	@RequestMapping(value = "/{questionPaperId}/demo/{isDemo}", method = RequestMethod.POST)
+	public Response setDemo(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("questionPaperId") int questionPaperId, @PathVariable("isDemo") boolean isDemo)
+			throws Exception {
+		qPaperService.updateIsDemo(questionPaperId, isDemo);
+		return Response.ok().build();
+	}
+
 }

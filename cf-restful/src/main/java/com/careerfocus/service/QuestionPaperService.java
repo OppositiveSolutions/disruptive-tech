@@ -118,6 +118,11 @@ public class QuestionPaperService {
 		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<Integer>(subCatIds));
 		return qList;
 	}
+	
+	@Transactional
+	public void updateIsDemo(int questionPaperId, boolean isDemo) {
+		qPaperRepository.updateIsDemo(isDemo, questionPaperId);
+	}
 
 	private void updateLastModified(List<QuestionPaperCategory> categoryList) {
 		Set<Integer> qIds = new HashSet<Integer>();

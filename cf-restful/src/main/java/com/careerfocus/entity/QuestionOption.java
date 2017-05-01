@@ -3,8 +3,6 @@ package com.careerfocus.entity;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
@@ -13,11 +11,6 @@ import javax.persistence.Table;
 @Table(name = "question_option")
 @IdClass(QuestionOptionId.class)
 public class QuestionOption {
-
-	// @Id
-	// @GeneratedValue(strategy = GenerationType.AUTO)
-	// @Column(name = "question_option_id", columnDefinition = "INT")
-	// private int questionOptionId;
 
 	@Id
 	@Column(name = "question_id", columnDefinition = "INT", nullable = false)
@@ -40,14 +33,6 @@ public class QuestionOption {
 		this.optionNo = optionNo;
 		this.option = option;
 	}
-
-	// public int getQuestionOptionId() {
-	// return questionOptionId;
-	// }
-	//
-	// public void setQuestionOptionId(int questionOptionId) {
-	// this.questionOptionId = questionOptionId;
-	// }
 
 	public int getQuestionId() {
 		return questionId;

@@ -2,10 +2,7 @@ package com.careerfocus.service;
 
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.NotAuthorizedException;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,7 +17,6 @@ import com.careerfocus.constants.Constants;
 import com.careerfocus.entity.User;
 import com.careerfocus.exception.UnauthorisedException;
 import com.careerfocus.repository.UserRepository;
-import com.careerfocus.util.response.Response;
 
 @Service
 public class LoginService {
