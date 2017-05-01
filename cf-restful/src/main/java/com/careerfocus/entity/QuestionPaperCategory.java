@@ -69,15 +69,6 @@ public class QuestionPaperCategory {
 	public QuestionPaperCategory() {
 	}
 	
-	public int getOrder() {
-		return order;
-	}
-
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
-
 	public QuestionPaperCategory(int questionPaperCategoryId) {
 		this.questionPaperCategoryId = questionPaperCategoryId;
 	}
@@ -88,14 +79,6 @@ public class QuestionPaperCategory {
 
 	public void setCategory(Category category) {
 		this.category = category;
-	}
-
-	public float getNegativeMark() {
-		return negativeMark;
-	}
-
-	public void setNegativeMark(int negativeMark) {
-		this.negativeMark = negativeMark;
 	}
 
 	public int getNoOfQuestions() {
@@ -137,9 +120,21 @@ public class QuestionPaperCategory {
 	public void setCorrectAnswerMark(float correctAnswerMark) {
 		this.correctAnswerMark = correctAnswerMark;
 	}
+	
+	public float getNegativeMark() {
+		return negativeMark;
+	}
 
 	public void setNegativeMark(float negativeMark) {
 		this.negativeMark = negativeMark;
+	}
+	
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 	
 }

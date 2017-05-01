@@ -14,54 +14,54 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * org.apache.openjpa.jdbc.meta.ReverseMappingTool$AnnotatedCodeGenerator
  */
 @Entity
-@Table(name="question_paper")
+@Table(name = "question_paper")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class QuestionPaper {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="question_paper_id", columnDefinition="INT")
+	@Column(name = "question_paper_id", columnDefinition = "INT")
 	private int questionPaperId;
-	
+
 	@Basic
-	@Column(nullable=false, length=150)
+	@Column(nullable = false, length = 150)
 	private String name;
-	
+
 	@Basic
-	@Column(name="exam_code", nullable=false, length=45)
+	@Column(name = "exam_code", nullable = false, length = 45)
 	private String examCode;
-	
+
 	@Basic
-	@Column(name="course_name", nullable=false)
+	@Column(name = "course_name", nullable = false)
 	private String courseName;
-	
+
 	@Basic
-	@Column(columnDefinition="INT")
+	@Column(columnDefinition = "INT")
 	private int duration;
-	
+
 	@Basic
-	@Column(name="no_of_questions", columnDefinition="INT")
+	@Column(name = "no_of_questions", columnDefinition = "INT")
 	private int noOfQuestions;
-	
+
 	@Basic
-	@Column(name="no_of_options", columnDefinition="INT")
+	@Column(name = "no_of_options", columnDefinition = "INT")
 	private int noOfOptions;
-	
+
 	@Basic
-	@Column(name="created_date", columnDefinition="DATETIME DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "created_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
 	@Basic
-	@Column(name="last_modified", columnDefinition="DATETIME DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "last_modified", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = true)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastModified;
 
 	@Basic
-	@Column(name="is_demo")
+	@Column(name = "is_demo")
 	private boolean isDemo;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch= FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_paper_id")
 	@OrderBy("order")
 	private Set<QuestionPaperCategory> questionPaperCategorys = new HashSet<QuestionPaperCategory>();
@@ -161,13 +161,12 @@ public class QuestionPaper {
 		this.lastModified = lastModified;
 	}
 
-//	public boolean isDemo() {
-//		return isDemo;
-//	}
-//
-//	public void setDemo(boolean isDemo) {
-//		this.isDemo = isDemo;
-//	}
-	
-	
+	// public boolean isDemo() {
+	// return isDemo;
+	// }
+	//
+	// public void setDemo(boolean isDemo) {
+	// this.isDemo = isDemo;
+	// }
+
 }

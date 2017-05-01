@@ -174,7 +174,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `career_focus`.`question_paper`
 -- -----------------------------------------------------
-CREATE TABLE `question_paper` (
+CREATE TABLE IF NOT EXISTS `question_paper` (
   `question_paper_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(150) NOT NULL,
   `exam_code` varchar(45) NOT NULL,
@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`sections` (
 ENGINE = InnoDB;
 
 
-CREATE TABLE `question_paper_category` (
+CREATE TABLE IF NOT EXISTS `question_paper_category` (
   `question_paper_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_paper_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
