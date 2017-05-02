@@ -15,10 +15,15 @@ public class CommonController {
 
 	@Autowired
 	CommonService commonService;
-	
 
 	@RequestMapping(value = "/log4j/{level}", method = RequestMethod.GET)
 	public Response setLogLevel(@PathVariable("level") int level) throws Exception {
 		return Response.ok(commonService.setLogLevel(level)).build();
 	}
+
+	@RequestMapping(value = "/states", method = RequestMethod.GET)
+	public Response getStates() throws Exception {
+		return Response.ok(commonService.getStates()).build();
+	}
+
 }

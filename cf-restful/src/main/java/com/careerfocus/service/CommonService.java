@@ -1,10 +1,13 @@
 package com.careerfocus.service;
 
+import java.util.List;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.careerfocus.dao.CommonDAO;
+import com.careerfocus.entity.States;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -61,5 +64,9 @@ public class CommonService {
 			break;
 		}
 		return message;
+	}
+	
+	public List<States> getStates() {
+		return commonDAO.getStates();
 	}
 }

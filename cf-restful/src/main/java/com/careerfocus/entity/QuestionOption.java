@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import com.careerfocus.entity.id.QuestionOptionId;
+
 @Entity
 @Table(name = "question_option")
 @IdClass(QuestionOptionId.class)

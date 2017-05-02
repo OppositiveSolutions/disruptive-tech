@@ -1,4 +1,4 @@
-package com.careerfocus.entity;
+package com.careerfocus.entity.id;
 
 import java.io.Serializable;
 

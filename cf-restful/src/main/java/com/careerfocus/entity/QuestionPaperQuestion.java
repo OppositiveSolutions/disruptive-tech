@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.careerfocus.entity.id.QuestionPaperQuestionId;
+
 @Entity
 @Table(name = "question_paper_question")
 @IdClass(QuestionPaperQuestionId.class)
