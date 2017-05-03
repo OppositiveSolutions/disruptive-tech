@@ -19,4 +19,15 @@ public class DateUtils {
 		}
 		return date;
 	}
+	
+	public static Date convertYYYYMMDDToJavaDate(String dateTime) {
+		Date date = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			date = sdf.parse(dateTime);
+		} catch (Exception e) {
+			log.error("convertYYYYMMDDToJavaDate", e);
+		}
+		return date;
+	}
 }

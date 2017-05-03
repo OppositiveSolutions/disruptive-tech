@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.careerfocus.entity.Temp0;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StudentService;
 import com.careerfocus.util.response.Response;
@@ -30,9 +29,17 @@ public class StudentController {
 		return studentService.addStudent(student);
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Response getStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return Response.ok(studentService.getStudent(0, 0)).build();
+	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
+	public Response getStudent(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
+		return Response.ok(studentService.getStudent(pageSize, pageNo)).build();
+	}
+
+	@RequestMapping(value = "/{userId}/expiry", method = RequestMethod.PUT, consumes = { "text/plain" })
+	public Response updateStudentExpiry(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("userId") int userId, @RequestBody String expiryDate) throws Exception {
+		studentService.updateStudentExpiry(userId, expiryDate);
+		return Response.ok().build();
 	}
 
 }

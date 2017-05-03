@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +62,12 @@ public class StudentService {
 
 	public Collection<StudentVO> getStudent(int pageSize, int pageNo) {
 
-		return studentDAO.getStudents(0, 0);
+		return studentDAO.getStudents(pageSize, pageNo);
+	}
+
+	@Transactional
+	public void updateStudentExpiry(int userId, String expiryDate) {
+		studentRepository.updateStudentExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate), userId);
 	}
 
 }

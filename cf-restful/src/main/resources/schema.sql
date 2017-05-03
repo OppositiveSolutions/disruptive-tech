@@ -65,11 +65,23 @@ CREATE TABLE IF NOT EXISTS `user_phone` (
   CONSTRAINT `fk_user_phone_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `states` (
+CREATE TABLE IF NOT EXISTS `states` (
   `state_id` int(8) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`state_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`user_profile_pic`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `user_profile_pic` (
+  `user_id` int(11) NOT NULL,
+  `picture` blob,
+  PRIMARY KEY (`user_id`),
+  KEY `fk_user_profile_pic_user1_idx` (`user_id`),
+  CONSTRAINT `fk_user_profile_pic_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`address`
@@ -428,18 +440,6 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`testimonials` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `career_focus`.`user_profile_pic`
--- -----------------------------------------------------
-CREATE TABLE `user_profile_pic` (
-  `user_id` int(11) NOT NULL,
-  `picture` blob,
-  PRIMARY KEY (`user_id`),
-  KEY `fk_user_profile_pic_user1_idx` (`user_id`),
-  CONSTRAINT `fk_user_profile_pic_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------

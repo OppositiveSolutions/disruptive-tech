@@ -19,8 +19,12 @@ public class StudentDAO {
 
 	public Collection<StudentVO> getStudents(int pageSize, int pageNo) {
 
-		String query = "SELECT first_name, last_name, created_date, expiry_date, username, status  FROM student s \n"
+		String query = "SELECT first_name, last_name, created_date, expiry_date, username, status FROM student s \n"
 				+ "INNER JOIN user u ON s.user_id = u.user_id";
+		
+		if (pageSize > 0 && pageNo > 0) {
+			query += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
+		}
 
 		return template.query(query, new RowMapper<StudentVO>() {
 
