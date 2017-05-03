@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.entity.Temp0;
+import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StudentService;
 import com.careerfocus.util.response.Response;
 
@@ -18,15 +19,20 @@ import com.careerfocus.util.response.Response;
 @RequestMapping("/student")
 public class StudentController {
 
-	private final Logger logger = Logger.getLogger(this.getClass());
+	private final Logger log = Logger.getLogger(this.getClass());
 
 	@Autowired
 	StudentService studentService;
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Response getVideoTutorial(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable("id") Integer id) throws Exception {
-		return Response.ok(studentService.getStudent(id)).build();
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public Response addStudent(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody AddStudentVO student) throws Exception {
+		return studentService.addStudent(student);
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public Response getStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return Response.ok(studentService.getStudent(0, 0)).build();
 	}
 
 }

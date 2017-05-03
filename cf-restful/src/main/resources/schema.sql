@@ -27,53 +27,67 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '1 - student\n2 - super admin\n3 - branch admin',
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
-  `created_date` datetime NOT NULL,
+  `created_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `role` int(2) NOT NULL,
-  `dob` date DEFAULT NULL,
-  `gender` varchar(11) DEFAULT NULL,
   `first_name` varchar(46) NOT NULL,
   `last_name` varchar(46) NOT NULL,
-  `status` int(2) NOT NULL COMMENT 'Indicates whether user is enabled or not.',
-  `center_id` varchar(12) NOT NULL,
-  `fee_status` varchar(45) NOT NULL COMMENT 'reserved\n',
+  `dob` date DEFAULT NULL,
+  `gender` varchar(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`user_address`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`user_address` (
-  `user_address_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `user_address_type` INT(2) NULL,
-  `address` VARCHAR(400) NULL,
-  PRIMARY KEY (`user_address_id`),
-  INDEX `fk_user_address_user_idx` (`user_id` ASC),
-  CONSTRAINT `fk_user_address_user`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `career_focus`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+CREATE TABLE IF NOT EXISTS `user_address` (
+  `user_id` int(11) NOT NULL,
+  `address_id` int(11) NOT NULL,
+  KEY `fk_user_address_user_idx` (`user_id`),
+  KEY `fk_user_address_address_idx` (`address_id`),
+  CONSTRAINT `FKdaaxogn1ss81gkcsdn05wi6jp` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`),
+  CONSTRAINT `FKk2ox3w9jm7yd6v1m5f68xibry` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `fk_user_address_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_address_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`user_phone`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`user_phone` (
-  `user_phone_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `type` INT(2) NOT NULL COMMENT '1 - mobile\n2 - home\n3 - other',
-  `phone_no` VARCHAR(45) NOT NULL,
+CREATE TABLE IF NOT EXISTS `user_phone` (
+  `user_phone_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `type` int(2) NOT NULL COMMENT '1 - mobile\n2 - home\n3 - other',
+  `phone_no` varchar(45) NOT NULL,
   PRIMARY KEY (`user_phone_id`),
-  INDEX `fk_user_phone_user1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_user_phone_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `career_focus`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  KEY `fk_user_phone_user1_idx` (`user_id`),
+  CONSTRAINT `FKaqeg9vtqjgkgi9vw7xy66va7` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `fk_user_phone_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `states` (
+  `state_id` int(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`state_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`address`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `address` (
+  `address_id` int(11) NOT NULL AUTO_INCREMENT,
+  `street_address` varchar(2000) DEFAULT NULL,
+  `land_mark` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state_id` int(11) DEFAULT NULL,
+  `pin_code` int(6) DEFAULT NULL,
+  `student_id` int(11) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`address_id`),
+  KEY `fk_address_state_idx` (`state_id`),
+  CONSTRAINT `FK1uk1eurcj7mhj5tpql2yurw32` FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`),
+  CONSTRAINT `fk_address_state` FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------
@@ -419,18 +433,13 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `career_focus`.`user_profile_pic`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`user_profile_pic` (
-  `id` INT NOT NULL,
-  `user_id` INT NOT NULL,
-  `picture` BLOB NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_user_profile_pic_user1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_user_profile_pic_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `career_focus`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE `user_profile_pic` (
+  `user_id` int(11) NOT NULL,
+  `picture` blob,
+  PRIMARY KEY (`user_id`),
+  KEY `fk_user_profile_pic_user1_idx` (`user_id`),
+  CONSTRAINT `fk_user_profile_pic_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------
@@ -529,6 +538,21 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`fee_details` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS`student` (
+  `user_id` int(11) NOT NULL,
+  `qualification` varchar(255) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `center_id` varchar(45) NOT NULL,
+  `fee_status` varchar(45) NOT NULL,
+  `expiry_date` date NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
+  KEY `fk_user_id_idx` (`user_id`),
+  CONSTRAINT `FKk5m148xqefonqw7bgnpm0snwj` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

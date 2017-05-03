@@ -12,8 +12,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-@Entity
-@Table(name = "address")
+//@Entity
+//@Table(name = "address")
 public class Temp {
 	
 	@Id

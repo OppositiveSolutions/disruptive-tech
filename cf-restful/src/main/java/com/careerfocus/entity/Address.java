@@ -30,7 +30,7 @@ public class Address {
 	private int pinCode;
 
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="stateId", scope=States.class)
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
+	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.MERGE)
 	@JoinColumn(name="state_id", columnDefinition="INT")
 	private States state;
 

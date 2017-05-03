@@ -17,8 +17,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Student {
 	@Id
-	@Column(name="student_id", columnDefinition="INT")
-	private int studentId;
+	@Column(name="user_id", columnDefinition="INT")
+	private int userId;
 	
 	@Basic
 	@Column(name="center_id", nullable=false, length=45)
@@ -42,15 +42,23 @@ public class Student {
 
 	@JsonManagedReference
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="userId", scope=User.class)
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
-	@JoinColumn(name="user_id", columnDefinition="INT", nullable=false)
+	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
+	@JoinColumn(name="user_id", columnDefinition="INT")
 	private User user;
 
 	public Student() {
 	}
-
-	public Student(int studentId) {
-		this.studentId = studentId;
+	
+	public Student(int userId) {
+		this.userId = userId;
+	}
+	
+	public Student(int userId, String qualification, int status, String centerId, String feeStatus, Date expiryDate) {
+		this.userId = userId;
+		this.qualification = qualification;
+		this.status = status;
+		this.feeStatus = feeStatus;
+		this.expiryDate = expiryDate;
 	}
 
 	public String getCenterId() {
@@ -93,14 +101,6 @@ public class Student {
 		this.status = status;
 	}
 
-	public int getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(int studentId) {
-		this.studentId = studentId;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -108,4 +108,13 @@ public class Student {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
 }

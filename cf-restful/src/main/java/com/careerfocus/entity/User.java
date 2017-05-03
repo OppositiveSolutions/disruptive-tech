@@ -14,64 +14,72 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  */
 @Entity
 @Table(name="user")
-//@IdClass(UserId.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 	
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="addressId", scope=Address.class)
-	@ManyToMany(targetEntity=Address.class, mappedBy="users", cascade=CascadeType.MERGE)
-	private Set<Address> address = new HashSet<Address>();
-
-	@Basic
-	@Column(name="created_date", nullable=false)
-	private Date createdDate;
-
-	@Basic
-	@Temporal(TemporalType.DATE)
-	private Date dob;
-
-	@Basic
-	@Column(name="first_name", nullable=false, length=46)
-	private String firstName;
-
-	@Basic
-	@Column(length=11)
-	private String gender;
-
-	@Basic
-	@Column(name="last_name", nullable=false, length=46)
-	private String lastName;
-
-	@Basic
-	@Column(nullable=false, length=45)
-	private String password;
-
-	@Basic
-	@Column(columnDefinition="INT")
-	private int role;
-
-	@JsonBackReference
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="studentId", scope=Student.class)
-	@OneToMany(targetEntity=Student.class, mappedBy="user", cascade=CascadeType.MERGE)
-	private Set<Student> students = new HashSet<Student>();
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="user_id", columnDefinition="INT")
 	private int userId;
 
+	@Basic
+	@Column(nullable=false, length=45)
+	private String username;
+	
+	@Basic
+	@Column(nullable=false, length=45)
+	private String password;
+	
+	@Basic
+	@Column(name="created_date", nullable=false, insertable = false, updatable = false)
+	private Date createdDate;
+
+	@Basic
+	@Column(columnDefinition="INT")
+	private int role;
+
+	@Basic
+	@Column(name="first_name", nullable=false, length=46)
+	private String firstName;
+	
+	@Basic
+	@Column(name="last_name", nullable=false, length=46)
+	private String lastName;
+	
+	@Basic
+	@Column(length=11)
+	private String gender;
+
+	@Basic
+	@Temporal(TemporalType.DATE)
+	private Date dob;
+
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="addressId", scope=Address.class)
+	@ManyToMany(targetEntity=Address.class, mappedBy="users", cascade=CascadeType.MERGE)
+	private Set<Address> address = new HashSet<Address>();
+
 	@OneToMany(targetEntity=UserPhone.class, mappedBy="user", cascade=CascadeType.MERGE)
 	private Set<UserPhone> userPhones = new HashSet<UserPhone>();
+	
+	@JsonBackReference
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="userId", scope=Student.class)
+	@OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade=CascadeType.MERGE)
+	private Student student;
 
 //	@OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade=CascadeType.MERGE)
 //	private UserProfilePic userProfilePic;
 
-	@Basic
-	@Column(nullable=false, length=45)
-	private String username;
-
-
 	public User() {
+	}
+	
+	public User(String username, String password, int role, String firstName, String lastName, String gender, Date dob) {
+		this.username = username;
+		this.password = password;
+		this.role = role;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.dob = dob;
 	}
 
 	public User(int userId) {
@@ -142,12 +150,12 @@ public class User {
 		this.role = role;
 	}
 
-	public Set<Student> getStudents() {
-		return students;
+	public Student getStudent() {
+		return student;
 	}
 
-	public void setStudents(Set<Student> students) {
-		this.students = students;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
 
 	public int getUserId() {

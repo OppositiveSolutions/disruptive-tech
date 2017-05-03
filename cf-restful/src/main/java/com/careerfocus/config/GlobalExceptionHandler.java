@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.exception.UnauthorisedException;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
@@ -17,11 +18,6 @@ import com.careerfocus.util.response.Response;
 @RestController
 public class GlobalExceptionHandler {
 	
-	
-	private static int ERROR_INVALID_CREDENTIALS_CODE = 49;
-	
-	private static String ERROR_INVALID_CREDENTIALS_MSG = "The username or password you've entered is incorrect.";
-
 	private final Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -43,8 +39,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(value = AuthenticationCredentialsNotFoundException.class)
 	public Response handleException(AuthenticationCredentialsNotFoundException e) {		
 		log.error("Error", e);
-		Error error = new Error(ERROR_INVALID_CREDENTIALS_CODE, ERROR_INVALID_CREDENTIALS_MSG);
-		return Response.status(ERROR_INVALID_CREDENTIALS_CODE).error(error, null).build();
+		Error error = new Error(ErrorCodes.INVALID_CREDENTIALS_CODE, ErrorCodes.INVALID_CREDENTIALS_MSG);
+		return Response.status(ErrorCodes.INVALID_CREDENTIALS_CODE).error(error, null).build();
 	}
 	
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
