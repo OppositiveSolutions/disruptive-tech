@@ -52,6 +52,7 @@ public class PersistenceJPAConfig {
 		return properties;
 	}
 	
+	
 //	private void addLevel2Cache(Properties properties){
 //		properties.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.infinispan.InfinispanRegionFactory");
 //		properties.setProperty("hibernate.cache.infinispan.cachemanager","java:CacheManager/Employee");

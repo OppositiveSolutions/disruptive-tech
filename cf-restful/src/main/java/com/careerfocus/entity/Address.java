@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
@@ -13,8 +14,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  */
 @Entity
 @Table(name="address")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Address {
+	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="address_id", columnDefinition="INT")
 	private int addressId;
 

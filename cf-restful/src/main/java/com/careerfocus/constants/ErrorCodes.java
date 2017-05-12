@@ -19,5 +19,9 @@ public class ErrorCodes {
 	
 	public static int INVALID_GENDER = 703;
 	public static String INVALID_GENDER_MSG = "Unexpected value found for gender.";
+	
+	public static int CENTER_ALREADY_EXISTS = 704;
+	public static String CENTER_ALREADY_EXISTS_MSG = "The center code you've entered already exists.";
+	
 
 }

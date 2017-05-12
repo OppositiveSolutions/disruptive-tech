@@ -108,12 +108,6 @@
 			<artifactId>spring-boot-starter-redis</artifactId>
 			<version>1.4.5.RELEASE</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.redisson/redisson -->
-		<dependency>
-			<groupId>org.redisson</groupId>
-			<artifactId>redisson</artifactId>
-			<version>3.3.2</version>
-		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
 		<dependency>
@@ -136,6 +130,12 @@
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
 			<version>1.5.5</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
 		</dependency>
 
 	</dependencies>

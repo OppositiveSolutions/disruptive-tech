@@ -16,14 +16,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name="student")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Student {
+	
 	@Id
 	@Column(name="user_id", columnDefinition="INT")
 	private int userId;
 	
-	@Basic
-	@Column(name="center_id", nullable=false, length=45)
-	private String centerId;
-
 	@Basic
 	@Column(name="expiry_date", nullable=false)
 	@Temporal(TemporalType.DATE)
@@ -45,6 +42,10 @@ public class Student {
 	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
 	@JoinColumn(name="user_id", columnDefinition="INT")
 	private User user;
+	
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
+	@JoinColumn(name="center_id", columnDefinition="INT", nullable=false)
+	private Center center;
 
 	public Student() {
 	}
@@ -61,13 +62,13 @@ public class Student {
 		this.expiryDate = expiryDate;
 	}
 
-	public String getCenterId() {
-		return centerId;
-	}
-
-	public void setCenterId(String centerId) {
-		this.centerId = centerId;
-	}
+//	public String getCenterId() {
+//		return centerId;
+//	}
+//
+//	public void setCenterId(String centerId) {
+//		this.centerId = centerId;
+//	}
 
 	public Date getExpiryDate() {
 		return expiryDate;
@@ -116,5 +117,14 @@ public class Student {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+	
+	public Center getCenter() {
+		return center;
+	}
+
+	public void setCenter(Center center) {
+		this.center = center;
+	}
+
 	
 }

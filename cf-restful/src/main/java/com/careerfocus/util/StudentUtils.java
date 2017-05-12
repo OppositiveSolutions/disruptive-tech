@@ -6,7 +6,6 @@ import java.util.List;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.util.response.Error;
-import com.careerfocus.util.response.Response;
 
 public class StudentUtils {
 

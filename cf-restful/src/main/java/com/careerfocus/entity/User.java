@@ -3,6 +3,7 @@ package com.careerfocus.entity;
 import java.util.*;
 import javax.persistence.*;
 
+import com.careerfocus.util.JPACryptoConverter;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,10 +25,12 @@ public class User {
 
 	@Basic
 	@Column(nullable=false, length=45)
+//	@Convert(converter = JPACryptoConverter.class)
 	private String username;
 	
 	@Basic
 	@Column(nullable=false, length=45)
+//	@Convert(converter = JPACryptoConverter.class)
 	private String password;
 	
 	@Basic
