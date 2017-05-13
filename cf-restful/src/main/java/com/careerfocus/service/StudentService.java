@@ -3,11 +3,8 @@ package com.careerfocus.service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
 import javax.transaction.Transactional;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +25,6 @@ import com.careerfocus.util.response.Response;
 
 @Service
 public class StudentService {
-
-	private final Logger log = Logger.getLogger(this.getClass());
 
 	@Autowired
 	StudentRepository studentRepository;
