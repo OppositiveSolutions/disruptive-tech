@@ -105,16 +105,21 @@ CREATE TABLE IF NOT EXISTS `address` (
 -- -----------------------------------------------------
 -- Table `career_focus`.`center`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`center` (
-  `center_id` INT NOT NULL AUTO_INCREMENT,
-  `center_code` VARCHAR(45) NOT NULL,
-  `place` VARCHAR(45) NULL,
-  `address` VARCHAR(45) NULL,
-  `center_latitude` VARCHAR(45) NULL,
-  `center_longitude` VARCHAR(45) NULL,
-  `is_franchise` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`center_id`))
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `center` (
+  `center_id` int(11) NOT NULL AUTO_INCREMENT,
+  `center_code` varchar(45) NOT NULL,
+  `place` varchar(45) DEFAULT NULL,
+  `address_id` int(11) DEFAULT NULL,
+  `center_latitude` varchar(45) DEFAULT NULL,
+  `center_longitude` varchar(45) DEFAULT NULL,
+  `is_franchise` tinyint(1) NOT NULL,
+  PRIMARY KEY (`center_id`),
+  UNIQUE KEY `center_id_UNIQUE` (`center_id`),
+  UNIQUE KEY `center_code_UNIQUE` (`center_code`),
+  KEY `fk_address_id_idx` (`address_id`),
+  CONSTRAINT `FKt1fq4spc0h4xy74nxrxxcmsfe` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`),
+  CONSTRAINT `fk_address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------
@@ -539,20 +544,39 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`fee_details` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS`student` (
+CREATE TABLE `student` (
   `user_id` int(11) NOT NULL,
   `qualification` varchar(255) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
-  `center_id` varchar(45) NOT NULL,
+  `center_id` int(11) NOT NULL,
   `fee_status` varchar(45) NOT NULL,
   `expiry_date` date NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id_UNIQUE` (`user_id`),
   KEY `fk_user_id_idx` (`user_id`),
-  CONSTRAINT `FKk5m148xqefonqw7bgnpm0snwj` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  KEY `fk_center_id_idx` (`center_id`),
+  CONSTRAINT `FKm9qatplyi1302g7wgq75743fj` FOREIGN KEY (`center_id`) REFERENCES `center` (`center_id`),
+  CONSTRAINT `fk_center_id` FOREIGN KEY (`center_id`) REFERENCES `center` (`center_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+CREATE TABLE IF NOT EXISTS `announcements` (
+  `announcement_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) NOT NULL,
+  `description` text,
+  `is_current` tinyint(1) NOT NULL DEFAULT '0',
+  `announcement_order` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`announcement_id`),
+  UNIQUE KEY `announcement_id_UNIQUE` (`announcement_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `announcement_image` (
+  `announcement_id` int(11) NOT NULL,
+  `image` blob NOT NULL,
+  PRIMARY KEY (`announcement_id`),
+  UNIQUE KEY `accouncement_id_UNIQUE` (`announcement_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

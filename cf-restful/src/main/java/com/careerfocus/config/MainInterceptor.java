@@ -100,7 +100,8 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/student")
-				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/center"))
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/center")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement"))
 			return true;
 		return false;
 	}

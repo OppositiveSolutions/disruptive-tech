@@ -23,5 +23,8 @@ public class ErrorCodes {
 	public static int CENTER_ALREADY_EXISTS = 704;
 	public static String CENTER_ALREADY_EXISTS_MSG = "The center code you've entered already exists.";
 	
+	public static int ANNOUNCEMENT_NAME_EMPTY = 705;
+	public static String ANNOUNCEMENT_NAME_EMPTY_MSG = "Announcement name cannot be empty";
+	
 
 }
