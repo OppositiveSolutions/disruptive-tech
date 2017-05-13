@@ -544,7 +544,7 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`fee_details` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE `student` (
+CREATE IF NOT EXISTS TABLE `student` (
   `user_id` int(11) NOT NULL,
   `qualification` varchar(255) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
