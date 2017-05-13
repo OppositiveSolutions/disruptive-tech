@@ -62,8 +62,8 @@ public class AnnouncementService {
 		return announcement;
 	}
 	
-	public void editsAnnouncements(List<Announcements> announcements) {
-		
+	public List<Announcements> editsAnnouncements(List<Announcements> announcements) {
+		return announcementRepository.save(announcements);
 	}
 
 	public void editAnnouncementImage(int announcementId, MultipartFile image) throws IOException {
