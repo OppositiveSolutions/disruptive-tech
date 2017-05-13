@@ -59,11 +59,13 @@ CREATE TABLE IF NOT EXISTS `user_phone` (
   `user_id` int(11) NOT NULL,
   `type` int(2) NOT NULL COMMENT '1 - mobile\n2 - home\n3 - other',
   `phone_no` varchar(45) NOT NULL,
+  `is_primary` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_phone_id`),
   KEY `fk_user_phone_user1_idx` (`user_id`),
   CONSTRAINT `FKaqeg9vtqjgkgi9vw7xy66va7` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `fk_user_phone_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
 
 CREATE TABLE IF NOT EXISTS `states` (
   `state_id` int(8) NOT NULL AUTO_INCREMENT,

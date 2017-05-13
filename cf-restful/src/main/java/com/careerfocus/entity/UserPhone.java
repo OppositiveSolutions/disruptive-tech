@@ -26,6 +26,10 @@ public class UserPhone {
 	@Basic
 	@Column(columnDefinition="INT")
 	private int type;
+	
+	@Basic
+	@Column(name="is_primary")
+	private boolean isPrimary;
 
 	@JsonIgnore
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="userId", scope=User.class)
@@ -71,4 +75,14 @@ public class UserPhone {
 	public void setUserPhoneId(int userPhoneId) {
 		this.userPhoneId = userPhoneId;
 	}
+
+	public boolean isPrimary() {
+		return isPrimary;
+	}
+
+	public void setPrimary(boolean isPrimary) {
+		this.isPrimary = isPrimary;
+	}
+	
+	
 }

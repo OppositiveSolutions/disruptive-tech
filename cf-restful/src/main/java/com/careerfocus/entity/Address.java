@@ -23,24 +23,24 @@ public class Address {
 	private int addressId;
 
 	@Basic
-	private String city;
-
+	@Column(name="street_address", length=2000)
+	private String streetAddress;
+	
 	@Basic
 	@Column(name="land_mark")
 	private String landMark;
-
+	
 	@Basic
-	@Column(name="pin_code", columnDefinition="INT")
-	private int pinCode;
+	private String city;
 
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="stateId", scope=States.class)
 	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.MERGE)
 	@JoinColumn(name="state_id", columnDefinition="INT")
 	private States state;
-
+	
 	@Basic
-	@Column(name="street_address", length=2000)
-	private String streetAddress;
+	@Column(name="pin_code", columnDefinition="INT")
+	private int pinCode;
 
 	@JsonIgnore
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="userId", scope=User.class)
