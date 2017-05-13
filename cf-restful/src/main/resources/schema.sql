@@ -544,7 +544,7 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`fee_details` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE IF NOT EXISTS TABLE `student` (
+CREATE TABLE IF NOT EXISTS `student` (
   `user_id` int(11) NOT NULL,
   `qualification` varchar(255) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
@@ -559,6 +559,7 @@ CREATE IF NOT EXISTS TABLE `student` (
   CONSTRAINT `fk_center_id` FOREIGN KEY (`center_id`) REFERENCES `center` (`center_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 CREATE TABLE IF NOT EXISTS `announcements` (

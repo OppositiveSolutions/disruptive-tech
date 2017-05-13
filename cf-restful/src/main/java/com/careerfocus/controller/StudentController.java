@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.model.request.AddStudentVO;
@@ -30,6 +31,13 @@ public class StudentController {
 	public Response getStudent(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
 		return Response.ok(studentService.getStudent(pageSize, pageNo)).build();
+	}
+
+	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}/search", method = RequestMethod.GET)
+	public Response searchByName(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "name") String name, @PathVariable("pageSize") int pageSize,
+			@PathVariable("pageNo") int pageNo) throws Exception {
+		return Response.ok(studentService.findStudentsByName(name, pageSize, pageNo)).build();
 	}
 
 	@RequestMapping(value = "/{userId}/expiry", method = RequestMethod.PUT, consumes = { "text/plain" })

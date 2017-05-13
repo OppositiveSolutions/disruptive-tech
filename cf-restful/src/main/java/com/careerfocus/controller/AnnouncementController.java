@@ -50,7 +50,7 @@ public class AnnouncementController {
 		return Response.ok(service.editAnnouncement(announcement)).build();
 	}
 	
-	@RequestMapping(value = "", method = RequestMethod.PUT)
+	@RequestMapping(value = "/all", method = RequestMethod.PUT)
 	public Response editAnnouncements(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody List<Announcements> announcements) throws Exception {
 		return Response.ok(service.editsAnnouncements(announcements)).build();

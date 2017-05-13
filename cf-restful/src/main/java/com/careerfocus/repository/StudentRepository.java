@@ -12,4 +12,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 	@Modifying
 	@Query("UPDATE Student s SET s.expiryDate = ?1 WHERE s.userId = ?2")
 	public void updateStudentExpiry(Date date, int userId);
+	
+	
+	
 }

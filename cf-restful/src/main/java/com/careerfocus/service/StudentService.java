@@ -59,6 +59,10 @@ public class StudentService {
 
 		return studentDAO.getStudents(pageSize, pageNo);
 	}
+	
+	public Collection<StudentVO> findStudentsByName(String name, int pageSize, int pageNo) {
+		return studentDAO.searchStudentsByName(name, pageSize, pageNo);
+	}
 
 	@Transactional
 	public void updateStudentExpiry(int userId, String expiryDate) {
