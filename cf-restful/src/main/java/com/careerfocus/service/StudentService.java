@@ -54,6 +54,9 @@ public class StudentService {
 		studentRepository.save(student);
 
 		studentVO.setUserId(user.getUserId());
+		
+		// TODO: save address and phone number
+		
 		return Response.ok(studentVO).build();
 	}
 
