@@ -19,7 +19,7 @@ public class StudentDAO {
 
 	public Collection<StudentVO> getStudents(int pageSize, int pageNo) {
 
-		String query = "SELECT first_name, last_name, created_date, expiry_date, username, status FROM student s \n"
+		String query = "SELECT u.user_id, first_name, last_name, created_date, expiry_date, username, status FROM student s \n"
 				+ "INNER JOIN user u ON s.user_id = u.user_id ORDER BY first_name, last_name";
 
 		if (pageSize > 0 && pageNo > 0) {
@@ -30,7 +30,7 @@ public class StudentDAO {
 	}
 
 	public Collection<StudentVO> searchStudentsByName(String name, int pageSize, int pageNo) {
-		String query = "SELECT first_name, last_name, created_date, expiry_date, username, status FROM student s \n"
+		String query = "SELECT u.user_id, first_name, last_name, created_date, expiry_date, username, status FROM student s \n"
 				+ "INNER JOIN user u ON s.user_id = u.user_id WHERE role=1 AND CONCAT(first_name, ' ', last_name) LIKE ? "
 				+ "ORDER BY first_name, last_name";
 
@@ -46,8 +46,8 @@ public class StudentDAO {
 			@Override
 			public StudentVO mapRow(ResultSet result, int arg1) throws SQLException {
 				String name = result.getString("first_name") + " " + result.getString("last_name");
-				return new StudentVO(name, result.getDate("created_date"), result.getDate("expiry_date"),
-						result.getString("username"), null, result.getInt("status"));
+				return new StudentVO(result.getInt("user_id"), name, result.getDate("created_date"),
+						result.getDate("expiry_date"), result.getString("username"), null, result.getInt("status"));
 			}
 
 		});

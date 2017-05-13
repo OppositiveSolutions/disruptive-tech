@@ -9,6 +9,8 @@ public class StudentVO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 3658306710126419002L;
+	
+	int userId;
 
 	String name;
 	
@@ -22,14 +24,23 @@ public class StudentVO implements Serializable {
 	
 	int status;
 	
-	public StudentVO(String name, Date createdDate, Date expiryDate, String emailId, String phone, int status) {
+	public StudentVO(int userId, String name, Date createdDate, Date expiryDate, String emailId, String phone, int status) {
 		super();
+		this.userId = userId;
 		this.name = name;
 		this.createdDate = createdDate;
 		this.expiryDate = expiryDate;
 		this.emailId = emailId;
 		this.phone = phone;
 		this.status = status;
+	}
+	
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getName() {

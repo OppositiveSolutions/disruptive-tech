@@ -1,11 +1,13 @@
 package com.careerfocus.service;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.careerfocus.constants.Constants;
@@ -55,13 +57,15 @@ public class StudentService {
 		return Response.ok(studentVO).build();
 	}
 
-	public Collection<StudentVO> getStudent(int pageSize, int pageNo) {
-
-		return studentDAO.getStudents(pageSize, pageNo);
+	public Page<StudentVO> getStudent(int pageSize, int pageNo) {
+		Pageable request = new PageRequest(pageNo - 1, pageSize);
+		return studentRepository.findAllStudents(request);
 	}
-	
-	public Collection<StudentVO> findStudentsByName(String name, int pageSize, int pageNo) {
-		return studentDAO.searchStudentsByName(name, pageSize, pageNo);
+
+	public Page<StudentVO> findStudentsByName(String name, int pageSize, int pageNo) {
+
+		Pageable request = new PageRequest(pageNo - 1, pageSize);
+		return studentRepository.searchStudentsByName("%" + name + "%", request);
 	}
 
 	@Transactional
