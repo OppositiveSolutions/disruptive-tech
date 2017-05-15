@@ -26,5 +26,8 @@ public class ErrorCodes {
 	public static int ANNOUNCEMENT_NAME_EMPTY = 705;
 	public static String ANNOUNCEMENT_NAME_EMPTY_MSG = "Announcement name cannot be empty";
 	
+	public static int EMAIL_EXISTS = 706;
+	public static String EMAIL_EXISTS_MSG = "The email id you've entered already exists.";
+	
 
 }

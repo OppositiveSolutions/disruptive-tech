@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.careerfocus.constants.ErrorCodes;
-import com.careerfocus.dao.StudentDAO;
 import com.careerfocus.entity.Center;
 import com.careerfocus.entity.Student;
 import com.careerfocus.entity.User;
@@ -33,12 +32,12 @@ public class StudentService {
 	@Autowired
 	UserRepository userRepository;
 
-	@Autowired
-	StudentDAO studentDAO;
-
 	@Transactional
 	public Response addStudent(AddStudentVO studentVO) {
 		List<Error> errors = StudentUtils.validate(studentVO);
+		if (userRepository.findByUsername(studentVO.getEmailId()) != null)
+			errors.add(new Error(ErrorCodes.EMAIL_EXISTS, ErrorCodes.EMAIL_EXISTS_MSG));
+
 		if (errors != null && !errors.isEmpty()) {
 			return Response.status(ErrorCodes.VALIDATION_FAILED)
 					.error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
