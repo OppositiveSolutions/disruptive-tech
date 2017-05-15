@@ -144,6 +144,7 @@ public class QuestionPaperService {
 		Set<QuestionPaperCategory> categories = qPaper.getQuestionPaperCategorys();
 
 		int categoryQuestionsCount = 0;
+		int questionsCount = 0;
 		for (QuestionPaperCategory category : categories) {
 			categoryQuestionsCount += category.getNoOfQuestions();
 
@@ -161,6 +162,7 @@ public class QuestionPaperService {
 					return false;
 
 				for (QuestionPaperQuestion qpQuestion : questions) {
+					questionsCount++;
 					Question question = qpQuestion.getQuestion();
 
 					Set<QuestionOption> options = question.getOptions();
@@ -176,6 +178,8 @@ public class QuestionPaperService {
 		}
 
 		if (qPaper.getNoOfOptions() != categoryQuestionsCount)
+			return false;
+		if (questionsCount != qPaper.getNoOfQuestions())
 			return false;
 
 		return true;
