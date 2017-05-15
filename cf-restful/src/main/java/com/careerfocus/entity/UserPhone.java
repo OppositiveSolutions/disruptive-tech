@@ -33,11 +33,17 @@ public class UserPhone {
 
 	@JsonIgnore
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="userId", scope=User.class)
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id", columnDefinition="INT", nullable=false)
 	private User user;
 
 	public UserPhone() {
+	}
+	
+	public UserPhone(String phoneNo, int type, boolean isPrimary) {
+		this.phoneNo = phoneNo;
+		this.type = type;
+		this.isPrimary = isPrimary;
 	}
 
 	public UserPhone(int userPhoneId) {
@@ -83,6 +89,5 @@ public class UserPhone {
 	public void setPrimary(boolean isPrimary) {
 		this.isPrimary = isPrimary;
 	}
-	
 	
 }

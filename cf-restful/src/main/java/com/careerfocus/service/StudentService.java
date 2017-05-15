@@ -1,10 +1,7 @@
 package com.careerfocus.service;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.careerfocus.constants.Constants;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.StudentDAO;
-import com.careerfocus.entity.Address;
 import com.careerfocus.entity.Center;
 import com.careerfocus.entity.Student;
 import com.careerfocus.entity.User;
@@ -25,7 +20,6 @@ import com.careerfocus.model.response.StudentVO;
 import com.careerfocus.repository.StudentRepository;
 import com.careerfocus.repository.UserRepository;
 import com.careerfocus.util.DateUtils;
-import com.careerfocus.util.PasswordGenerator;
 import com.careerfocus.util.StudentUtils;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
@@ -50,15 +44,7 @@ public class StudentService {
 					.error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
 		}
 
-		User user = new User(studentVO.getEmailId(), PasswordGenerator.generateSixDigitPassword(),
-				Constants.ROLE_STUDENT, studentVO.getFirstName(), studentVO.getLastName(), studentVO.getGender(),
-				DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
-		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
-				studentVO.getState(), studentVO.getPinCode());
-		Set<Address> addressSet = new HashSet<>();
-		addressSet.add(address);
-		user.setAddress(addressSet);
-		
+		User user = StudentUtils.createUserEntity(studentVO);
 		user = userRepository.save(user);
 
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, "101", "dummy value",
@@ -66,11 +52,6 @@ public class StudentService {
 		studentRepository.save(student);
 
 		studentVO.setUserId(user.getUserId());
-
-		// TODO: save address and phone number
-
-		
-		
 
 		return Response.ok(studentVO).build();
 	}

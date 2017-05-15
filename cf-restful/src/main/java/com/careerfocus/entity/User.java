@@ -61,7 +61,7 @@ public class User {
 	@JoinTable(name="user_address", joinColumns=@JoinColumn(name="user_id", columnDefinition="INT", nullable=false), inverseJoinColumns=@JoinColumn(name="address_id", columnDefinition="INT"))
 	private Set<Address> address = new HashSet<Address>();
 
-	@OneToMany(targetEntity=UserPhone.class, mappedBy="user", cascade=CascadeType.MERGE)
+	@OneToMany(targetEntity=UserPhone.class, mappedBy="user", cascade=CascadeType.ALL)
 	private Set<UserPhone> userPhones = new HashSet<UserPhone>();
 	
 	@JsonBackReference
