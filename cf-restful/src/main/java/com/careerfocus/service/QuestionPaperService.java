@@ -50,7 +50,7 @@ public class QuestionPaperService {
 	QuestionOptionsRepository questionsOptionsRepository;
 
 	@Autowired
-				QuestionPaperQuestionRepository questionPaperQuestionRepository;
+	QuestionPaperQuestionRepository questionPaperQuestionRepository;
 
 	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
 		qPaper.setLastModified(new Date());
