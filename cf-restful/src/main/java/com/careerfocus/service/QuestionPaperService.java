@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.careerfocus.dao.QuestionPaperDAO;
@@ -49,7 +50,7 @@ public class QuestionPaperService {
 	QuestionOptionsRepository questionsOptionsRepository;
 
 	@Autowired
-	QuestionPaperQuestionRepository questionPaperQuestionRepository;
+				QuestionPaperQuestionRepository questionPaperQuestionRepository;
 
 	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
 		qPaper.setLastModified(new Date());
@@ -89,8 +90,7 @@ public class QuestionPaperService {
 
 	@Transactional
 	public List<QuestionVO> saveQuestion(List<QuestionVO> qList) {
-		
-		
+
 		Set<Integer> subCatIds = new HashSet<Integer>();
 		qList.forEach(qstn -> {
 
@@ -114,7 +114,7 @@ public class QuestionPaperService {
 		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<Integer>(subCatIds));
 		return qList;
 	}
-	
+
 	@Transactional
 	public void updateIsDemo(int questionPaperId, boolean isDemo) {
 		qPaperRepository.updateIsDemo(isDemo, questionPaperId);
@@ -128,7 +128,7 @@ public class QuestionPaperService {
 		});
 		qPaperDAO.updateLastModified(new ArrayList<Integer>(qIds));
 	}
-	
+
 	private void updateLastModifiedBySubCategorys(List<QuestionPaperSubCategory> subCategoryList) {
 		Set<Integer> qIds = new HashSet<Integer>();
 		subCategoryList.forEach(category -> {
@@ -136,6 +136,49 @@ public class QuestionPaperService {
 			qIds.add(id);
 		});
 		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<Integer>(qIds));
+	}
+
+	@Async
+	private boolean isQuestionPaperComplete(int questionPaperId) {
+		QuestionPaper qPaper = qPaperRepository.findOne(questionPaperId);
+		Set<QuestionPaperCategory> categories = qPaper.getQuestionPaperCategorys();
+
+		int categoryQuestionsCount = 0;
+		for (QuestionPaperCategory category : categories) {
+			categoryQuestionsCount += category.getNoOfQuestions();
+
+			Set<QuestionPaperSubCategory> subCategories = category.getQuestionPaperSubCategorys();
+			if (category.getNoOfSubCategory() != subCategories.size()) {
+				return false;
+			}
+
+			int subCategoryQuestionsCount = 0;
+			for (QuestionPaperSubCategory subCategory : subCategories) {
+				subCategoryQuestionsCount += subCategory.getNoOfQuestions();
+
+				Set<QuestionPaperQuestion> questions = subCategory.getQuestions();
+				if (subCategory.getNoOfQuestions() != questions.size())
+					return false;
+
+				for (QuestionPaperQuestion qpQuestion : questions) {
+					Question question = qpQuestion.getQuestion();
+
+					Set<QuestionOption> options = question.getOptions();
+					if (options.size() != qPaper.getNoOfOptions())
+						return false;
+				}
+
+			}
+
+			if (category.getNoOfQuestions() != subCategoryQuestionsCount) {
+				return false;
+			}
+		}
+
+		if (qPaper.getNoOfOptions() != categoryQuestionsCount)
+			return false;
+
+		return true;
 	}
 
 }
