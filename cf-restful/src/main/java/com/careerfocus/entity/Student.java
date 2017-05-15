@@ -43,7 +43,7 @@ public class Student {
 	@JoinColumn(name="user_id", columnDefinition="INT")
 	private User user;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
 	@JoinColumn(name="center_id", columnDefinition="INT", nullable=false)
 	private Center center;
 
@@ -54,12 +54,13 @@ public class Student {
 		this.userId = userId;
 	}
 	
-	public Student(int userId, String qualification, int status, String centerId, String feeStatus, Date expiryDate) {
+	public Student(int userId, String qualification, int status, String centerId, String feeStatus, Date expiryDate, Center center) {
 		this.userId = userId;
 		this.qualification = qualification;
 		this.status = status;
 		this.feeStatus = feeStatus;
 		this.expiryDate = expiryDate;
+		this.center = center;
 	}
 
 //	public String getCenterId() {

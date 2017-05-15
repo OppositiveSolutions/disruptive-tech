@@ -57,7 +57,8 @@ public class User {
 	private Date dob;
 
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="addressId", scope=Address.class)
-	@ManyToMany(targetEntity=Address.class, mappedBy="users", cascade=CascadeType.MERGE)
+	@ManyToMany(targetEntity=Address.class, cascade=CascadeType.ALL)
+	@JoinTable(name="user_address", joinColumns=@JoinColumn(name="user_id", columnDefinition="INT", nullable=false), inverseJoinColumns=@JoinColumn(name="address_id", columnDefinition="INT"))
 	private Set<Address> address = new HashSet<Address>();
 
 	@OneToMany(targetEntity=UserPhone.class, mappedBy="user", cascade=CascadeType.MERGE)

@@ -25,13 +25,19 @@ public class AddStudentVO implements Serializable {
 	
 	private String address;
 	
+	private String landMark;
+	
 	private String city;
 	
 	private States state;
 	
+	private int pinCode;
+	
 	private String emailId;
 	
 	private String mobileNo;
+	
+	private int centerId;
 
 	public int getUserId() {
 		return userId;
@@ -89,6 +95,14 @@ public class AddStudentVO implements Serializable {
 		this.address = address;
 	}
 
+	public String getLandMark() {
+		return landMark;
+	}
+
+	public void setLandMark(String landMark) {
+		this.landMark = landMark;
+	}
+
 	public String getCity() {
 		return city;
 	}
@@ -103,6 +117,14 @@ public class AddStudentVO implements Serializable {
 
 	public void setState(States state) {
 		this.state = state;
+	}
+	
+	public int getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(int pinCode) {
+		this.pinCode = pinCode;
 	}
 
 	public String getEmailId() {
@@ -119,6 +141,14 @@ public class AddStudentVO implements Serializable {
 
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+
+	public int getCenterId() {
+		return centerId;
+	}
+
+	public void setCenterId(int centerId) {
+		this.centerId = centerId;
 	}
 	
 }

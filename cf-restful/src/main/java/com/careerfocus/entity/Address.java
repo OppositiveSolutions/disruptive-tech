@@ -44,12 +44,20 @@ public class Address {
 
 	@JsonIgnore
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="userId", scope=User.class)
-	@ManyToMany(targetEntity=User.class, cascade=CascadeType.MERGE)
-	@JoinTable(name="user_address", joinColumns=@JoinColumn(name="address_id", columnDefinition="INT", nullable=false), inverseJoinColumns=@JoinColumn(name="user_id", columnDefinition="INT"))
+	@ManyToMany(targetEntity=User.class, cascade=CascadeType.MERGE, mappedBy = "address")
+//	@JoinTable(name="user_address", joinColumns=@JoinColumn(name="address_id", columnDefinition="INT", nullable=false), inverseJoinColumns=@JoinColumn(name="user_id", columnDefinition="INT"))
 	private Set<User> users = new HashSet<User>();
 
 
 	public Address() {
+	}
+	
+	public Address(String streetAddress, String landMark, String city, States state, int pinCode) {
+		this.streetAddress = streetAddress;
+		this.landMark = landMark;
+		this.city = city;
+		this.state = state;
+		this.pinCode = pinCode;
 	}
 
 	public Address(int addressId) {

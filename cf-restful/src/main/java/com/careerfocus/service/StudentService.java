@@ -1,7 +1,10 @@
 package com.careerfocus.service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.careerfocus.constants.Constants;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.StudentDAO;
+import com.careerfocus.entity.Address;
+import com.careerfocus.entity.Center;
 import com.careerfocus.entity.Student;
 import com.careerfocus.entity.User;
 import com.careerfocus.model.request.AddStudentVO;
@@ -37,6 +42,7 @@ public class StudentService {
 	@Autowired
 	StudentDAO studentDAO;
 
+	@Transactional
 	public Response addStudent(AddStudentVO studentVO) {
 		List<Error> errors = StudentUtils.validate(studentVO);
 		if (errors != null && !errors.isEmpty()) {
@@ -47,16 +53,25 @@ public class StudentService {
 		User user = new User(studentVO.getEmailId(), PasswordGenerator.generateSixDigitPassword(),
 				Constants.ROLE_STUDENT, studentVO.getFirstName(), studentVO.getLastName(), studentVO.getGender(),
 				DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
+		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
+				studentVO.getState(), studentVO.getPinCode());
+		Set<Address> addressSet = new HashSet<>();
+		addressSet.add(address);
+		user.setAddress(addressSet);
+		
 		user = userRepository.save(user);
 
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, "101", "dummy value",
-				new Date());
+				new Date(), new Center(studentVO.getCenterId()));
 		studentRepository.save(student);
 
 		studentVO.setUserId(user.getUserId());
-		
+
 		// TODO: save address and phone number
+
 		
+		
+
 		return Response.ok(studentVO).build();
 	}
 
