@@ -169,17 +169,13 @@ public class QuestionPaperService {
 					if (options.size() != qPaper.getNoOfOptions())
 						return false;
 				}
-
 			}
-
 			if (category.getNoOfQuestions() != subCategoryQuestionsCount) {
 				return false;
 			}
 		}
 
-		if (qPaper.getNoOfOptions() != categoryQuestionsCount)
-			return false;
-		if (questionsCount != qPaper.getNoOfQuestions())
+		if (qPaper.getNoOfQuestions() != categoryQuestionsCount || questionsCount != qPaper.getNoOfQuestions())
 			return false;
 
 		return true;

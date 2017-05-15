@@ -25,7 +25,8 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
 	@Query(value = "SELECT new com.careerfocus.model.response.StudentVO(u.userId, CONCAT(u.firstName, ' ', u.lastName), "
 			+ "u.createdDate, s.expiryDate, u.username, p.phoneNo, s.status) FROM Student s INNER JOIN s.user u LEFT JOIN u.userPhones p "
-			+ "WHERE p.isPrimary=1 AND CONCAT(u.firstName, ' ', u.lastName) LIKE :name ORDER BY u.firstName, u.lastName", nativeQuery = false)
+			+ "WHERE p.isPrimary=1 AND (CONCAT(u.firstName, ' ', u.lastName) LIKE :name OR u.username LIKE :name) "
+			+ "ORDER BY u.firstName, u.lastName", nativeQuery = false)
 	public Page<StudentVO> searchStudentsByName(@Param("name") String name, Pageable page);
 
 }
