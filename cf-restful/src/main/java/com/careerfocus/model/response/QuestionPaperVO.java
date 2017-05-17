@@ -1,11 +1,7 @@
 package com.careerfocus.model.response;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.careerfocus.entity.QuestionPaper;
-import com.careerfocus.entity.QuestionPaperCategory;
 import com.careerfocus.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
