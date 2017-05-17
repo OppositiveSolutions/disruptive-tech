@@ -30,6 +30,10 @@ public class CategoryService {
 		return repository.findAll();
 	}
 	
+	public List<Category> findCategory(String name) {
+		return repository.findByNameContainingIgnoreCase(name);
+	}
+	
 	public Page<Category> getCategories(int pageSize, int pageNumber) {
 		Pageable page = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "categoryId");
 		return repository.findAll(page);

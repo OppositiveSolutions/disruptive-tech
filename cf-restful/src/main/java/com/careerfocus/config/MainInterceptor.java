@@ -59,7 +59,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				CommonUtils.setUnauthorizedResponse(response);
 				return false;
 			}
-		} //
+		}
 		return true;
 	}
 
@@ -96,7 +96,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 		PathMatcher pathMatcher = new AntPathMatcher();
 		if (pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
 				|| pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
-				|| pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/category*", uri)
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/category")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/student")

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.constants.UIMessages;
@@ -56,6 +57,12 @@ public class CategoryController {
 	public Response getTutorialsForPage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") Integer pageSize, @PathVariable("pageNo") Integer pageNo) throws Exception {
 		return Response.ok(service.getCategories(pageSize, pageNo)).build();
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public Response findCategories(HttpServletRequest request, HttpServletResponse response, 
+			@RequestParam("key") String key) throws Exception {
+		return Response.ok(service.findCategory(key)).build();
 	}
 
 }
