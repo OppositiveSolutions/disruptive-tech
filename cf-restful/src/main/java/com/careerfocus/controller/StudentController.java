@@ -35,9 +35,9 @@ public class StudentController {
 
 	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}/search", method = RequestMethod.GET)
 	public Response searchByName(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(value = "name") String name, @PathVariable("pageSize") int pageSize,
+			@RequestParam(value = "key") String key, @PathVariable("pageSize") int pageSize,
 			@PathVariable("pageNo") int pageNo) throws Exception {
-		return Response.ok(studentService.findStudentsByName(name, pageSize, pageNo)).build();
+		return Response.ok(studentService.findStudentsByName(key, pageSize, pageNo)).build();
 	}
 
 	@RequestMapping(value = "/{userId}/expiry", method = RequestMethod.PUT, consumes = { "text/plain" })

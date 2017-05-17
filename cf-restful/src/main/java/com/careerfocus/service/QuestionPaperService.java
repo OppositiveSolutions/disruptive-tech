@@ -10,6 +10,9 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,7 @@ import com.careerfocus.entity.QuestionPaperCategory;
 import com.careerfocus.entity.QuestionPaperQuestion;
 import com.careerfocus.entity.QuestionPaperSubCategory;
 import com.careerfocus.model.request.QuestionVO;
+import com.careerfocus.model.response.QuestionPaperVO;
 import com.careerfocus.repository.QuestionOptionsRepository;
 import com.careerfocus.repository.QuestionPaperCategoryRepository;
 import com.careerfocus.repository.QuestionPaperQuestionRepository;
@@ -61,8 +65,14 @@ public class QuestionPaperService {
 		return qPaperRepository.findAll();
 	}
 
-	public Collection<QuestionPaper> getAllQuestionPapers() {
-		return qPaperDAO.getAllQuestionPapers();
+	public Page<QuestionPaperVO> getAllQuestionPapers(int pageSize, int pageNo) {
+		Pageable page = new PageRequest(pageNo - 1, pageSize);
+		return qPaperRepository.findAllQuestionsPapers(page);
+	}
+
+	public Page<QuestionPaperVO> searchQuestionPaper(String key, int pageSize, int pageNo) {
+		Pageable page = new PageRequest(pageNo - 1, pageSize);
+		return qPaperRepository.searchQuestionsPaper("%" + key + "%", page);
 	}
 
 	public QuestionPaper getQuestionPaper(int questionPaperId) {

@@ -60,10 +60,10 @@ public class StudentService {
 		return studentRepository.findAllStudents(request);
 	}
 
-	public Page<StudentVO> findStudentsByName(String name, int pageSize, int pageNo) {
+	public Page<StudentVO> findStudentsByName(String key, int pageSize, int pageNo) {
 
 		Pageable request = new PageRequest(pageNo - 1, pageSize);
-		return studentRepository.searchStudentsByName("%" + name + "%", request);
+		return studentRepository.searchStudentsByNameOrEmail("%" + key + "%", request);
 	}
 
 	@Transactional

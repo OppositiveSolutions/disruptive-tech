@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.entity.QuestionPaper;
@@ -38,9 +39,17 @@ public class QuestionPaperController {
 		return Response.ok(qPaperService.addQuestionPaper(qPaper)).build();
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Response getAllQuestionPapers(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return Response.ok(qPaperService.getAllQuestionPapers()).build();
+	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
+	public Response getAllQuestionPapers(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
+		return Response.ok(qPaperService.getAllQuestionPapers(pageSize, pageNo)).build();
+	}
+
+	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}/search", method = RequestMethod.GET)
+	public Response searchQuestionPaper(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo,
+			@RequestParam(value = "key", required = false, defaultValue = "") String key) throws Exception {
+		return Response.ok(qPaperService.searchQuestionPaper(key, pageSize, pageNo)).build();
 	}
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)

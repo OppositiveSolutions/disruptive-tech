@@ -3,6 +3,9 @@ package com.careerfocus.model.response;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.careerfocus.util.DateUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class StudentVO implements Serializable {
 	
 	/**
@@ -14,8 +17,10 @@ public class StudentVO implements Serializable {
 
 	String name;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone=DateUtils.PRIMARY_TIMEZONE)
 	Date createdDate;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone=DateUtils.PRIMARY_TIMEZONE)
 	Date expiryDate;
 	
 	String emailId;

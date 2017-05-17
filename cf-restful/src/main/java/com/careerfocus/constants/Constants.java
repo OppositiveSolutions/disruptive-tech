@@ -13,4 +13,5 @@ public class Constants {
 	public static final int ROLE_STUDENT = 1;
 	public static final int ROLE_SUPER_ADMIN = 2;
 	public static final int ROLE_BRANCH_ADMIN = 3;
+	
 }

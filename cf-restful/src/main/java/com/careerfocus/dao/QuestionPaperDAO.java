@@ -3,7 +3,10 @@ package com.careerfocus.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,9 +14,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.careerfocus.entity.QuestionPaper;
+import com.careerfocus.util.DateUtils;
 
 @Repository
 public class QuestionPaperDAO {
+
+	private static final Logger log = Logger.getLogger(DateUtils.class.getClass());
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -24,6 +30,9 @@ public class QuestionPaperDAO {
 
 			@Override
 			public QuestionPaper mapRow(ResultSet result, int arg1) throws SQLException {
+				log.info("createdDate: " + DateUtils.convertToDDMMYYYYHHmma(result.getTimestamp("created_date")));
+				log.info("Now: " + new Date());
+				
 				QuestionPaper qPaper = new QuestionPaper();
 				qPaper.setQuestionPaperId(result.getInt("question_paper_id"));
 				qPaper.setName(result.getString("name"));
@@ -70,7 +79,7 @@ public class QuestionPaperDAO {
 		for (int id : ids)
 			query += id + ", ";
 		query = query.substring(0, query.length() - 2) + ")";
-		
+
 		jdbcTemplate.update(query);
 	}
 
