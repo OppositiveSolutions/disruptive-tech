@@ -28,7 +28,7 @@ public class ValidationUtils {
 	}
 	
 	public static boolean validateGender(String gender) {
-		if (gender.equals("Male") || gender.equals("Female")) {
+		if (gender != null && (gender.equals("Male") || gender.equals("Female"))) {
 			return true;
 		}
 		return false;
