@@ -67,12 +67,6 @@ CREATE TABLE IF NOT EXISTS `user_phone` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE IF NOT EXISTS `states` (
-  `state_id` int(8) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`state_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
-
 -- -----------------------------------------------------
 -- Table `career_focus`.`user_profile_pic`
 -- -----------------------------------------------------
@@ -83,6 +77,16 @@ CREATE TABLE IF NOT EXISTS `user_profile_pic` (
   KEY `fk_user_profile_pic_user1_idx` (`user_id`),
   CONSTRAINT `fk_user_profile_pic_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`states`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `states` (
+  `state_id` int(8) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`state_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------
@@ -122,6 +126,26 @@ CREATE TABLE IF NOT EXISTS `center` (
   CONSTRAINT `FKt1fq4spc0h4xy74nxrxxcmsfe` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`),
   CONSTRAINT `fk_address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`student`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `student` (
+  `user_id` int(11) NOT NULL,
+  `qualification` varchar(255) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `center_id` int(11) NOT NULL,
+  `fee_status` varchar(45) NOT NULL,
+  `expiry_date` date NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
+  KEY `fk_user_id_idx` (`user_id`),
+  KEY `fk_center_id_idx` (`center_id`),
+  CONSTRAINT `FKm9qatplyi1302g7wgq75743fj` FOREIGN KEY (`center_id`) REFERENCES `center` (`center_id`),
+  CONSTRAINT `fk_center_id` FOREIGN KEY (`center_id`) REFERENCES `center` (`center_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 -- -----------------------------------------------------
@@ -205,6 +229,16 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `career_focus`.`category`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `career_focus`.`category` (
+  `category_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`category_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `career_focus`.`question_paper`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `question_paper` (
@@ -222,17 +256,9 @@ CREATE TABLE IF NOT EXISTS `question_paper` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 
-
 -- -----------------------------------------------------
--- Table `career_focus`.`sections`
+-- Table `career_focus`.`category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`sections` (
-  `sections_id` INT NOT NULL,
-  `name` VARCHAR(84) NOT NULL,
-  PRIMARY KEY (`sections_id`))
-ENGINE = InnoDB;
-
-
 CREATE TABLE IF NOT EXISTS `question_paper_category` (
   `question_paper_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_paper_id` int(11) NOT NULL,
@@ -267,6 +293,17 @@ CREATE TABLE IF NOT EXISTS `question_paper_sub_category` (
 
 
 -- -----------------------------------------------------
+-- Table `career_focus`.`question`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `question` (
+  `question_id` int(11) NOT NULL AUTO_INCREMENT,
+  `question` varchar(2000) NOT NULL,
+  `correct_option_no` int(11) NOT NULL,
+  PRIMARY KEY (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- -----------------------------------------------------
 -- Table `career_focus`.`question_option`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `question_option` (
@@ -278,18 +315,6 @@ CREATE TABLE IF NOT EXISTS `question_option` (
 
 
 -- -----------------------------------------------------
--- Table `career_focus`.`question`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `question` (
-  `question_id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` varchar(2000) NOT NULL,
-  `correct_option_no` int(11) NOT NULL,
-  PRIMARY KEY (`question_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-
--- -----------------------------------------------------
 -- Table `career_focus`.`question_paper_question`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `question_paper_question` (
@@ -298,6 +323,7 @@ CREATE TABLE IF NOT EXISTS `question_paper_question` (
   `question_id` int(11) NOT NULL,
   PRIMARY KEY (`question_paper_sub_category_id`,`question_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`question_paper_demo`
@@ -449,14 +475,7 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`testimonials` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `career_focus`.`category`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `career_focus`.`category` (
-  `category_id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`category_id`))
-ENGINE = InnoDB;
+
 
 
 -- -----------------------------------------------------
@@ -546,24 +565,10 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`fee_details` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `student` (
-  `user_id` int(11) NOT NULL,
-  `qualification` varchar(255) DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT '0',
-  `center_id` int(11) NOT NULL,
-  `fee_status` varchar(45) NOT NULL,
-  `expiry_date` date NOT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
-  KEY `fk_user_id_idx` (`user_id`),
-  KEY `fk_center_id_idx` (`center_id`),
-  CONSTRAINT `FKm9qatplyi1302g7wgq75743fj` FOREIGN KEY (`center_id`) REFERENCES `center` (`center_id`),
-  CONSTRAINT `fk_center_id` FOREIGN KEY (`center_id`) REFERENCES `center` (`center_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
-
+-- -----------------------------------------------------
+-- Table `career_focus`.`announcements`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `announcements` (
   `announcement_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(1000) NOT NULL,
@@ -574,12 +579,26 @@ CREATE TABLE IF NOT EXISTS `announcements` (
   UNIQUE KEY `announcement_id_UNIQUE` (`announcement_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`announcement_image`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `announcement_image` (
   `announcement_id` int(11) NOT NULL,
   `image` blob NOT NULL,
   PRIMARY KEY (`announcement_id`),
   UNIQUE KEY `accouncement_id_UNIQUE` (`announcement_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`sections`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `career_focus`.`sections` (
+  `sections_id` INT NOT NULL,
+  `name` VARCHAR(84) NOT NULL,
+  PRIMARY KEY (`sections_id`))
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
