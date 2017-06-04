@@ -22,11 +22,9 @@ public class QuestionPaperSubCategory {
 	private int questionPaperCategoryId;
 	
 	@Basic
-	@Column(length=200)
-	private String name;
+	private String direction;
 	
 	@Basic
-	@Column(length=2000)
 	private String description;
 
 	@Basic
@@ -42,7 +40,7 @@ public class QuestionPaperSubCategory {
 	private Set<QuestionPaperQuestion> questions = new HashSet<QuestionPaperQuestion>();
 
 //	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
-//	@JoinColumn(name="question_paper_category_id", columnDefinition="INT", nullable=false)
+//	@JoinColumn(direction="question_paper_category_id", columnDefinition="INT", nullable=false)
 //	private QuestionPaperCategory questionPaperCategory;
 
 
@@ -69,12 +67,12 @@ public class QuestionPaperSubCategory {
 		this.description = description;
 	}
 
-	public String getName() {
-		return name;
+	public String getDirection() {
+		return direction;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDirection(String direction) {
+		this.direction = direction;
 	}
 
 	public int getNoOfQuestions() {

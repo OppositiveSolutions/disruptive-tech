@@ -283,13 +283,14 @@ CREATE TABLE IF NOT EXISTS `question_paper_sub_category` (
   `question_paper_sub_category_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_paper_category_id` int(11) NOT NULL,
   `no_of_questions` int(3) NOT NULL,
-  `name` varchar(200) DEFAULT NULL,
-  `description` varchar(2000) DEFAULT NULL,
+  `direction` text,
+  `description` text,
   `r_order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`question_paper_sub_category_id`),
   KEY `FK6t91utt20hhd58qm9njbm3qyp` (`question_paper_category_id`),
   CONSTRAINT `FK6t91utt20hhd58qm9njbm3qyp` FOREIGN KEY (`question_paper_category_id`) REFERENCES `question_paper_category` (`question_paper_category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
 
 
 -- -----------------------------------------------------

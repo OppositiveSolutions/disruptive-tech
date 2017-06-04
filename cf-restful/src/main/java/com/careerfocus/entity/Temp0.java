@@ -60,11 +60,11 @@
 //		this.studentId = id;
 //	}
 //
-//	public String getName() {
+//	public String getDirection() {
 //		return name;
 //	}
 //
-//	public void setName(String name) {
+//	public void setDirection(String name) {
 //		this.name = name;
 //	}
 //

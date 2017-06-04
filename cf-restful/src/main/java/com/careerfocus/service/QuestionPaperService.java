@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +35,8 @@ import com.careerfocus.repository.QuestionsRepository;
 
 @Service
 public class QuestionPaperService {
+
+	private static final Logger log = Logger.getLogger(QuestionPaperService.class);
 
 	@Autowired
 	QuestionPaperRepository qPaperRepository;
@@ -101,7 +104,7 @@ public class QuestionPaperService {
 	@Transactional
 	public List<QuestionVO> saveQuestion(List<QuestionVO> qList) {
 
-		Set<Integer> subCatIds = new HashSet<Integer>();
+		Set<Integer> subCatIds = new HashSet<>();
 		qList.forEach(qstn -> {
 
 			Question question = new Question(qstn.getQuestion(), qstn.getCorrectOptionNo());
@@ -109,10 +112,10 @@ public class QuestionPaperService {
 				question.setQuestionId(qstn.getQuestionId());
 			Question savedQuestion = questionsRepository.save(question);
 
-			List<QuestionOption> oList = new ArrayList<QuestionOption>();
-			qstn.getOptions().forEach(option -> {
-				oList.add(new QuestionOption(savedQuestion.getQuestionId(), option.getOptionNo(), option.getOption()));
-			});
+			List<QuestionOption> oList = new ArrayList<>();
+			qstn.getOptions().forEach(option ->
+					oList.add(new QuestionOption(savedQuestion.getQuestionId(),
+							option.getOptionNo(), option.getOption())));
 			questionsOptionsRepository.save(oList);
 
 			questionPaperQuestionRepository.save(new QuestionPaperQuestion(qstn.getQuestionPaperSubCategoryId(),
@@ -121,7 +124,7 @@ public class QuestionPaperService {
 			qstn.setQuestionId(savedQuestion.getQuestionId());
 			subCatIds.add(qstn.getQuestionPaperSubCategoryId());
 		});
-		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<Integer>(subCatIds));
+		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<>(subCatIds));
 		return qList;
 	}
 
@@ -131,25 +134,25 @@ public class QuestionPaperService {
 	}
 
 	private void updateLastModified(List<QuestionPaperCategory> categoryList) {
-		Set<Integer> qIds = new HashSet<Integer>();
+		Set<Integer> qIds = new HashSet<>();
 		categoryList.forEach(category -> {
 			int questionPaperId = category.getQuestionPaperId();
 			qIds.add(questionPaperId);
 		});
-		qPaperDAO.updateLastModified(new ArrayList<Integer>(qIds));
+		qPaperDAO.updateLastModified(new ArrayList<>(qIds));
 	}
 
 	private void updateLastModifiedBySubCategorys(List<QuestionPaperSubCategory> subCategoryList) {
-		Set<Integer> qIds = new HashSet<Integer>();
+		Set<Integer> qIds = new HashSet<>();
 		subCategoryList.forEach(category -> {
 			int id = category.getQuestionPaperSubCategoryId();
 			qIds.add(id);
 		});
-		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<Integer>(qIds));
+		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<>(qIds));
 	}
 
-	@Async
-	private boolean isQuestionPaperComplete(int questionPaperId) {
+//	@Async
+	public boolean isQuestionPaperComplete(int questionPaperId) {
 		QuestionPaper qPaper = qPaperRepository.findOne(questionPaperId);
 		Set<QuestionPaperCategory> categories = qPaper.getQuestionPaperCategorys();
 
@@ -160,6 +163,7 @@ public class QuestionPaperService {
 
 			Set<QuestionPaperSubCategory> subCategories = category.getQuestionPaperSubCategorys();
 			if (category.getNoOfSubCategory() != subCategories.size()) {
+				log.info("CHECKPOINT1");
 				return false;
 			}
 
@@ -168,25 +172,32 @@ public class QuestionPaperService {
 				subCategoryQuestionsCount += subCategory.getNoOfQuestions();
 
 				Set<QuestionPaperQuestion> questions = subCategory.getQuestions();
-				if (subCategory.getNoOfQuestions() != questions.size())
+				if (subCategory.getNoOfQuestions() != questions.size()) {
+					log.info("CHECKPOINT2");
 					return false;
+				}
 
 				for (QuestionPaperQuestion qpQuestion : questions) {
 					questionsCount++;
 					Question question = qpQuestion.getQuestion();
 
 					Set<QuestionOption> options = question.getOptions();
-					if (options.size() != qPaper.getNoOfOptions())
+					if (options.size() != qPaper.getNoOfOptions()) {
+						log.info("CHECKPOINT3");
 						return false;
+					}
 				}
 			}
 			if (category.getNoOfQuestions() != subCategoryQuestionsCount) {
+				log.info("CHECKPOINT4");
 				return false;
 			}
 		}
 
-		if (qPaper.getNoOfQuestions() != categoryQuestionsCount || questionsCount != qPaper.getNoOfQuestions())
+		if (qPaper.getNoOfQuestions() != categoryQuestionsCount || questionsCount != qPaper.getNoOfQuestions()) {
+			log.info("CHECKPOINT5");
 			return false;
+		}
 
 		return true;
 	}
