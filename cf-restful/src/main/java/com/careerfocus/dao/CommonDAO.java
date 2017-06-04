@@ -1,34 +1,29 @@
 package com.careerfocus.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
+import com.careerfocus.entity.States;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.careerfocus.entity.States;
+import java.sql.ResultSet;
+import java.util.List;
 
 @Repository
 public class CommonDAO {
 
-	@Autowired
-	JdbcTemplate template;
+    private JdbcTemplate template;
 
-	public List<States> getStates() {
+    @Autowired
+    public CommonDAO (JdbcTemplate template) {
+        this.template = template;
+    }
 
-		String query = "SELECT * FROM states";
+    public List<States> getStates() {
 
-		return template.query(query, new RowMapper<States>() {
+        String query = "SELECT * FROM states";
 
-			@Override
-			public States mapRow(ResultSet result, int arg1) throws SQLException {
-				return new States(result.getInt("state_id"), result.getString("name"));
-			}
-
-		});
-	}
+        return template.query(query, (ResultSet result, int arg1) ->
+                new States(result.getInt("state_id"), result.getString("name")));
+    }
 
 }
