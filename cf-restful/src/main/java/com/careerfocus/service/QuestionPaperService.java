@@ -43,15 +43,16 @@ public class QuestionPaperService {
 
     public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
         qPaper.setLastModified(new Date());
-        log.info("questionPaperId: " + qPaper.getQuestionPaperId());
-        qPaper.setQuestionPaperCategorys(null);
         return qPaperRepository.save(qPaper);
     }
 
     public QuestionPaper editQuestionPaper(QuestionPaper qPaper) {
-        log.info("questionPaperId: " + qPaper.getQuestionPaperId());
 
         QuestionPaper paper = qPaperRepository.findOne(qPaper.getQuestionPaperId());
+        if (paper == null) {
+            throw new RuntimeException();
+        }
+
         paper.setCourseName(qPaper.getCourseName());
         paper.setDuration(qPaper.getDuration());
         paper.setExamCode(qPaper.getExamCode());
@@ -60,7 +61,6 @@ public class QuestionPaperService {
         paper.setNoOfOptions(qPaper.getNoOfOptions());
         paper.setNoOfQuestions(qPaper.getNoOfQuestions());
         paper.setLastModified(new Date());
-
 
         return qPaperRepository.save(paper);
     }
