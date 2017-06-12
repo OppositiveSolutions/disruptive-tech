@@ -4,71 +4,71 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class QuestionVO implements Serializable {
-	
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	private int questionPaperSubCategoryId;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private int questionNo;
-	
-	private ArrayList<OptionVO> options;
-	
-	private String question;
-	
-	private int correctOptionNo;
-	
-	private int questionId;
-	
-	public int getQuestionId() {
-		return questionId;
-	}
+    private int questionPaperSubCategoryId;
 
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
-	}
+    private int questionNo;
 
-	public int getQuestionPaperSubCategoryId() {
-		return this.questionPaperSubCategoryId;
-	}
+    private ArrayList<OptionVO> options;
 
-	public void setQuestionPaperSubCategoryId(int questionPaperSubCategoryId) {
-		this.questionPaperSubCategoryId = questionPaperSubCategoryId;
-	}
+    private String question;
 
-	public int getQuestionNo() {
-		return this.questionNo;
-	}
+    private int correctOptionNo;
 
-	public void setQuestionNo(int questionNo) {
-		this.questionNo = questionNo;
-	}
+    private int questionId;
 
-	public String getQuestion() {
-		return this.question;
-	}
+    public int getQuestionId() {
+        return questionId;
+    }
 
-	public void setQuestion(String question) {
-		this.question = question;
-	}
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
 
-	public ArrayList<OptionVO> getOptions() {
-		return this.options;
-	}
+    public int getQuestionPaperSubCategoryId() {
+        return this.questionPaperSubCategoryId;
+    }
 
-	public void setOptions(ArrayList<OptionVO> options) {
-		this.options = options;
-	}
+    public void setQuestionPaperSubCategoryId(int questionPaperSubCategoryId) {
+        this.questionPaperSubCategoryId = questionPaperSubCategoryId;
+    }
 
-	public int getCorrectOptionNo() {
-		return this.correctOptionNo;
-	}
+    public int getQuestionNo() {
+        return this.questionNo;
+    }
 
-	public void setCorrectOptionNo(int correctOptionNo) {
-		this.correctOptionNo = correctOptionNo;
-	}
+    public void setQuestionNo(int questionNo) {
+        this.questionNo = questionNo;
+    }
+
+    public String getQuestion() {
+        return this.question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public ArrayList<OptionVO> getOptions() {
+        return this.options;
+    }
+
+    public void setOptions(ArrayList<OptionVO> options) {
+        this.options = options;
+    }
+
+    public int getCorrectOptionNo() {
+        return this.correctOptionNo;
+    }
+
+    public void setCorrectOptionNo(int correctOptionNo) {
+        this.correctOptionNo = correctOptionNo;
+    }
 
 }

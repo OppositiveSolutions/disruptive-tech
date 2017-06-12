@@ -4,38 +4,38 @@ import java.io.Serializable;
 
 public class QuestionOptionId implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	private int questionId;
-	
-	private int optionNo;
-	
-	public QuestionOptionId() {
-		
-	}
-	
-	public QuestionOptionId (int questionId, int optionNo) {
-		this.questionId = questionId;
-		this.optionNo = optionNo;
-	}
-	
-	public int getQuestionId() {
-		return questionId;
-	}
+    private int questionId;
 
-	public void setQuestionId(int questionId) {
-		this.questionId = questionId;
-	}
+    private int optionNo;
 
-	public int getOptionNo() {
-		return optionNo;
-	}
+    public QuestionOptionId() {
 
-	public void setOptionNo(int optionNo) {
-		this.optionNo = optionNo;
-	}
+    }
+
+    public QuestionOptionId(int questionId, int optionNo) {
+        this.questionId = questionId;
+        this.optionNo = optionNo;
+    }
+
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
+    }
+
+    public int getOptionNo() {
+        return optionNo;
+    }
+
+    public void setOptionNo(int optionNo) {
+        this.optionNo = optionNo;
+    }
 
 }

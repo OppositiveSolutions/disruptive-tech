@@ -1,9 +1,5 @@
 package com.careerfocus.config;
 
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,45 +10,48 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
+import java.util.Properties;
+
 @Configuration
 @EnableTransactionManagement
 public class PersistenceJPAConfig {
 
-	
-	@Autowired
-	DataSource dataSource;
-	
-	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-		em.setDataSource(dataSource);
-		em.setPackagesToScan("com.careerfocus.entity", "com.careerfocus.service");
-		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		em.setJpaVendorAdapter(vendorAdapter);
-		em.setJpaProperties(additionalProperties());
-		return em;
-	}
 
-	@Bean
-	public PlatformTransactionManager transactionManager() {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-		return transactionManager;
-	}
-	
-	private Properties additionalProperties() {
-		Properties properties = new Properties();
-		properties.setProperty("hibernate.hbm2ddl.auto", "update");
-		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-		properties.setProperty("hibernate.jdbc.batch_size", "20");
-		properties.setProperty("hibernate.id.new_generator_mappings", "false");
+    @Autowired
+    DataSource dataSource;
 
-		// second level cache configurations
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource);
+        em.setPackagesToScan("com.careerfocus.entity", "com.careerfocus.service");
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(additionalProperties());
+        return em;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        return transactionManager;
+    }
+
+    private Properties additionalProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("hibernate.jdbc.batch_size", "20");
+        properties.setProperty("hibernate.id.new_generator_mappings", "false");
+
+        // second level cache configurations
 //		addLevel2Cache(properties);
-		return properties;
-	}
-	
-	
+        return properties;
+    }
+
+
 //	private void addLevel2Cache(Properties properties){
 //		properties.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.infinispan.InfinispanRegionFactory");
 //		properties.setProperty("hibernate.cache.infinispan.cachemanager","java:CacheManager/Employee");
@@ -66,5 +65,5 @@ public class PersistenceJPAConfig {
 ////		properties.setProperty("hibernate.generate_statistics", "true");
 //		properties.setProperty("hibernate.transaction.manager_lookup_class", "org.infinispan.transaction.lookup.GenericTransactionManagerLookup");
 //	}
-	
+
 }

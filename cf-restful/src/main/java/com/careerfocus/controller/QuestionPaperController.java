@@ -25,7 +25,7 @@ public class QuestionPaperController {
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public Response editQuestionPaper(@RequestBody QuestionPaper qPaper) throws Exception {
-        return Response.ok(qPaperService.addQuestionPaper(qPaper)).build();
+        return Response.ok(qPaperService.editQuestionPaper(qPaper)).build();
     }
 
     @RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
 <configuration>
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<!-- printing line number is extremely slow - remove %L for production -->
-			<pattern>[%-5p] %d %c{0}:%L - %m%n</pattern>
-		</encoder>
-	</appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- printing line number is extremely slow - remove %L for production -->
+            <pattern>[%-5p] %d %c{0}:%L - %m%n</pattern>
+        </encoder>
+    </appender>
 
-	<logger name="org.springframework.web" level="ERROR" additivity="false">
-		<appender-ref ref="STDOUT" />
-	</logger>
+    <logger name="org.springframework.web" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
-	<logger name="com.careerfocus" level="DEBUG" additivity="false">
-		<appender-ref ref="STDOUT" />
-	</logger>
-	
-	<!-- <logger name="org.hibernate.SQL" level=INFO additivity="false">
-		<appender-ref ref="STDOUT" />
-	</logger> -->
+    <logger name="com.careerfocus" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
-	<root level="INFO">
-		<appender-ref ref="STDOUT" />
-	</root>
+    <!-- <logger name="org.hibernate.SQL" level=INFO additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger> -->
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
 </configuration>

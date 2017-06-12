@@ -14,7 +14,7 @@ public class CommonDAO {
     private JdbcTemplate template;
 
     @Autowired
-    public CommonDAO (JdbcTemplate template) {
+    public CommonDAO(JdbcTemplate template) {
         this.template = template;
     }
 

@@ -5,14 +5,14 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 
 public class UnauthorisedException extends AuthenticationCredentialsNotFoundException {
 
-	public UnauthorisedException(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
-	}
+    public UnauthorisedException(String message) {
+        super(message);
+        // TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
 }

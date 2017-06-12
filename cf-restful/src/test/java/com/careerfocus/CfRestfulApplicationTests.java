@@ -4,8 +4,8 @@ package com.careerfocus;
 //@SpringBootTest
 public class CfRestfulApplicationTests {
 
-//	@Test
-	public void contextLoads() {
-	}
+    //	@Test
+    public void contextLoads() {
+    }
 
 }

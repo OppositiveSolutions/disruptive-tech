@@ -1,154 +1,154 @@
 package com.careerfocus.model.request;
 
-import java.io.Serializable;
-
 import com.careerfocus.entity.States;
+
+import java.io.Serializable;
 
 public class AddStudentVO implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2399489805714976231L;
-	
-	private int userId;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -2399489805714976231L;
 
-	private String firstName;
-	
-	private String lastName;
-	
-	private String gender;
-	
-	private String dob;
-	
-	private String qualification;
-	
-	private String address;
-	
-	private String landMark;
-	
-	private String city;
-	
-	private States state;
-	
-	private int pinCode;
-	
-	private String emailId;
-	
-	private String mobileNo;
-	
-	private int centerId;
+    private int userId;
 
-	public int getUserId() {
-		return userId;
-	}
+    private String firstName;
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    private String lastName;
 
-	public String getFirstName() {
-		return firstName;
-	}
+    private String gender;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    private String dob;
 
-	public String getLastName() {
-		return lastName;
-	}
+    private String qualification;
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    private String address;
 
-	public String getGender() {
-		return gender;
-	}
+    private String landMark;
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    private String city;
 
-	public String getDob() {
-		return dob;
-	}
+    private States state;
 
-	public void setDob(String dob) {
-		this.dob = dob;
-	}
+    private int pinCode;
 
-	public String getQualification() {
-		return qualification;
-	}
+    private String emailId;
 
-	public void setQualification(String qualification) {
-		this.qualification = qualification;
-	}
+    private String mobileNo;
 
-	public String getAddress() {
-		return address;
-	}
+    private int centerId;
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public int getUserId() {
+        return userId;
+    }
 
-	public String getLandMark() {
-		return landMark;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public void setLandMark(String landMark) {
-		this.landMark = landMark;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public States getState() {
-		return state;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setState(States state) {
-		this.state = state;
-	}
-	
-	public int getPinCode() {
-		return pinCode;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public void setPinCode(int pinCode) {
-		this.pinCode = pinCode;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public String getEmailId() {
-		return emailId;
-	}
+    public String getDob() {
+        return dob;
+    }
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
 
-	public String getMobileNo() {
-		return mobileNo;
-	}
+    public String getQualification() {
+        return qualification;
+    }
 
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
 
-	public int getCenterId() {
-		return centerId;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setCenterId(int centerId) {
-		this.centerId = centerId;
-	}
-	
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getLandMark() {
+        return landMark;
+    }
+
+    public void setLandMark(String landMark) {
+        this.landMark = landMark;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public States getState() {
+        return state;
+    }
+
+    public void setState(States state) {
+        this.state = state;
+    }
+
+    public int getPinCode() {
+        return pinCode;
+    }
+
+    public void setPinCode(int pinCode) {
+        this.pinCode = pinCode;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
+
+    public int getCenterId() {
+        return centerId;
+    }
+
+    public void setCenterId(int centerId) {
+        this.centerId = centerId;
+    }
+
 }

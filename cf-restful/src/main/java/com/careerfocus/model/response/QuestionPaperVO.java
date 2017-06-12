@@ -1,132 +1,133 @@
 package com.careerfocus.model.response;
 
-import java.util.Date;
 import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.util.Date;
+
 public class QuestionPaperVO {
 
-	private int questionPaperId;
+    private int questionPaperId;
 
-	private String name;
+    private String name;
 
-	private String examCode;
+    private String examCode;
 
-	private String courseName;
+    private String courseName;
 
-	private int duration;
+    private int duration;
 
-	private int noOfQuestions;
+    private int noOfQuestions;
 
-	private int noOfOptions;
+    private int noOfOptions;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone=DateUtils.PRIMARY_TIMEZONE)
-	private Date createdDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
+    private Date createdDate;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone=DateUtils.PRIMARY_TIMEZONE)
-	private Date lastModified;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
+    private Date lastModified;
 
-	private boolean isDemo;
+    private boolean isDemo;
 
-	public QuestionPaperVO() {
-	}
-	
-	public QuestionPaperVO(QuestionPaper qPaper) {
-		questionPaperId = qPaper.getQuestionPaperId();
-		name = qPaper.getName();
-		examCode = qPaper.getExamCode();
-		courseName = qPaper.getCourseName();
-		duration = qPaper.getDuration();
-		noOfQuestions = qPaper.getNoOfQuestions();
-		noOfOptions = qPaper.getNoOfOptions();
-		createdDate = qPaper.getCreatedDate();
-		lastModified = qPaper.getLastModified();
-		isDemo = qPaper.isIsDemo();
-	}
+    public QuestionPaperVO() {
+    }
 
-	public QuestionPaperVO(int questionPaperId) {
-		this.questionPaperId = questionPaperId;
-	}
+    public QuestionPaperVO(QuestionPaper qPaper) {
+        questionPaperId = qPaper.getQuestionPaperId();
+        name = qPaper.getName();
+        examCode = qPaper.getExamCode();
+        courseName = qPaper.getCourseName();
+        duration = qPaper.getDuration();
+        noOfQuestions = qPaper.getNoOfQuestions();
+        noOfOptions = qPaper.getNoOfOptions();
+        createdDate = qPaper.getCreatedDate();
+        lastModified = qPaper.getLastModified();
+        isDemo = qPaper.isIsDemo();
+    }
 
-	public String getCourseName() {
-		return courseName;
-	}
+    public QuestionPaperVO(int questionPaperId) {
+        this.questionPaperId = questionPaperId;
+    }
 
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
+    public String getCourseName() {
+        return courseName;
+    }
 
-	public int getDuration() {
-		return duration;
-	}
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
+    public int getDuration() {
+        return duration;
+    }
 
-	public String getExamCode() {
-		return examCode;
-	}
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
-	public void setExamCode(String examCode) {
-		this.examCode = examCode;
-	}
+    public String getExamCode() {
+        return examCode;
+    }
 
-	public boolean isIsDemo() {
-		return isDemo;
-	}
+    public void setExamCode(String examCode) {
+        this.examCode = examCode;
+    }
 
-	public void setIsDemo(boolean isDemo) {
-		this.isDemo = isDemo;
-	}
+    public boolean isIsDemo() {
+        return isDemo;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setIsDemo(boolean isDemo) {
+        this.isDemo = isDemo;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getNoOfOptions() {
-		return noOfOptions;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setNoOfOptions(int noOfOptions) {
-		this.noOfOptions = noOfOptions;
-	}
+    public int getNoOfOptions() {
+        return noOfOptions;
+    }
 
-	public int getNoOfQuestions() {
-		return noOfQuestions;
-	}
+    public void setNoOfOptions(int noOfOptions) {
+        this.noOfOptions = noOfOptions;
+    }
 
-	public void setNoOfQuestions(int noOfQuestions) {
-		this.noOfQuestions = noOfQuestions;
-	}
+    public int getNoOfQuestions() {
+        return noOfQuestions;
+    }
 
-	public int getQuestionPaperId() {
-		return questionPaperId;
-	}
+    public void setNoOfQuestions(int noOfQuestions) {
+        this.noOfQuestions = noOfQuestions;
+    }
 
-	public void setQuestionPaperId(int questionPaperId) {
-		this.questionPaperId = questionPaperId;
-	}
+    public int getQuestionPaperId() {
+        return questionPaperId;
+    }
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+    public void setQuestionPaperId(int questionPaperId) {
+        this.questionPaperId = questionPaperId;
+    }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 
-	public Date getLastModified() {
-		return lastModified;
-	}
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
-	
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
 }

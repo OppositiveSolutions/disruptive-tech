@@ -1,59 +1,54 @@
 package com.careerfocus.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "video_tutorials")
 public class VideoTutorial {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "video_tutorial_id")
-	int videoTutorialId;
-	
-	@Column(name = "name")
-	String name;
-	
-	@Column(name = "description")
-	String description;
-	
-	@Column(name = "url")
-	String url;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "video_tutorial_id")
+    int videoTutorialId;
 
-	public int getVideoTutorialId() {
-		return videoTutorialId;
-	}
+    @Column(name = "name")
+    String name;
 
-	public void setVideoTutorialId(int videoTutorialId) {
-		this.videoTutorialId = videoTutorialId;
-	}
+    @Column(name = "description")
+    String description;
 
-	public String getName() {
-		return name;
-	}
+    @Column(name = "url")
+    String url;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public int getVideoTutorialId() {
+        return videoTutorialId;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setVideoTutorialId(int videoTutorialId) {
+        this.videoTutorialId = videoTutorialId;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

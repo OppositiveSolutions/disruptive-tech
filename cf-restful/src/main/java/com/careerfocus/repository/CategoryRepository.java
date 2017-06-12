@@ -1,12 +1,11 @@
 package com.careerfocus.repository;
 
-import java.util.List;
-
+import com.careerfocus.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.careerfocus.entity.Category;
+import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
-	List<Category> findByNameContainingIgnoreCase(String name);
+    List<Category> findByNameContainingIgnoreCase(String name);
 }

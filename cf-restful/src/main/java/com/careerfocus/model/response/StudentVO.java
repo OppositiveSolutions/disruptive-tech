@@ -1,99 +1,99 @@
 package com.careerfocus.model.response;
 
-import java.io.Serializable;
-import java.util.Date;
-
 import com.careerfocus.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
+import java.util.Date;
+
 public class StudentVO implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3658306710126419002L;
-	
-	int userId;
 
-	String name;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone=DateUtils.PRIMARY_TIMEZONE)
-	Date createdDate;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone=DateUtils.PRIMARY_TIMEZONE)
-	Date expiryDate;
-	
-	String emailId;
-	
-	String phone;
-	
-	int status;
-	
-	public StudentVO(int userId, String name, Date createdDate, Date expiryDate, String emailId, String phone, int status) {
-		super();
-		this.userId = userId;
-		this.name = name;
-		this.createdDate = createdDate;
-		this.expiryDate = expiryDate;
-		this.emailId = emailId;
-		this.phone = phone;
-		this.status = status;
-	}
-	
-	public int getUserId() {
-		return userId;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 3658306710126419002L;
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    int userId;
 
-	public String getName() {
-		return name;
-	}
+    String name;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
+    Date createdDate;
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
+    Date expiryDate;
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+    String emailId;
 
-	public Date getExpiryDate() {
-		return expiryDate;
-	}
+    String phone;
 
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
-	}
+    int status;
 
-	public String getEmailId() {
-		return emailId;
-	}
+    public StudentVO(int userId, String name, Date createdDate, Date expiryDate, String emailId, String phone, int status) {
+        super();
+        this.userId = userId;
+        this.name = name;
+        this.createdDate = createdDate;
+        this.expiryDate = expiryDate;
+        this.emailId = emailId;
+        this.phone = phone;
+        this.status = status;
+    }
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
+    public int getUserId() {
+        return userId;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getStatus() {
-		return status;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
-	
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 }

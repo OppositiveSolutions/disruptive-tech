@@ -18,7 +18,7 @@ public class QuestionPaperDAO {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public  QuestionPaperDAO(JdbcTemplate jdbcTemplate) {
+    public QuestionPaperDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

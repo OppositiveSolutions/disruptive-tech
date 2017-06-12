@@ -1,16 +1,5 @@
 package com.careerfocus.service;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.entity.AnnouncementImage;
 import com.careerfocus.entity.Announcements;
@@ -21,89 +10,98 @@ import com.careerfocus.util.response.Response;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AnnouncementService {
 
-	private final Logger log = Logger.getLogger(this.getClass());
+    private final Logger log = Logger.getLogger(this.getClass());
 
-	@Autowired
-	AnnouncementRepository announcementRepository;
+    @Autowired
+    AnnouncementRepository announcementRepository;
 
-	@Autowired
-	AnnouncementImageRepository aiRepository;
+    @Autowired
+    AnnouncementImageRepository aiRepository;
 
-	@Transactional
-	public Response saveAnnouncement(String announcementJson, MultipartFile image)
-			throws JsonParseException, JsonMappingException, IOException {
-		Announcements announcement = new ObjectMapper().readValue(announcementJson, Announcements.class);
-		List<Error> errors = validateAnnouncement(announcement);
-		if (errors != null && !errors.isEmpty()) {
-			return Response.status(ErrorCodes.VALIDATION_FAILED)
-					.error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
-		}
+    @Transactional
+    public Response saveAnnouncement(String announcementJson, MultipartFile image)
+            throws JsonParseException, JsonMappingException, IOException {
+        Announcements announcement = new ObjectMapper().readValue(announcementJson, Announcements.class);
+        List<Error> errors = validateAnnouncement(announcement);
+        if (errors != null && !errors.isEmpty()) {
+            return Response.status(ErrorCodes.VALIDATION_FAILED)
+                    .error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
+        }
 
-		announcement = announcementRepository.save(announcement);
+        announcement = announcementRepository.save(announcement);
 
-		AnnouncementImage aImage = new AnnouncementImage(announcement.getAnnouncementId(), image.getBytes());
-		aiRepository.save(aImage);
+        AnnouncementImage aImage = new AnnouncementImage(announcement.getAnnouncementId(), image.getBytes());
+        aiRepository.save(aImage);
 
-		if (announcement.isIsCurrent()) {
-			updateCurrentAnnouncementsOrder(announcement);
-		}
-		return Response.ok(announcement).build();
-	}
-	
-	public Announcements editAnnouncement(Announcements announcement) {
-		announcement = announcementRepository.save(announcement);
-		if (announcement.isIsCurrent()) {
-			updateCurrentAnnouncementsOrder(announcement);
-		}
-		return announcement;
-	}
-	
-	public List<Announcements> editsAnnouncements(List<Announcements> announcements) {
-		return announcementRepository.save(announcements);
-	}
+        if (announcement.isIsCurrent()) {
+            updateCurrentAnnouncementsOrder(announcement);
+        }
+        return Response.ok(announcement).build();
+    }
 
-	public void editAnnouncementImage(int announcementId, MultipartFile image) throws IOException {
-		AnnouncementImage aImage = new AnnouncementImage(announcementId, image.getBytes());
-		aiRepository.save(aImage);
-	}
+    public Announcements editAnnouncement(Announcements announcement) {
+        announcement = announcementRepository.save(announcement);
+        if (announcement.isIsCurrent()) {
+            updateCurrentAnnouncementsOrder(announcement);
+        }
+        return announcement;
+    }
 
-	public List<Announcements> getAllAnnouncements() {
-		return announcementRepository.findAllByOrderByIsCurrentDescOrderAsc();
-	}
+    public List<Announcements> editsAnnouncements(List<Announcements> announcements) {
+        return announcementRepository.save(announcements);
+    }
 
-	public List<Announcements> getCurrentAnnouncements() {
-		return announcementRepository.findByIsCurrentOrderByOrderAsc(true);
-	}
+    public void editAnnouncementImage(int announcementId, MultipartFile image) throws IOException {
+        AnnouncementImage aImage = new AnnouncementImage(announcementId, image.getBytes());
+        aiRepository.save(aImage);
+    }
 
-	public List<Announcements> getOldAnnouncements() {
-		return announcementRepository.findByIsCurrentOrderByOrderAsc(false);
-	}
+    public List<Announcements> getAllAnnouncements() {
+        return announcementRepository.findAllByOrderByIsCurrentDescOrderAsc();
+    }
 
-	public byte[] getAnnouncementImage(int announcementId) {
-		return aiRepository.findOne(announcementId).getImage();
-	}
+    public List<Announcements> getCurrentAnnouncements() {
+        return announcementRepository.findByIsCurrentOrderByOrderAsc(true);
+    }
 
-	private List<Error> validateAnnouncement(Announcements announcement) {
-		List<Error> subErrors = new ArrayList<Error>();
-		if (announcement.getName() == null || announcement.getName().isEmpty()) {
-			subErrors.add(new Error(ErrorCodes.ANNOUNCEMENT_NAME_EMPTY, ErrorCodes.ANNOUNCEMENT_NAME_EMPTY_MSG));
-		}
-		return subErrors;
-	}
+    public List<Announcements> getOldAnnouncements() {
+        return announcementRepository.findByIsCurrentOrderByOrderAsc(false);
+    }
 
-	private void updateCurrentAnnouncementsOrder(Announcements announcement) {
-		List<Announcements> aList = announcementRepository.findByIsCurrentAndOrderGreaterThan(true,
-				announcement.getOrder() - 1);
-		aList.forEach(ancment -> {
-			log.debug("Announcement Name:" + announcement.getName());
-			if (ancment.getAnnouncementId() != announcement.getAnnouncementId())
-				ancment.setOrder(ancment.getOrder() + 1);
-		});
-		announcementRepository.save(aList);
-	}
+    public byte[] getAnnouncementImage(int announcementId) {
+        return aiRepository.findOne(announcementId).getImage();
+    }
+
+    private List<Error> validateAnnouncement(Announcements announcement) {
+        List<Error> subErrors = new ArrayList<Error>();
+        if (announcement.getName() == null || announcement.getName().isEmpty()) {
+            subErrors.add(new Error(ErrorCodes.ANNOUNCEMENT_NAME_EMPTY, ErrorCodes.ANNOUNCEMENT_NAME_EMPTY_MSG));
+        }
+        return subErrors;
+    }
+
+    private void updateCurrentAnnouncementsOrder(Announcements announcement) {
+        List<Announcements> aList = announcementRepository.findByIsCurrentAndOrderGreaterThan(true,
+                announcement.getOrder() - 1);
+        aList.forEach(ancment -> {
+            log.debug("Announcement Name:" + announcement.getName());
+            if (ancment.getAnnouncementId() != announcement.getAnnouncementId())
+                ancment.setOrder(ancment.getOrder() + 1);
+        });
+        announcementRepository.save(aList);
+    }
 
 }
