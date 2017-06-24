@@ -57,10 +57,11 @@ public class QuestionPaperController {
         return Response.ok(qPaperService.saveQuestionPaperCategories(categoryList)).build();
     }
 
-    @RequestMapping(value = "/category", method = RequestMethod.PUT)
-    public Response editQuestionPaperCategory(@RequestBody List<QuestionPaperCategory> categoryList)
+    @RequestMapping(value = "/{questionPaperId}/category", method = RequestMethod.PUT)
+    public Response editQuestionPaperCategory(@RequestBody List<QuestionPaperCategory> categoryList,
+                                              @PathVariable int questionPaperId)
             throws Exception {
-        return Response.ok(qPaperService.editQuestionPaperCategories(categoryList)).build();
+        return Response.ok(qPaperService.editQuestionPaperCategories(categoryList, questionPaperId)).build();
     }
 
     @RequestMapping(value = "/{questionPaperId}/category", method = RequestMethod.GET)

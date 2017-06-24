@@ -92,13 +92,21 @@ public class QuestionPaperService {
     }
 
     @Transactional
-    public List<QuestionPaperCategory> editQuestionPaperCategories(List<QuestionPaperCategory> categoryList) {
+    public List<QuestionPaperCategory> editQuestionPaperCategories(List<QuestionPaperCategory> categoryList, int questionPaperId) {
 
-        List<QuestionPaperCategory> cList = categoryRepository.
+        List<QuestionPaperCategory> oldCList = categoryRepository.findByQuestionPaperId(questionPaperId);
+
+        List<QuestionPaperCategory> cListToUpdate = categoryRepository.
                 findByQuestionPaperCategoryIdIn(QuestionPaperUtils.getCategoryIds(categoryList));
-        QuestionPaperUtils.copyCategoryListByCategoryId(cList, categoryList);
 
-        categoryList = categoryRepository.save(cList);
+        List<QuestionPaperCategory> cListToDelete = new ArrayList<>(oldCList);
+        cListToDelete.remove(cListToUpdate);
+
+        QuestionPaperUtils.copyCategoryListByCategoryId(cListToUpdate, categoryList);
+
+        categoryList = categoryRepository.save(cListToUpdate);
+        categoryRepository.delete(cListToDelete);
+
         updateLastModified(categoryList);
         return categoryRepository.save(categoryList);
     }

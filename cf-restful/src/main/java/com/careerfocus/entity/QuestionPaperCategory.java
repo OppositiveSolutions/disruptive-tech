@@ -51,7 +51,7 @@ public class QuestionPaperCategory {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "question_paper_category_id")
     @OrderBy("order")
-    private Set<QuestionPaperSubCategory> questionPaperSubCategorys = new HashSet<QuestionPaperSubCategory>();
+    private Set<QuestionPaperSubCategory> questionPaperSubCategorys = new HashSet<>();
 
     @Basic
     @Column(name = "correct_answer_mark", columnDefinition = "INT")
@@ -64,6 +64,9 @@ public class QuestionPaperCategory {
     @Basic
     @Column(name = "r_order", columnDefinition = "INT")
     private int order;
+
+    @Transient
+    private boolean remove;
 
     public QuestionPaperCategory() {
     }
@@ -136,4 +139,11 @@ public class QuestionPaperCategory {
         this.order = order;
     }
 
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public void setRemove(boolean remove) {
+        this.remove = remove;
+    }
 }
