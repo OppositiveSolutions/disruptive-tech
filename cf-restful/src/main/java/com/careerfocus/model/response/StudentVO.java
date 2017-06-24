@@ -13,21 +13,21 @@ public class StudentVO implements Serializable {
      */
     private static final long serialVersionUID = 3658306710126419002L;
 
-    int userId;
+    private int userId;
 
-    String name;
+    private String name;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
-    Date createdDate;
+    private Date createdDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
-    Date expiryDate;
+    private Date expiryDate;
 
-    String emailId;
+    private String emailId;
 
-    String phone;
+    private String phone;
 
-    int status;
+    private int status;
 
     public StudentVO(int userId, String name, Date createdDate, Date expiryDate, String emailId, String phone, int status) {
         super();

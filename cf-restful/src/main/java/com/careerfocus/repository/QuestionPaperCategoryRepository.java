@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface QuestionPaperCategoryRepository extends JpaRepository<QuestionPaperCategory, Integer> {
 
-    public List<QuestionPaperCategory> findByQuestionPaperId(int questionPaperId);
+    List<QuestionPaperCategory> findByQuestionPaperId(int questionPaperId);
+
+    List<QuestionPaperCategory> findByQuestionPaperCategoryIdIn(List<Integer> inventoryIdList);
 }

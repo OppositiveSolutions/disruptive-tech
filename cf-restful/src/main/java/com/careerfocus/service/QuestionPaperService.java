@@ -5,6 +5,7 @@ import com.careerfocus.entity.*;
 import com.careerfocus.model.request.QuestionVO;
 import com.careerfocus.model.response.QuestionPaperVO;
 import com.careerfocus.repository.*;
+import com.careerfocus.util.QuestionPaperUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -86,6 +87,18 @@ public class QuestionPaperService {
     @Transactional
     public List<QuestionPaperCategory> saveQuestionPaperCategories(List<QuestionPaperCategory> categoryList) {
         categoryList = categoryRepository.save(categoryList);
+        updateLastModified(categoryList);
+        return categoryRepository.save(categoryList);
+    }
+
+    @Transactional
+    public List<QuestionPaperCategory> editQuestionPaperCategories(List<QuestionPaperCategory> categoryList) {
+
+        List<QuestionPaperCategory> cList = categoryRepository.
+                findByQuestionPaperCategoryIdIn(QuestionPaperUtils.getCategoryIds(categoryList));
+        QuestionPaperUtils.copyCategoryListByCategoryId(cList, categoryList);
+
+        categoryList = categoryRepository.save(cList);
         updateLastModified(categoryList);
         return categoryRepository.save(categoryList);
     }
