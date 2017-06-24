@@ -65,9 +65,6 @@ public class QuestionPaperCategory {
     @Column(name = "r_order", columnDefinition = "INT")
     private int order;
 
-    @Transient
-    private boolean remove;
-
     public QuestionPaperCategory() {
     }
 
@@ -139,11 +136,4 @@ public class QuestionPaperCategory {
         this.order = order;
     }
 
-    public boolean isRemove() {
-        return remove;
-    }
-
-    public void setRemove(boolean remove) {
-        this.remove = remove;
-    }
 }
