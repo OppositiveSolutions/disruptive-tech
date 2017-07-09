@@ -113,24 +113,18 @@ CREATE TABLE IF NOT EXISTS `states` (
 -- Table `career_focus`.`address`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `address` (
-  `address_id`     INT(11) NOT NULL AUTO_INCREMENT,
-  `street_address` VARCHAR(2000)    DEFAULT NULL,
-  `land_mark`      VARCHAR(255)     DEFAULT NULL,
-  `city`           VARCHAR(255)     DEFAULT NULL,
-  `state_id`       INT(11)          DEFAULT NULL,
-  `pin_code`       INT(6)           DEFAULT NULL,
-  `student_id`     INT(11) NOT NULL,
-  `address`        VARCHAR(255)     DEFAULT NULL,
+  `address_id` int(11) NOT NULL AUTO_INCREMENT,
+  `street_address` varchar(2000) DEFAULT NULL,
+  `land_mark` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state_id` int(11) DEFAULT NULL,
+  `pin_code` int(6) DEFAULT NULL,
   PRIMARY KEY (`address_id`),
   KEY `fk_address_state_idx` (`state_id`),
   CONSTRAINT `FK1uk1eurcj7mhj5tpql2yurw32` FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`),
-  CONSTRAINT `fk_address_state` FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 2
-  DEFAULT CHARSET = latin1;
+  CONSTRAINT `fk_address_state` FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`center`
