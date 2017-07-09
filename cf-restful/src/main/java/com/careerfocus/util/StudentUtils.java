@@ -34,6 +34,10 @@ public class StudentUtils {
             errors.add(new Error(ErrorCodes.INVALID_EMAIL_ID, ErrorCodes.INVALID_EMAIL_ID_MSG));
         }
 
+        if (student.getCenterId() == Constants.FALSE) {
+            errors.add(new Error(ErrorCodes.INVALID_CENTER, ErrorCodes.INVALID_CENTER_MSG));
+        }
+
         return errors;
     }
 
