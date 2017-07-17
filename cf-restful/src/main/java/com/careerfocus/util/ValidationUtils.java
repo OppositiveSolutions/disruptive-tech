@@ -19,7 +19,7 @@ public class ValidationUtils {
     }
 
     public static boolean validateFirstName(String firstName) {
-        return firstName.matches("[A-Z][a-zA-Z]*");
+        return firstName.matches("[a-zA-Z][a-zA-Z]*");
     }
 
     public static boolean validateLastName(String lastName) {
