@@ -16,5 +16,10 @@ public class TestService {
 		// TODO Auto-generated method stub
 		return testDAO.getAllExams(userId);
 	}
+	
+	public String getAllTests(int userId) {
+		// TODO Auto-generated method stub
+		return testDAO.getAllTests(userId);
+	}
 
 }

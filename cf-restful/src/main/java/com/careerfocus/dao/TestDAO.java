@@ -31,4 +31,9 @@ public class TestDAO {
 		return null;
 	}
 
+	public String getAllTests(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

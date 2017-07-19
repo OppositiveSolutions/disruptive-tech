@@ -22,6 +22,12 @@ public class TestController {
     @RequestMapping(value = "/all/{userId}", method = RequestMethod.GET)
     public Response getAllQuestionPapers(@PathVariable("userId") int userId)
             throws Exception {
+        return Response.ok(testService.getAllTests(userId)).build();
+    }
+    
+    @RequestMapping(value = "/all/{userId}", method = RequestMethod.GET)
+    public Response getAllExams(@PathVariable("userId") int userId)
+            throws Exception {
         return Response.ok(testService.getAllExams(userId)).build();
     }
 
