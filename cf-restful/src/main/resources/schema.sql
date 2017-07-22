@@ -652,7 +652,24 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`sections` (
   PRIMARY KEY (`sections_id`)
 )
   ENGINE = InnoDB;
-
+ 
+-- -----------------------------------------------------
+-- Table `career_focus`.`staff`
+-- ----------------------------------------------------- 
+  CREATE TABLE `staff` (
+  `user_id` int(11) NOT NULL,
+  `qualification` varchar(255) DEFAULT NULL,
+  `experience` varchar(255) DEFAULT NULL,
+  `status` int(2) DEFAULT '0',
+  `center_id` int(5) DEFAULT NULL,
+  `joining_date` datetime DEFAULT NULL,
+  `salary` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
+  CONSTRAINT `staff_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  )
+  ENGINE = InnoDB;
+  
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
