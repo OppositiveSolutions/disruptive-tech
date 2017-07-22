@@ -49,9 +49,6 @@ public class QuestionPaperDAO {
                 + "INNER JOIN question_paper_sub_category qpsc ON qpc.question_paper_category_id=question_paper_category_id "
                 + "SET qp.`last_modified` = current_timestamp() "
                 + "WHERE qpsc.`question_paper_sub_category_id` IN (" + DBUtils.getMarkers(ids.size()) + ")");
-        for (int id : ids)
-            query.append(id).append(", ");
-        query = new StringBuilder(query.substring(0, query.length() - 2) + ")");
 
         jdbcTemplate.update(query.toString(), ids.toArray());
     }
