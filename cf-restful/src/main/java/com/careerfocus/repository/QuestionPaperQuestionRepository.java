@@ -4,9 +4,10 @@ import com.careerfocus.entity.QuestionPaperQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface QuestionPaperQuestionRepository extends JpaRepository<QuestionPaperQuestion, Integer> {
 
-//    @Query("SELECT qpq FROM QuestionPaperQuestion qpq ve")
-//    String findQuestionsByQuestionPaperSubCategoryId(int questionPaperSubCategoryId );
+    List<QuestionPaperQuestion> findByQuestionPaperSubCategoryId(int questionPaperSubCategoryId);
 
 }
