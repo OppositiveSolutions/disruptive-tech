@@ -20,7 +20,7 @@ public class QuestionPaperQuestion {
 //	@Column(name = "question_id", nullable = false, columnDefinition = "INT")
 //	private int questionId;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false)
     private Question question;
 

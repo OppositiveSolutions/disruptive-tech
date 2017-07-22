@@ -29,7 +29,9 @@ public class StudentVO implements Serializable {
 
     private int status;
 
-    public StudentVO(int userId, String name, Date createdDate, Date expiryDate, String emailId, String phone, int status) {
+    private int centerId;
+
+    public StudentVO(int userId, String name, Date createdDate, Date expiryDate, String emailId, String phone, int status, int centerId) {
         super();
         this.userId = userId;
         this.name = name;
@@ -38,6 +40,7 @@ public class StudentVO implements Serializable {
         this.emailId = emailId;
         this.phone = phone;
         this.status = status;
+        this.centerId = centerId;
     }
 
     public int getUserId() {
@@ -96,4 +99,11 @@ public class StudentVO implements Serializable {
         this.status = status;
     }
 
+    public int getCenterId() {
+        return centerId;
+    }
+
+    public void setCenterId(int centerId) {
+        this.centerId = centerId;
+    }
 }

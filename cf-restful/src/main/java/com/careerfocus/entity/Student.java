@@ -33,6 +33,13 @@ public class Student {
     @Basic
     private String qualification;
 
+    @Column(name = "center_id", insertable = false, updatable = false)
+    private int centerId;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "center_id", columnDefinition = "INT", nullable = false)
+    private Center center;
+
     @Basic
     @Column(columnDefinition = "INT")
     private int status;
@@ -42,10 +49,6 @@ public class Student {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", columnDefinition = "INT")
     private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "center_id", columnDefinition = "INT", nullable = false)
-    private Center center;
 
     public Student() {
     }
