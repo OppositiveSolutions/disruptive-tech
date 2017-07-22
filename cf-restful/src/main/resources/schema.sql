@@ -656,7 +656,7 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`sections` (
 -- -----------------------------------------------------
 -- Table `career_focus`.`staff`
 -- ----------------------------------------------------- 
-  CREATE TABLE `staff` (
+  CREATE TABLE IF NOT EXISTS `staff` (
   `user_id` int(11) NOT NULL,
   `qualification` varchar(255) DEFAULT NULL,
   `experience` varchar(255) DEFAULT NULL,
