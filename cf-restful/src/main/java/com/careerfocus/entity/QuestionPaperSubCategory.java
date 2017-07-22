@@ -114,4 +114,5 @@ public class QuestionPaperSubCategory {
     public void setQuestions(Set<QuestionPaperQuestion> questions) {
         this.questions = questions;
     }
+
 }

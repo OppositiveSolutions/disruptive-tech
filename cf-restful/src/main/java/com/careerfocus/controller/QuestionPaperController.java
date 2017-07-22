@@ -87,6 +87,11 @@ public class QuestionPaperController {
         return Response.ok(qPaperService.saveQuestion(qList)).build();
     }
 
+    @RequestMapping(value = "/question", method = RequestMethod.PUT)
+    public Response editQuestion(@RequestBody List<QuestionVO> qList) throws Exception {
+        return Response.ok(qPaperService.editQuestion(qList)).build();
+    }
+
     @RequestMapping(value = "/sub-category/{subCategoryId}/questions", method = RequestMethod.GET)
     public Response getQuestions(@PathVariable("subCategoryId") int subCategoryId) throws Exception {
         return Response.ok(qPaperService.getQuestions(subCategoryId)).build();

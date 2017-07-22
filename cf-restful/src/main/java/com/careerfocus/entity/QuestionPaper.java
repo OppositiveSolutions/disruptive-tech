@@ -36,6 +36,10 @@ public class QuestionPaper {
     private String courseName;
 
     @Basic
+    @Column(name ="duration_type")
+    private int durationType;
+
+    @Basic
     @Column(columnDefinition = "INT")
     private int duration;
 
@@ -81,6 +85,14 @@ public class QuestionPaper {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public int getDurationType() {
+        return durationType;
+    }
+
+    public void setDurationType(int durationType) {
+        this.durationType = durationType;
     }
 
     public int getDuration() {
