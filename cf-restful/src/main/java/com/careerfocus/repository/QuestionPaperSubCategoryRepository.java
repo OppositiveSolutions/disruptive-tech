@@ -10,5 +10,4 @@ public interface QuestionPaperSubCategoryRepository extends JpaRepository<Questi
 
     List<QuestionPaperSubCategory> findByQuestionPaperCategoryId(int questionPaperSubCategoryId);
 
-
 }

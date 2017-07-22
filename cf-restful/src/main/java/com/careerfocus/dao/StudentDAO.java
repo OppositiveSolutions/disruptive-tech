@@ -39,8 +39,7 @@ public class StudentDAO {
     private Collection<StudentVO> StudentVO(String query, Object... params) {
         return template.query(query, params, (result, arg1) -> {
             String name = result.getString("first_name") + " " + result.getString("last_name");
-            return new StudentVO(result.getInt("user_id"), name, result.getDate("created_date"),
-                    result.getDate("expiry_date"), result.getString("username"), null, result.getInt("status"));
+            return null;
         });
     }
 }

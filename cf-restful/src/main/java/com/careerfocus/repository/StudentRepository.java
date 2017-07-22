@@ -19,13 +19,14 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     @Query(value = "SELECT new com.careerfocus.model.response.StudentVO(u.userId, CONCAT(u.firstName, ' ', u.lastName), "
             + "u.createdDate, s.expiryDate, u.username, p.phoneNo, s.status) FROM Student s INNER JOIN s.user u "
-            + "LEFT JOIN u.userPhones p WHERE p.isPrimary=1 ORDER BY u.firstName, u.lastName", nativeQuery = false)
+            + "LEFT JOIN u.userPhones p WHERE p.isPrimary=1 OR p.isPrimary IS NULL ORDER BY u.firstName, u.lastName", nativeQuery = false)
     Page<StudentVO> findAllStudents(Pageable page);
 
     @Query(value = "SELECT new com.careerfocus.model.response.StudentVO(u.userId, CONCAT(u.firstName, ' ', u.lastName), "
             + "u.createdDate, s.expiryDate, u.username, p.phoneNo, s.status) FROM Student s INNER JOIN s.user u LEFT JOIN u.userPhones p "
-            + "WHERE p.isPrimary=1 AND (LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(:key) OR LOWER(u.username) LIKE LOWER(:key)) "
-            + "ORDER BY u.firstName, u.lastName", nativeQuery = false)
+            + "WHERE p.isPrimary=1 OR p.isPrimary IS NULL AND (LOWER(CONCAT(u.firstName, ' ', u.lastName)) "
+            + "LIKE LOWER(:key) OR LOWER(u.username) LIKE LOWER(:key)) "
+            + "ORDER BY u.firstName, u.lastName")
     Page<StudentVO> searchStudentsByNameOrEmail(@Param("key") String key, Pageable page);
 
 }

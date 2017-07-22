@@ -239,4 +239,7 @@ public class QuestionPaperService {
         return true;
     }
 
+    public String getQuestions(int subCategoryId) {
+        return null;
+    }
 }

@@ -87,6 +87,11 @@ public class QuestionPaperController {
         return Response.ok(qPaperService.saveQuestion(qList)).build();
     }
 
+    @RequestMapping(value = "/sub-category/{subCategoryId}/questions", method = RequestMethod.GET)
+    public Response getQuestions(@PathVariable("subCategoryId") int subCategoryId) throws Exception {
+        return Response.ok(qPaperService.getQuestions(subCategoryId)).build();
+    }
+
     @RequestMapping(value = "/{questionPaperId}/demo/{isDemo}", method = RequestMethod.POST)
     public Response setDemo(@PathVariable("questionPaperId") int questionPaperId, @PathVariable("isDemo") boolean isDemo)
             throws Exception {
