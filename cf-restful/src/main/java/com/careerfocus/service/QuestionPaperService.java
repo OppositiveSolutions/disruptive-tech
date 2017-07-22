@@ -115,8 +115,23 @@ public class QuestionPaperService {
         return categoryRepository.findByQuestionPaperId(questionPaperId);
     }
 
+//    public List<QuestionPaperSubCategory> getQuestionPaperCategoryId(int questionPaperCategoryId) {
+//        List<QuestionPaperSubCategory> subCategoryList = subCategoryRepository.findByQuestionPaperCategoryId(questionPaperCategoryId);
+//
+//
+//        return
+//    }
+
     @Transactional
     public List<QuestionPaperSubCategory> saveQuestionPaperSubCategory(
+            List<QuestionPaperSubCategory> qPaperSubCategoryList) {
+        qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
+        updateLastModifiedBySubCategorys(qPaperSubCategoryList);
+        return subCategoryRepository.save(qPaperSubCategoryList);
+    }
+
+    @Transactional
+    public List<QuestionPaperSubCategory> editQuestionPaperSubCategory(
             List<QuestionPaperSubCategory> qPaperSubCategoryList) {
         qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
         updateLastModifiedBySubCategorys(qPaperSubCategoryList);

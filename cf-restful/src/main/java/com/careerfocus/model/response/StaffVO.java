@@ -22,17 +22,19 @@ public class StaffVO implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
     private Date joiningDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
+    private Date createdDate;
+
     private String emailId;
 
     private String phone;
 
     private int status;
 
-    public StaffVO(int userId, String name, Date joiningDate, String salary, String emailId, String phone, int status) {
+    public StaffVO(int userId, String name, Date joiningDate, Date createdDate, String emailId, String phone, int status) {
         super();
         this.userId = userId;
         this.name = name;
-        this.salary = salary;
         this.joiningDate = joiningDate;
         this.emailId = emailId;
         this.phone = phone;
@@ -95,4 +97,11 @@ public class StaffVO implements Serializable {
         this.status = status;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 }
