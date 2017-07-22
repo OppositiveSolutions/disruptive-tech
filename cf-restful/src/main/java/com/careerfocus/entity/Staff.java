@@ -13,7 +13,7 @@ import java.util.Date;
  * org.apache.openjpa.jdbc.meta.ReverseMappingTool$AnnotatedCodeGenerator
  */
 @Entity
-@Table(name = "student")
+@Table(name = "staff")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Staff {
 
