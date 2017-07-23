@@ -14,9 +14,29 @@ public class ResultService {
     @Autowired
     ResultDAO resultDAO;
 
-	public String getScoreCard(int examId) {
+	public String getScoreCard(int examId, int isDemo) {
 		// TODO Auto-generated method stub
 		return resultDAO.getScoreCard(examId);
+	}
+
+	public String getCategoryScore(int examId, int categoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getCategoryScoreGraph(int examId, int categoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getCategoryTime(int examId, int categoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getTopTenScore(int userId, int examId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

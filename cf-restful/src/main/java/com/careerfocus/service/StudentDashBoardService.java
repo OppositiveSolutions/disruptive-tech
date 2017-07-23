@@ -20,4 +20,19 @@ public class StudentDashBoardService {
 		return dashBoardDAO.getSpeedTestSummary(userId);
 	}
 
+	public String getSpeedTestSummary(int userId, int type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getQPPurchasedList(int userId, int isCurrent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getSpeedTestGraphDetails(int userId, int examId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

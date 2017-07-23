@@ -8,91 +8,95 @@ import java.util.Date;
 
 public class StaffVO implements Serializable {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 3658306710126419002L;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 3658306710126419002L;
 
-    private int userId;
+	private int userId;
 
-    private String name;
+	private String name;
 
-    private String salary;
+	private String salary;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
-    private Date joiningDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
+	private Date joiningDate;
 
-    private String emailId;
+	private String emailId;
 
-    private String phone;
+	private String phone;
 
-    private int status;
+	private int status;
 
-    public StaffVO(int userId, String name, Date joiningDate, String salary, String emailId, String phone, int status) {
-        super();
-        this.userId = userId;
-        this.name = name;
-        this.salary = salary;
-        this.joiningDate = joiningDate;
-        this.emailId = emailId;
-        this.phone = phone;
-        this.status = status;
-    }
+	public StaffVO() {
 
-    public int getUserId() {
-        return userId;
-    }
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public StaffVO(int userId, String name, Date joiningDate, String salary, String emailId, String phone, int status) {
+		super();
+		this.userId = userId;
+		this.name = name;
+		this.salary = salary;
+		this.joiningDate = joiningDate;
+		this.emailId = emailId;
+		this.phone = phone;
+		this.status = status;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    public Date getJoiningDate() {
-        return joiningDate;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setJoiningDate(Date joiningDate) {
-        this.joiningDate = joiningDate;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getSalary() {
-        return salary;
-    }
+	public Date getJoiningDate() {
+		return joiningDate;
+	}
 
-    public void setSalary(String salary) {
-        this.salary = salary;
-    }
+	public void setJoiningDate(Date joiningDate) {
+		this.joiningDate = joiningDate;
+	}
 
-    public String getEmailId() {
-        return emailId;
-    }
+	public String getSalary() {
+		return salary;
+	}
 
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
+	public void setSalary(String salary) {
+		this.salary = salary;
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public String getEmailId() {
+		return emailId;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 
-    public int getStatus() {
-        return status;
-    }
+	public String getPhone() {
+		return phone;
+	}
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
 }
