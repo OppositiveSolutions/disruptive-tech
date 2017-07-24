@@ -19,16 +19,10 @@ public class TestController {
     @Autowired
     TestService testService;
 
-//    @RequestMapping(value = "/all/{userId}", method = RequestMethod.GET)
-//    public Response getAllQuestionPapers(@PathVariable("userId") int userId)
-//            throws Exception {
-//        return Response.ok(testService.getAllTests(userId)).build();
-//    }
-//
-//    @RequestMapping(value = "/all/{userId}", method = RequestMethod.GET)
-//    public Response getAllExams(@PathVariable("userId") int userId)
-//            throws Exception {
-//        return Response.ok(testService.getAllExams(userId)).build();
-//    }
-
+    @RequestMapping(value = "/{userId}/all/{type}", method = RequestMethod.GET)
+    public Response getAllTests(@PathVariable("userId") int userId, @PathVariable("type") int type)
+            throws Exception {
+        return Response.ok(testService.getAllTests(userId, type)).build();
+    }
+    
 }

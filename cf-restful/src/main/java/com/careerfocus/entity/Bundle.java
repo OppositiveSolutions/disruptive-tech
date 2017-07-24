@@ -43,6 +43,13 @@ public class Bundle {
     @Column(name="selling_price", columnDefinition="FLOAT")
     private float sellingPrice;
 
+    @Basic
+    @Column(name="discount_percent", columnDefinition="FLOAT")
+    private float discountPercent;
+    
+    @Basic
+    @Column(name="coaching_type", columnDefinition="INT")
+    private float coachingType;
 
     public Bundle() {
     }
@@ -122,4 +129,20 @@ public class Bundle {
     public void setSellingPrice(float sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
+
+	public boolean isAvailable() {
+		return isAvailable;
+	}
+
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+
+	public float getDiscountPercent() {
+		return discountPercent;
+	}
+
+	public void setDiscountPercent(float discountPercent) {
+		this.discountPercent = discountPercent;
+	}
 }

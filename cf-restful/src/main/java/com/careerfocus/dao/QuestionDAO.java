@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class QuestionDAO {
@@ -38,6 +39,15 @@ public class QuestionDAO {
 		int qStatus = 0;
 		// TODO Auto-generated method stub
 		return qStatus;
+	}
+
+	public Map<String, Object> getQuestionId(int examId) {
+		// TODO Auto-generated method stub
+		String query = "select category_id, question_id, question_no from question_paper_question qpq"
+				+ " inner join question_paper_sub_category qpsc on qpq.question_paper_sub_category_id=qpsc.question_paper_sub_category_id"
+				+ " inner join question_paper_category qpc on qpc.question_paper_category_id = qpsc.question_paper_category_id inner join question_paperqId qp on qpc.question_paper_id = qp.question_paper_id inner join test t on t.question_paper_id= qp.question_paper_id where t.exam_id = 1";
+		Map<String, Object> result = template.queryForMap(query, examId);
+		return result;
 	}
 
 }

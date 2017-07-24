@@ -25,21 +25,26 @@ public class StaffVO implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
     private Date createdDate;
 
-    private String emailId;
+	private String emailId;
 
     private String phone;
 
     private int status;
 
-    public StaffVO(int userId, String name, Date joiningDate, Date createdDate, String emailId, String phone, int status) {
-        super();
-        this.userId = userId;
-        this.name = name;
-        this.joiningDate = joiningDate;
-        this.emailId = emailId;
-        this.phone = phone;
-        this.status = status;
-    }
+	public StaffVO() {
+
+	}
+
+	public StaffVO(int userId, String name, Date joiningDate, String salary, String emailId, String phone, int status) {
+		super();
+		this.userId = userId;
+		this.name = name;
+		this.salary = salary;
+		this.joiningDate = joiningDate;
+		this.emailId = emailId;
+		this.phone = phone;
+		this.status = status;
+	}
 
     public int getUserId() {
         return userId;

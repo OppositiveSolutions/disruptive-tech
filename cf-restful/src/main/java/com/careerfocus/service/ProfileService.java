@@ -1,8 +1,7 @@
 package com.careerfocus.service;
 
 import com.careerfocus.dao.ProfileDAO;
-import com.careerfocus.entity.Bundle;
-import com.careerfocus.repository.BundleRepository;
+import com.careerfocus.model.request.AddStudentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +16,11 @@ public class ProfileService {
 	public String getDetailsForMyProfile(int userId) {
 		// TODO Auto-generated method stub
 		return profileDAO.getDetailsForMyProfile(userId);
+	}
+
+	public String editMyProfile(AddStudentVO student) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

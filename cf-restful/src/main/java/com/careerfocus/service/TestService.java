@@ -12,14 +12,11 @@ public class TestService {
 	 @Autowired
 	    TestDAO testDAO;
 
-	public String getAllExams(int userId) {
-		// TODO Auto-generated method stub
-		return testDAO.getAllExams(userId);
-	}
-	
-	public String getAllTests(int userId) {
-		// TODO Auto-generated method stub
+	public String getAllTests(int userId, int type) {
+		if (type == 1)
 		return testDAO.getAllTests(userId);
+		else 
+		return testDAO.getAllExams(userId);
 	}
 
 }

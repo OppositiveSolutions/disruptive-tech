@@ -16,25 +16,33 @@ import org.springframework.stereotype.Service;
 public class ExamService {
 
 	@Autowired
-    ExamDAO examDAO;
-	
-	@Autowired
-    QuestionDAO questionDAO;
+	ExamDAO examDAO;
 
-	public List<Map<String, String>> getExamCategoryDetails(int examId) {
+	@Autowired
+	QuestionDAO questionDAO;
+
+	public Map<String, Object> getExamCategoryDetails(int examId) {
 		return examDAO.getExamCategoryDetails(examId);
 	}
 
-	public boolean startExam(int examId) {
-		return examDAO.startExam(examId);
+	public boolean startExam(int examId, int language) {
+		return examDAO.startExam(examId, language);
 	}
 
-	public int createExam(int userId, int qpId) {
-		return examDAO.createExam(userId, qpId);
+	public int createExam(int testId, int isDemo) {
+		int examId = examDAO.createExam(testId, isDemo);
+		if (examDAO.createExamQuestions(examId) > 0) {
+			List<Map<String, Object>> categoryBasedQList = examDAO.getNoOfQsPerCategory(examId);
+			for (Map<String, Object> m : categoryBasedQList) {
+				int categoryId = (Integer) m.get("category_id");
+				examDAO.createExamCategoryTime(examId, categoryId);
+			}
+		}
+		return examId;
 	}
 
-	public List<Map<String, String>> getCategoryQStatusList(int examId, int categoryId) {
-		return examDAO.getCategoryQStatusList(examId);
+	public List<Map<String, Object>> getCategoryQStatusList(int examId, int categoryId) {
+		return examDAO.getCategoriesQStatusList(examId, categoryId);
 	}
 
 	public QuestionPopulateVO getQuestion(int examId, int qId) {
