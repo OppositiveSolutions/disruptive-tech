@@ -5,6 +5,7 @@ import com.careerfocus.entity.*;
 import com.careerfocus.entity.id.QuestionPaperQuestionId;
 import com.careerfocus.model.request.OptionVO;
 import com.careerfocus.model.request.QuestionVO;
+import com.careerfocus.model.response.QPSubCategoryVO;
 import com.careerfocus.model.response.QuestionPaperVO;
 import com.careerfocus.repository.*;
 import com.careerfocus.util.QuestionPaperUtils;
@@ -115,6 +116,10 @@ public class QuestionPaperService {
 
     public List<QuestionPaperCategory> getQuestionPaperCategories(int questionPaperId) {
         return categoryRepository.findByQuestionPaperId(questionPaperId);
+    }
+
+    public List<QPSubCategoryVO> getQuestionPaperSubCategories(int questionPaperSubCategoryId) {
+        return subCategoryRepository.findByQuestionPaperCategoryId(questionPaperSubCategoryId);
     }
 
     @Transactional

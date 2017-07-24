@@ -70,6 +70,12 @@ public class QuestionPaperController {
         return Response.ok(qPaperService.getQuestionPaperCategories(questionPaperId)).build();
     }
 
+    @RequestMapping(value = "/category/{categoryId}/sub-category", method = RequestMethod.GET)
+    public Response getQuestionPaperSubCategory(@PathVariable("categoryId") int categoryId)
+            throws Exception {
+        return Response.ok(qPaperService.getQuestionPaperSubCategories(categoryId)).build();
+    }
+
     @RequestMapping(value = "/sub-category", method = RequestMethod.POST)
     public Response saveQuestionPaperSubCategory(@RequestBody List<QuestionPaperSubCategory> subCategoryList)
             throws Exception {
