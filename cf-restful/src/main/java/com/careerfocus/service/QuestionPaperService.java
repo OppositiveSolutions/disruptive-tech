@@ -2,7 +2,10 @@ package com.careerfocus.service;
 
 import com.careerfocus.dao.QuestionPaperDAO;
 import com.careerfocus.entity.*;
+import com.careerfocus.entity.id.QuestionPaperQuestionId;
+import com.careerfocus.model.request.OptionVO;
 import com.careerfocus.model.request.QuestionVO;
+import com.careerfocus.model.response.QPSubCategoryVO;
 import com.careerfocus.model.response.QuestionPaperVO;
 import com.careerfocus.repository.*;
 import com.careerfocus.util.QuestionPaperUtils;
@@ -115,8 +118,20 @@ public class QuestionPaperService {
         return categoryRepository.findByQuestionPaperId(questionPaperId);
     }
 
+    public List<QPSubCategoryVO> getQuestionPaperSubCategories(int questionPaperSubCategoryId) {
+        return subCategoryRepository.findByQuestionPaperCategoryId(questionPaperSubCategoryId);
+    }
+
     @Transactional
     public List<QuestionPaperSubCategory> saveQuestionPaperSubCategory(
+            List<QuestionPaperSubCategory> qPaperSubCategoryList) {
+        qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
+        updateLastModifiedBySubCategorys(qPaperSubCategoryList);
+        return subCategoryRepository.save(qPaperSubCategoryList);
+    }
+
+    @Transactional
+    public List<QuestionPaperSubCategory> editQuestionPaperSubCategory(
             List<QuestionPaperSubCategory> qPaperSubCategoryList) {
         qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
         updateLastModifiedBySubCategorys(qPaperSubCategoryList);
@@ -149,6 +164,40 @@ public class QuestionPaperService {
         qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<>(subCatIds));
         return qList;
     }
+
+    @Transactional
+    public List<QuestionVO> editQuestion(List<QuestionVO> qList) {
+
+        List<QuestionPaperQuestion> qpQuestionList = new ArrayList<>();
+        qList.forEach(questionVO -> {
+
+            QuestionPaperQuestion qpQuestion = questionPaperQuestionRepository.findOne(
+                    new QuestionPaperQuestionId(questionVO.getQuestionPaperSubCategoryId(), questionVO.getQuestionNo()));
+
+            Question question = qpQuestion.getQuestion();
+            question.setQuestionId(questionVO.getQuestionId());
+            question.setQuestion(questionVO.getQuestion());
+            question.setCorrectOptionNo(question.getCorrectOptionNo());
+
+            Set<QuestionOption> options = question.getOptions();
+            Iterator<QuestionOption> it = options.iterator();
+            for (int i = 0; i < questionVO.getOptions().size(); i++) {
+                if (it.hasNext()) {
+                    QuestionOption option = it.next();
+                    OptionVO optionVO = questionVO.getOptions().get(i);
+
+                    option.setOption(optionVO.getOption());
+                    option.setOptionNo(optionVO.getOptionNo());
+                    option.setQuestionId(questionVO.getQuestionId());
+                }
+            }
+            qpQuestionList.add(qpQuestion);
+
+        });
+        questionPaperQuestionRepository.save(qpQuestionList);
+        return qList;
+    }
+
 
     @Transactional
     public void updateIsDemo(int questionPaperId, boolean isDemo) {
@@ -224,4 +273,7 @@ public class QuestionPaperService {
         return true;
     }
 
+    public List<QuestionPaperQuestion> getQuestions(int subCategoryId) {
+        return questionPaperQuestionRepository.findByQuestionPaperSubCategoryId(subCategoryId);
+    }
 }

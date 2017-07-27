@@ -1,8 +1,14 @@
 package com.careerfocus.repository;
 
 import com.careerfocus.entity.QuestionPaperQuestion;
+import com.careerfocus.entity.id.QuestionPaperQuestionId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-public interface QuestionPaperQuestionRepository extends JpaRepository<QuestionPaperQuestion, Integer> {
+import java.util.List;
+
+public interface QuestionPaperQuestionRepository extends JpaRepository<QuestionPaperQuestion, QuestionPaperQuestionId> {
+
+    List<QuestionPaperQuestion> findByQuestionPaperSubCategoryId(int questionPaperSubCategoryId);
 
 }

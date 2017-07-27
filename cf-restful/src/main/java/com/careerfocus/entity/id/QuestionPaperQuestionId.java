@@ -13,6 +13,15 @@ public class QuestionPaperQuestionId implements Serializable {
 
     private int questionNo;
 
+    public QuestionPaperQuestionId() {
+
+    }
+
+    public QuestionPaperQuestionId(int questionPaperSubCategoryId, int questionNo) {
+        this.questionPaperSubCategoryId = questionPaperSubCategoryId;
+        this.questionNo = questionNo;
+    }
+
     public int getQuestionPaperSubCategoryId() {
         return questionPaperSubCategoryId;
     }

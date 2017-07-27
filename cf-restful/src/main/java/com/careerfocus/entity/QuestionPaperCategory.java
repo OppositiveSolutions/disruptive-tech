@@ -65,6 +65,10 @@ public class QuestionPaperCategory {
     @Column(name = "r_order", columnDefinition = "INT")
     private int order;
 
+    @Basic
+    @Column(columnDefinition = "INT")
+    private int duration;
+
     public QuestionPaperCategory() {
     }
 
@@ -136,4 +140,11 @@ public class QuestionPaperCategory {
         this.order = order;
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 }

@@ -36,6 +36,7 @@ public class QuestionPaperSubCategory {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "question_paper_sub_category_id")
+    @OrderBy("questionNo")
     private Set<QuestionPaperQuestion> questions = new HashSet<QuestionPaperQuestion>();
 
 //	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
@@ -113,4 +114,5 @@ public class QuestionPaperSubCategory {
     public void setQuestions(Set<QuestionPaperQuestion> questions) {
         this.questions = questions;
     }
+
 }

@@ -35,7 +35,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `last_name`    VARCHAR(46) NOT NULL,
   `dob`          DATE                 DEFAULT NULL,
   `gender`       VARCHAR(11)          DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `username_UNIQUE` (`username`);
+  
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 4
@@ -281,6 +283,7 @@ CREATE TABLE IF NOT EXISTS `question_paper` (
   `created_date`      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modified`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_demo`           TINYINT(1)   NOT NULL DEFAULT '0',
+  `duration_type`     INT(11)      NOT NULL DEFAULT '1',
   PRIMARY KEY (`question_paper_id`)
 )
   ENGINE = InnoDB
@@ -299,6 +302,7 @@ CREATE TABLE IF NOT EXISTS `question_paper_category` (
   `correct_answer_mark`        FLOAT   NOT NULL,
   `negative_mark`              FLOAT   NOT NULL,
   `r_order`                    INT(11) NOT NULL DEFAULT '0',
+  `duration`                   INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`question_paper_category_id`),
   KEY `FK1u18p6vxpcfrbptvvjpk6cr53` (`category_id`),
   KEY `FKe3h7gf2fchw73pyeriowtbfxi` (`question_paper_id`),
