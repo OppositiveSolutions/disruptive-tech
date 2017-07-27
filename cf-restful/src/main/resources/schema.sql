@@ -415,13 +415,19 @@ CREATE TABLE IF NOT EXISTS `bundle` (
 -- Table `career_focus`.`bundle_question_papers`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bundle_question_paper` (
-  `bundle_id` int(11) NOT NULL,
-  `question_paper_id` int(11) NOT NULL,
-  PRIMARY KEY (`bundle_id`,`question_paper_id`),
-  KEY `bundle_question_paper_question_paper_question_paper_id_fk` (`question_paper_id`),
-  CONSTRAINT `bundle_question_paper_bundle_bundle_id_fk` FOREIGN KEY (`bundle_id`) REFERENCES `bundle` (`bundle_id`),
-  CONSTRAINT `bundle_question_paper_question_paper_question_paper_id_fk` FOREIGN KEY (`question_paper_id`) REFERENCES `question_paper` (`question_paper_id`)
+  `bundle_question_paper_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bundle_id` int(11) DEFAULT NULL,
+  `question_paper_id` int(11) DEFAULT NULL,
+  `is_demo` int(2) DEFAULT NULL,
+  PRIMARY KEY (`bundle_question_paper_id`),
+  KEY `fk_question_paper_idx` (`question_paper_id`),
+  KEY `index3` (`bundle_id`),
+  CONSTRAINT `FKdqvuxka8gqvd367r5cidw6vf1` FOREIGN KEY (`bundle_id`) REFERENCES `bundle` (`bundle_id`),
+  CONSTRAINT `FKfoahhy1sjqegeqbrh4il1w27i` FOREIGN KEY (`question_paper_id`) REFERENCES `question_paper` (`question_paper_id`),
+  CONSTRAINT `fk_bundle` FOREIGN KEY (`bundle_id`) REFERENCES `bundle` (`bundle_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_question_paper` FOREIGN KEY (`question_paper_id`) REFERENCES `question_paper` (`question_paper_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 -- -----------------------------------------------------
@@ -669,6 +675,93 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`sections` (
   CONSTRAINT `staff_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
   )
   ENGINE = InnoDB;
+  
+-- -----------------------------------------------------
+-- Table `career_focus`.`bundle_purchase`
+-- ----------------------------------------------------- 
+  CREATE TABLE IF NOT EXISTS `bundle_purchase` (
+  `bundle_purchase_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bundle_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `purchase_time` datetime DEFAULT NULL,
+  `purchase_price` varchar(15) DEFAULT NULL,
+  `expiry_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`bundle_purchase_id`),
+  KEY `index2` (`bundle_id`),
+  KEY `index3` (`user_id`),
+  CONSTRAINT `fk_bundle_purchase_bundle_id` FOREIGN KEY (`bundle_id`) REFERENCES `bundle` (`bundle_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_bundle_purchase_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`exam`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exam` (
+  `exam_id` int(11) NOT NULL AUTO_INCREMENT,
+  `test_id` int(11) DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `question_answered` int(11) DEFAULT NULL,
+  `question_correct` int(11) DEFAULT NULL,
+  `mark_correct` varchar(10) DEFAULT NULL,
+  `mark_negative` varchar(10) DEFAULT NULL,
+  `is_demo` int(2) DEFAULT NULL,
+  `language` int(2) DEFAULT NULL,
+  PRIMARY KEY (`exam_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`exam_category_time`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exam_category_time` (
+  `exam_category_time_id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` int(11) DEFAULT NULL,
+  `last_update_time` datetime DEFAULT NULL,
+  `total_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`exam_category_time_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`exam_question`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exam_question` (
+  `exam_question_id` int(11) NOT NULL AUTO_INCREMENT,
+  `exam_id` int(11) DEFAULT NULL,
+  `question_id` int(11) DEFAULT NULL,
+  `question_no` int(4) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `option_entered` int(4) DEFAULT NULL,
+  `question_status` int(4) DEFAULT NULL,
+  `is_correct` int(2) DEFAULT NULL,
+  PRIMARY KEY (`exam_question_id`),
+  KEY `index2` (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`test`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `test` (
+  `test_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bundle_question_paper_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `expiry_date` datetime DEFAULT NULL,
+  `is_enabled` int(2) DEFAULT NULL,
+  `is_written` int(2) DEFAULT NULL,
+  `is_demo` int(2) DEFAULT NULL,
+  PRIMARY KEY (`test_id`),
+  KEY `index2` (`bundle_question_paper_id`),
+  KEY `index3` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- -----------------------------------------------------
+-- Table `career_focus`.`question_status`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `question_status` (
+  `question_status_id` int(11) NOT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  `description` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`question_status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
   
 
 SET SQL_MODE = @OLD_SQL_MODE;
