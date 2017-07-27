@@ -1,39 +1,44 @@
 package com.careerfocus.dao;
 
-import com.careerfocus.entity.States;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.util.List;
-
 @Repository
 public class TestDAO {
 
-    private JdbcTemplate template;
+	@Autowired
+	private JdbcTemplate template;
 
-    @Autowired
-    public TestDAO(JdbcTemplate template) {
-        this.template = template;
-    }
-
-    public List<States> getStates() {
-
-        String query = "SELECT * FROM states";
-
-        return template.query(query, (ResultSet result, int arg1) ->
-                new States(result.getInt("state_id"), result.getString("name")));
-    }
-
-	public String getAllExams(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public TestDAO(JdbcTemplate template) {
+		this.template = template;
 	}
 
-	public String getAllTests(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String,Object>> getAllExams(int userId) {
+		String query = "SELECT t.* FROM exam e inner join test t on e.test_id = t.test_id where user_id = ? and is_written = 1";
+		return template.queryForList(query, userId);
+	}
+
+	public List<Map<String, Object>> getAllTests(int userId) {
+		String query = "SELECT * FROM test where user_id = ? and is_written = 0";
+		return template.queryForList(query, userId);
+	}
+
+	public boolean createTest(int bundlePurchaseId) {
+		boolean status = true;
+		try {
+			String query = "INSERT INTO test (bundle_question_paper_id,user_id,expiry_date,is_enabled,is_written,is_demo)"
+					+ " SELECT bundle_question_paper_id,user_id,expiry_date,'1','0',is_demo FROM bundle_purchase bp"
+					+ " inner join bundle_question_paper bqp on bp.bundle_id = bqp.bundle_id where bundle_purchase_id = ?";
+			template.update(query, bundlePurchaseId);
+		} catch (Exception e) {
+			status = false;
+			e.printStackTrace();
+		}
+		return status;
 	}
 
 }

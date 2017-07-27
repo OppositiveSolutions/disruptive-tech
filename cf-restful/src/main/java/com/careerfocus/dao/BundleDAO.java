@@ -24,24 +24,28 @@ public class BundleDAO {
 		return template.queryForList(query, coachingType);
 	}
 
-	public String editBundle(Bundle bundle) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String,Object>> getBundleQPs(int bundleId) {
+		String query = "select bqp.bundle_id, bqp.question_paper_id, qp.name, qp.duration,"
+				+ " qp.no_of_questions from bundle_question_paper bqp"
+				+ " inner join question_paper qp on bqp.question_paper_id = qp.question_paper_id where bundle_id = ?";
+		return template.queryForList(query, bundleId);
 	}
 
-	public String getBundleQPs(Integer bundleId) {
-		// TODO Auto-generated method stub
-		return null;
+	public int addQptoBundle(int bundleId, int qpId) {
+		String query = "insert into bundle_question_paper (bundle_id,question_paper_id) values(?,?)";
+		return template.update(query, bundleId, qpId);
 	}
 
-	public String addQptoBundle(Integer bundleId, Integer qpId) {
-		// TODO Auto-generated method stub
-		return null;
+	public int removeQpfromBundle(Integer bundleId, Integer qpId) {
+		String query = "DELETE FROM bundle_question_paper WHERE question_paper_id = ? and bundle_id  = ?"; 
+		return template.update(query, qpId, bundleId);
 	}
 
-	public String removeQpfromBundle(Integer bundleId, Integer qpId) {
-		// TODO Auto-generated method stub
-		return null;
+	public int purchaseBundle(int userId, int bundleId) {
+		String query = "insert into bundle_purchase (bundle_id,user_id,purchase_time,purchase_price,expiry_date) values"
+				+ "(?,?,now(),(select selling_price from bundle where bundle_id = ?),"
+				+ "(now() + INTERVAL (select validity_days from bundle where bundle_id = ?) DAY))";
+		return template.update(query, bundleId, userId, bundleId, bundleId);
 	}
 
 }

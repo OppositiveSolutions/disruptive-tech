@@ -60,4 +60,9 @@ public class BundleController {
     public Response deleteBundle(@PathVariable("bundleId") Integer bundleId) throws Exception {
         return Response.ok(service.deleteBundle(bundleId)).build();
     }
+    
+    @RequestMapping(value = "/{userId}/addqp/{bundleId}", method = RequestMethod.GET)
+    public Response purchaseBundle(@PathVariable("bundleId") Integer bundleId, @PathVariable("userId") Integer userId) throws Exception {
+        return Response.ok(service.purchaseBundle(userId, bundleId)).build();
+    }
 }

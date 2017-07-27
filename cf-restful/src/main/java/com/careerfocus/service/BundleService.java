@@ -30,23 +30,27 @@ public class BundleService {
 		return bundleDAO.getQPBundleList(coachingType);
 	}
 
-	public String editBundle(Bundle bundle) {
-		return bundleDAO.editBundle(bundle);
+	public Bundle editBundle(Bundle bundle) {
+		return bundleRepository.save(bundle);
+	}
+	
+	public int purchaseBundle(int userId, int bundleId) {
+		return bundleDAO.purchaseBundle(userId, bundleId);
 	}
 
 	public Bundle getQPBundle(Integer bundleId) {
 		return bundleRepository.findOne(bundleId);
 	}
 
-	public String getQPBundleQPs(Integer bundleId) {
+	public List<Map<String,Object>> getQPBundleQPs(Integer bundleId) {
 		return bundleDAO.getBundleQPs(bundleId);
 	}
 
-	public String addQptoBundle(Integer bundleId, Integer qpId) {
+	public int addQptoBundle(Integer bundleId, Integer qpId) {
 		return bundleDAO.addQptoBundle(bundleId, qpId);
 	}
 
-	public String removeQptoBundle(Integer bundleId, Integer qpId) {
+	public int removeQptoBundle(Integer bundleId, Integer qpId) {
 		return bundleDAO.removeQpfromBundle(bundleId, qpId);
 	}
 
