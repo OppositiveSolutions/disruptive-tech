@@ -285,6 +285,7 @@ CREATE TABLE IF NOT EXISTS `question_paper` (
   `created_date`      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_modified`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_demo`           TINYINT(1)   NOT NULL DEFAULT '0',
+  `duration_type`     INT(11)      NOT NULL DEFAULT '1',
   PRIMARY KEY (`question_paper_id`)
 )
   ENGINE = InnoDB
