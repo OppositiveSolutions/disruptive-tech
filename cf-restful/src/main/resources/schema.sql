@@ -113,18 +113,22 @@ CREATE TABLE IF NOT EXISTS `states` (
 -- Table `career_focus`.`address`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `address` (
-  `address_id` int(11) NOT NULL AUTO_INCREMENT,
-  `street_address` varchar(2000) DEFAULT NULL,
-  `land_mark` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `state_id` int(11) DEFAULT NULL,
-  `pin_code` int(6) DEFAULT NULL,
+  `address_id`     INT(11) NOT NULL AUTO_INCREMENT,
+  `street_address` VARCHAR(2000)    DEFAULT NULL,
+  `land_mark`      VARCHAR(255)     DEFAULT NULL,
+  `city`           VARCHAR(255)     DEFAULT NULL,
+  `state_id`       INT(11)          DEFAULT NULL,
+  `pin_code`       INT(6)           DEFAULT NULL,
   PRIMARY KEY (`address_id`),
   KEY `fk_address_state_idx` (`state_id`),
   CONSTRAINT `FK1uk1eurcj7mhj5tpql2yurw32` FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`),
-  CONSTRAINT `fk_address_state` FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
-
+  CONSTRAINT `fk_address_state` FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 17
+  DEFAULT CHARSET = latin1;
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`center`
@@ -299,6 +303,7 @@ CREATE TABLE IF NOT EXISTS `question_paper_category` (
   `correct_answer_mark`        FLOAT   NOT NULL,
   `negative_mark`              FLOAT   NOT NULL,
   `r_order`                    INT(11) NOT NULL DEFAULT '0',
+  `duration`                   INT(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`question_paper_category_id`),
   KEY `FK1u18p6vxpcfrbptvvjpk6cr53` (`category_id`),
   KEY `FKe3h7gf2fchw73pyeriowtbfxi` (`question_paper_id`),
@@ -382,47 +387,49 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`question_paper_demo` (
 )
   ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `career_focus`.`bundle_category`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bundle_category` (
-  `bundle_category_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
+  `bundle_category_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name`               VARCHAR(255)     DEFAULT NULL,
   PRIMARY KEY (`bundle_category_id`),
   UNIQUE KEY `bundle_category_bundle_category_id_uindex` (`bundle_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`bundle`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bundle` (
-  `bundle_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bundle_category_id` int(11) NOT NULL,
-  `name` text,
-  `description` text,
-  `mrp` float NOT NULL,
-  `selling_price` float NOT NULL,
-  `image_url` varchar(2000) DEFAULT NULL,
-  `is_available` tinyint(1) DEFAULT NULL,
+  `bundle_id`          INT(11) NOT NULL AUTO_INCREMENT,
+  `bundle_category_id` INT(11) NOT NULL,
+  `name`               TEXT,
+  `description`        TEXT,
+  `mrp`                FLOAT   NOT NULL,
+  `selling_price`      FLOAT   NOT NULL,
+  `image_url`          VARCHAR(2000)    DEFAULT NULL,
+  `is_available`       TINYINT(1)       DEFAULT NULL,
   UNIQUE KEY `bundle_bundle_uindex` (`bundle_id`),
   CONSTRAINT `bundle_category___fk` FOREIGN KEY (`bundle_id`) REFERENCES `bundle_category` (`bundle_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`bundle_question_papers`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bundle_question_paper` (
-  `bundle_id` int(11) NOT NULL,
-  `question_paper_id` int(11) NOT NULL,
-  PRIMARY KEY (`bundle_id`,`question_paper_id`),
+  `bundle_id`         INT(11) NOT NULL,
+  `question_paper_id` INT(11) NOT NULL,
+  PRIMARY KEY (`bundle_id`, `question_paper_id`),
   KEY `bundle_question_paper_question_paper_question_paper_id_fk` (`question_paper_id`),
   CONSTRAINT `bundle_question_paper_bundle_bundle_id_fk` FOREIGN KEY (`bundle_id`) REFERENCES `bundle` (`bundle_id`),
   CONSTRAINT `bundle_question_paper_question_paper_question_paper_id_fk` FOREIGN KEY (`question_paper_id`) REFERENCES `question_paper` (`question_paper_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = latin1;
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`center_exam_question_paper`
@@ -652,24 +659,26 @@ CREATE TABLE IF NOT EXISTS `career_focus`.`sections` (
   PRIMARY KEY (`sections_id`)
 )
   ENGINE = InnoDB;
- 
+
 -- -----------------------------------------------------
 -- Table `career_focus`.`staff`
 -- ----------------------------------------------------- 
-  CREATE TABLE IF NOT EXISTS `staff` (
-  `user_id` int(11) NOT NULL,
-  `qualification` varchar(255) DEFAULT NULL,
-  `experience` varchar(255) DEFAULT NULL,
-  `status` int(2) DEFAULT '0',
-  `center_id` int(5) DEFAULT NULL,
-  `joining_date` datetime DEFAULT NULL,
-  `salary` varchar(15) DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `staff` (
+  `user_id`       INT(11) NOT NULL,
+  `qualification` VARCHAR(255) DEFAULT NULL,
+  `experience`    VARCHAR(255) DEFAULT NULL,
+  `status`        INT(2)       DEFAULT '0',
+  `center_id`     INT(5)       DEFAULT NULL,
+  `joining_date`  DATETIME     DEFAULT NULL,
+  `salary`        VARCHAR(15)  DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id_UNIQUE` (`user_id`),
-  CONSTRAINT `staff_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-  )
+  CONSTRAINT `staff_fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+)
   ENGINE = InnoDB;
-  
+
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
