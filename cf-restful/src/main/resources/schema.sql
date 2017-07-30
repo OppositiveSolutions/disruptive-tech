@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `dob`          DATE                 DEFAULT NULL,
   `gender`       VARCHAR(11)          DEFAULT NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `username_UNIQUE` (`username`);
+  UNIQUE KEY `username_UNIQUE` (`username`)
   
 )
   ENGINE = InnoDB
