@@ -71,16 +71,16 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
     private boolean roleHasAuthorisation(int role, String uri, String requestMethod) {
         switch (role) {
             case Constants.ROLE_STUDENT:
-                return checkAutorisationForStudent(uri, requestMethod);
+                return checkAuthorisationForStudent(uri, requestMethod);
             case Constants.ROLE_SUPER_ADMIN:
-                return checkAutorizationForSuperAdmin(uri, requestMethod);
+                return checkAuthorizationForSuperAdmin(uri, requestMethod);
             case Constants.ROLE_BRANCH_ADMIN:
-                return checkAutorisationForBranchAdmin(uri, requestMethod);
+                return checkAuthorisationForBranchAdmin(uri, requestMethod);
         }
         return false;
     }
 
-    private boolean checkAutorisationForStudent(String uri, String requestMethod) {
+    private boolean checkAuthorisationForStudent(String uri, String requestMethod) {
         PathMatcher pathMatcher = new AntPathMatcher();
         return pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
                 || pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
@@ -91,7 +91,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
                 || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam");
     }
 
-    private boolean checkAutorizationForSuperAdmin(String uri, String requestMethod) {
+    private boolean checkAuthorizationForSuperAdmin(String uri, String requestMethod) {
 
         PathMatcher pathMatcher = new AntPathMatcher();
         return pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
@@ -107,7 +107,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
                 || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement");
     }
 
-    private boolean checkAutorisationForBranchAdmin(String uri, String requestMethod) {
+    private boolean checkAuthorisationForBranchAdmin(String uri, String requestMethod) {
         // PathMatcher pathMatcher = new AntPathMatcher();
         // if (pathMatcher.match("/cf-restful/video-tutorial*", uri))
         return true;
