@@ -65,10 +65,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
     private boolean requestUriRequiresSession(String uri) {
         log.info(uri);
         // api's which can be accessed without session goes here.
-        if (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/login")) {
-            return false;
-        }
-        return true;
+        return !uri.equals(Constants.RESTFUL_PATH_PREFIX + "/login");
     }
 
     private boolean roleHasAuthorisation(int role, String uri, String requestMethod) {
@@ -85,27 +82,29 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 
     private boolean checkAutorisationForStudent(String uri, String requestMethod) {
         PathMatcher pathMatcher = new AntPathMatcher();
-        if (pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
+        return pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
                 || pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
                 || pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial*", uri)
-                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial"))
-            return true;
-        return false;
+                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial")
+                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/bundle")
+                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
+                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam");
     }
 
     private boolean checkAutorizationForSuperAdmin(String uri, String requestMethod) {
 
         PathMatcher pathMatcher = new AntPathMatcher();
-        if (pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
+        return pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
                 || pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
                 || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/category")
                 || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
                 || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
                 || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/student")
                 || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/center")
-                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement"))
-            return true;
-        return false;
+                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/bundle")
+                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
+                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
+                || pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement");
     }
 
     private boolean checkAutorisationForBranchAdmin(String uri, String requestMethod) {
