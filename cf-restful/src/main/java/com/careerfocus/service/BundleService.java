@@ -6,9 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.BundleDAO;
 import com.careerfocus.entity.Bundle;
 import com.careerfocus.repository.BundleRepository;
+import com.careerfocus.util.response.Response;
 
 /**
  * Created by sarath on 04/06/17.
@@ -30,8 +32,21 @@ public class BundleService {
 		return bundleDAO.getQPBundleList(coachingType);
 	}
 
-	public Bundle editBundle(Bundle bundle) {
-		return bundleRepository.save(bundle);
+	public Response editBundle(Bundle bundle) {
+		Bundle existingBundle = bundleRepository.findOne(bundle.getBundleId());
+		if (existingBundle == null) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.INVALID_BUNDLE_MSG).build();
+		}
+		existingBundle.setIsAvailable(bundle.isIsAvailable());
+		existingBundle.setBundleCategory(bundle.getBundleCategory());
+		existingBundle.setBundleId(bundle.getBundleId());
+		existingBundle.setDescription(bundle.getDescription());
+		existingBundle.setDiscountPercent(bundle.getDiscountPercent());
+		existingBundle.setImageUrl(bundle.getImageUrl());
+		existingBundle.setMrp(bundle.getMrp());
+		existingBundle.setName(bundle.getName());
+		existingBundle.setSellingPrice(bundle.getSellingPrice());
+		return Response.ok(bundleRepository.save(existingBundle)).build();
 	}
 	
 	public int purchaseBundle(int userId, int bundleId) {
@@ -50,8 +65,8 @@ public class BundleService {
 		return bundleDAO.addQptoBundle(bundleId, qpId);
 	}
 
-	public int removeQptoBundle(Integer bundleId, Integer qpId) {
-		return bundleDAO.removeQpfromBundle(bundleId, qpId);
+	public int removeQpFromBundle(Integer bundleId, Integer qpId) {
+		return bundleDAO.removeQpFromBundle(bundleId, qpId);
 	}
 
 	public boolean deleteBundle(Integer bundleId) {

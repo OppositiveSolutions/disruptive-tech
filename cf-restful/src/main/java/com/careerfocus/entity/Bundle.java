@@ -130,14 +130,6 @@ public class Bundle {
         this.sellingPrice = sellingPrice;
     }
 
-	public boolean isAvailable() {
-		return isAvailable;
-	}
-
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
-	}
-
 	public float getDiscountPercent() {
 		return discountPercent;
 	}

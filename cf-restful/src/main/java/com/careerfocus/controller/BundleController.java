@@ -51,17 +51,17 @@ public class BundleController {
         return Response.ok(service.addQptoBundle(bundleId, qpId)).build();
     }
     
-    @RequestMapping(value = "/{bundleId}/removeqp/{qpId}", method = RequestMethod.GET)
-    public Response removeQptoBundle(@PathVariable("bundleId") Integer bundleId, @PathVariable("qpId") Integer qpId) throws Exception {
-        return Response.ok(service.removeQptoBundle(bundleId, qpId)).build();
+    @RequestMapping(value = "/{bundleId}/removeqp/{qpId}", method = RequestMethod.DELETE)
+    public Response removeQpFromBundle(@PathVariable("bundleId") Integer bundleId, @PathVariable("qpId") Integer qpId) throws Exception {
+        return Response.ok(service.removeQpFromBundle(bundleId, qpId)).build();
     }
     
-    @RequestMapping(value = "/{bundleId}/removeqp/{qpId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{bundleId}", method = RequestMethod.DELETE)
     public Response deleteBundle(@PathVariable("bundleId") Integer bundleId) throws Exception {
         return Response.ok(service.deleteBundle(bundleId)).build();
     }
     
-    @RequestMapping(value = "/{userId}/addqp/{bundleId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{userId}/purchase/{bundleId}", method = RequestMethod.GET)
     public Response purchaseBundle(@PathVariable("bundleId") Integer bundleId, @PathVariable("userId") Integer userId) throws Exception {
         return Response.ok(service.purchaseBundle(userId, bundleId)).build();
     }

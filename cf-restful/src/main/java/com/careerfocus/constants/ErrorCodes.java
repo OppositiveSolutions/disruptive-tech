@@ -31,5 +31,8 @@ public class ErrorCodes {
 
     public static int INVALID_CENTER = 707;
     public static String INVALID_CENTER_MSG = "Please select a center";
+   
+    public static int INVALID_BUNDLE = 708;
+    public static String INVALID_BUNDLE_MSG = "Bundle does not exist";
 
 }

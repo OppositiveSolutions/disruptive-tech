@@ -36,7 +36,7 @@ public class BundleDAO {
 		return template.update(query, bundleId, qpId);
 	}
 
-	public int removeQpfromBundle(Integer bundleId, Integer qpId) {
+	public int removeQpFromBundle(Integer bundleId, Integer qpId) {
 		String query = "DELETE FROM bundle_question_paper WHERE question_paper_id = ? and bundle_id  = ?"; 
 		return template.update(query, qpId, bundleId);
 	}
