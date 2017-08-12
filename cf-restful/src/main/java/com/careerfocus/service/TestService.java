@@ -23,4 +23,8 @@ public class TestService {
 		return testDAO.getAllExams(userId);
 	}
 
+	public List<Map<String,Object>> getTestCategoryDetails(int testId) {
+		return testDAO.getCategoriesOfATest(testId);
+	}
+
 }

@@ -40,5 +40,16 @@ public class TestDAO {
 		}
 		return status;
 	}
+	
+	public List<Map<String, Object>> getCategoriesOfATest(int testId) {
+		String query = "select c.category_id,c.name,qpc.no_of_questions,qpc.correct_answer_mark,"
+				+ " qpc.negative_mark,qpc.duration from category c"
+				+ " inner join question_paper_category qpc on qpc.category_id = c.category_id"
+				+ " inner join question_paper qp on qp.question_paper_id = qpc.question_paper_id"
+				+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qp.question_paper_id"
+				+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+				+ " where t.test_id = ?";
+		return template.queryForList(query, testId);
+	}
 
 }

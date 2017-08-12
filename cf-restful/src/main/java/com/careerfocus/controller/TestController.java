@@ -25,4 +25,10 @@ public class TestController {
         return Response.ok(testService.getAllTests(userId, type)).build();
     }
     
+    @RequestMapping(value = "/categories/{testId}", method = RequestMethod.GET)
+    public Response getCategorieList(@PathVariable("testId") int testId)
+            throws Exception {
+        return Response.ok(testService.getTestCategoryDetails(testId)).build();
+    }
+    
 }

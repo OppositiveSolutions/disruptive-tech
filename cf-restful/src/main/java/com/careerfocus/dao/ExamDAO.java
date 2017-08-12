@@ -14,9 +14,12 @@ public class ExamDAO {
 
 	@Autowired
 	private JdbcTemplate template;
-	private categoryDAO categoryDAO = new categoryDAO(template);
-	private CommonDAO commonDAO = new CommonDAO(template);
-	private QuestionDAO questionDAO = new QuestionDAO(template);
+	@Autowired
+	private categoryDAO categoryDAO;
+	@Autowired
+	private CommonDAO commonDAO;
+	@Autowired
+	private QuestionDAO questionDAO;
 
 	@Autowired
 	public ExamDAO(JdbcTemplate template) {
@@ -37,13 +40,13 @@ public class ExamDAO {
 	public List<Map<String, Object>> getCategorySpecificQStatusList(int examId, int categoryId) {
 		String query = "SELECT question_status_id, status, count, category_id FROM"
 				+ " (SELECT question_status,COUNT(*) AS count, category_id FROM exam_question"
-				+ " where exam_id = 1 and category_id = 1 GROUP BY question_status) q"
+				+ " where exam_id = ? and category_id = ? GROUP BY question_status) q"
 				+ " inner join question_status qs on qs.question_status_id = q.question_status";
-		return template.queryForList(query, categoryId);
+		return template.queryForList(query, examId, categoryId);
 	}
 	
 	public List<Map<String, Object>> getCategoriesQStatusList(int examId, int categoryId) {
-		String query = "SELECT question_no,question_status FROM exam_question where exam_id = 1 and category_id = 1";
+		String query = "SELECT question_no,question_status FROM exam_question where exam_id = ? and category_id = ?";
 		return template.queryForList(query, examId, categoryId);
 	}
 
