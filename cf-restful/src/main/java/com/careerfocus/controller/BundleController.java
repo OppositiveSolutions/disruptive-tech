@@ -36,6 +36,11 @@ public class BundleController {
         return Response.ok(service.getQPBundleList(coachingType)).build();
     }
     
+    @RequestMapping(value = "/purchased/{userId}", method = RequestMethod.GET)
+    public Response getPurchasedQPBundleList(@PathVariable("userId") Integer userId) throws Exception {
+        return Response.ok(service.getPurchasedQPBundleList(userId)).build();
+    }
+    
     @RequestMapping(value = "/{bundleId}", method = RequestMethod.GET)
     public Response getQPBundle(@PathVariable("bundleId") Integer bundleId) throws Exception {
         return Response.ok(service.getQPBundle(bundleId)).build();

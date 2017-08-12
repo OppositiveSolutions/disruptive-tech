@@ -80,4 +80,8 @@ public class BundleService {
 		return status;
 	}
 
+	public List<Map<String,Object>> getPurchasedQPBundleList(Integer userId) {
+		return bundleDAO.getPurchasedQPBundleList(userId);
+	}
+
 }

@@ -24,7 +24,13 @@ public class BundleDAO {
 		return template.queryForList(query, coachingType);
 	}
 
-	public List<Map<String,Object>> getBundleQPs(int bundleId) {
+	public List<Map<String, Object>> getPurchasedQPBundleList(int userId) {
+		String query = "select * from bundle b inner join bundle_purchase bp"
+				+ " on b.bundle_id = bp.bundle_id where bp.user_id = ?";
+		return template.queryForList(query, userId);
+	}
+
+	public List<Map<String, Object>> getBundleQPs(int bundleId) {
 		String query = "select bqp.bundle_id, bqp.question_paper_id, qp.name, qp.duration,"
 				+ " qp.no_of_questions from bundle_question_paper bqp"
 				+ " inner join question_paper qp on bqp.question_paper_id = qp.question_paper_id where bundle_id = ?";
@@ -37,7 +43,7 @@ public class BundleDAO {
 	}
 
 	public int removeQpFromBundle(Integer bundleId, Integer qpId) {
-		String query = "DELETE FROM bundle_question_paper WHERE question_paper_id = ? and bundle_id  = ?"; 
+		String query = "DELETE FROM bundle_question_paper WHERE question_paper_id = ? and bundle_id  = ?";
 		return template.update(query, qpId, bundleId);
 	}
 
