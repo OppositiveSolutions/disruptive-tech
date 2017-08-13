@@ -46,10 +46,10 @@ public class ExamController {
         return Response.ok(examService.getCategoryQStatusList(examId, categoryId)).build();
     }
     
-    @RequestMapping(value = "/{examId}/question/{qId}", method = RequestMethod.GET)
-    public Response getQuestion(@PathVariable("examId") int examId, @PathVariable("qId") int qId)
+    @RequestMapping(value = "/{examId}/question/{qNo}", method = RequestMethod.GET)
+    public Response getQuestion(@PathVariable("examId") int examId, @PathVariable("qNo") int qNo)
             throws Exception {
-        return Response.ok(examService.getQuestion(examId, qId)).build();
+        return Response.ok(examService.getQuestion(examId, qNo)).build();
     }
     
     @RequestMapping(value = "/save/question", method = RequestMethod.POST)
@@ -61,6 +61,12 @@ public class ExamController {
     @RequestMapping(value = "/save/{examId}/time/{categoryId}", method = RequestMethod.POST)
     public Response saveTime(@PathVariable("examId") int examId, @PathVariable("categoryId") int categoryId) throws Exception {
         return Response.ok(examService.saveTime(examId, categoryId)).build();
+    }
+    
+    @RequestMapping(value = "/{examId}/questions", method = RequestMethod.GET)
+    public Response getExamWithFullQuestionDetails(@PathVariable("examId") int examId)
+            throws Exception {
+        return Response.ok(examService.getExamWithFullQuestionDetails(examId)).build();
     }
 
 }

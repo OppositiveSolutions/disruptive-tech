@@ -2,8 +2,12 @@ package com.careerfocus.service;
 
 import com.careerfocus.dao.ExamDAO;
 import com.careerfocus.dao.QuestionDAO;
+import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.model.request.SaveQuestionVO;
 import com.careerfocus.model.response.QuestionPopulateVO;
+import com.careerfocus.repository.QuestionPaperRepository;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +24,9 @@ public class ExamService {
 
 	@Autowired
 	QuestionDAO questionDAO;
+	
+	@Autowired
+    QuestionPaperRepository qPaperRepository;
 
 	public Map<String, Object> getExamCategoryDetails(int examId) {
 		return examDAO.getExamCategoryDetails(examId);
@@ -45,8 +52,8 @@ public class ExamService {
 		return examDAO.getCategoriesQStatusList(examId, categoryId);
 	}
 
-	public QuestionPopulateVO getQuestion(int examId, int qId) {
-		return questionDAO.getQuestion(examId, qId);
+	public QuestionPopulateVO getQuestion(int examId, int qNo) {
+		return questionDAO.getQuestion(examId, qNo);
 	}
 
 	public int saveQuestion(SaveQuestionVO question) {
@@ -56,5 +63,9 @@ public class ExamService {
 	public boolean saveTime(int examId, int categoryId) {
 		return examDAO.saveTime(examId, categoryId);
 	}
+	
+	public QuestionPaper getExamWithFullQuestionDetails(int examId) {
+		return qPaperRepository.findOne(examDAO.getQuestionPaperIdFromExamId(examId));
+    }
 
 }

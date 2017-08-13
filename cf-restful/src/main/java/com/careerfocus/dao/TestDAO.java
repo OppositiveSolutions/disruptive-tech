@@ -17,13 +17,16 @@ public class TestDAO {
 		this.template = template;
 	}
 
-	public List<Map<String,Object>> getAllExams(int userId) {
+	public List<Map<String, Object>> getAllExams(int userId) {
 		String query = "SELECT t.* FROM exam e inner join test t on e.test_id = t.test_id where user_id = ? and is_written = 1";
 		return template.queryForList(query, userId);
 	}
 
 	public List<Map<String, Object>> getAllTests(int userId) {
-		String query = "SELECT * FROM test where user_id = ? and is_written = 0";
+		String query = "SELECT t.*,qp.name FROM test t inner join bundle_question_paper bqp"
+				+ " on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+				+ " inner join question_paper qp on qp.question_paper_id = bqp.question_paper_id"
+				+ " where user_id = ? and is_written = 0";
 		return template.queryForList(query, userId);
 	}
 
@@ -40,7 +43,7 @@ public class TestDAO {
 		}
 		return status;
 	}
-	
+
 	public List<Map<String, Object>> getCategoriesOfATest(int testId) {
 		String query = "select c.category_id,c.name,qpc.no_of_questions,qpc.correct_answer_mark,"
 				+ " qpc.negative_mark,qpc.duration from category c"

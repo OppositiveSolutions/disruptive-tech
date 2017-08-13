@@ -44,18 +44,32 @@ public class ExamDAO {
 				+ " inner join question_status qs on qs.question_status_id = q.question_status";
 		return template.queryForList(query, examId, categoryId);
 	}
-	
+
 	public List<Map<String, Object>> getCategoriesQStatusList(int examId, int categoryId) {
-		String query = "SELECT question_no,question_status FROM exam_question where exam_id = ? and category_id = ?";
+		String query = "SELECT question_no,question_status FROM exam_question"
+				+ " where exam_id = ? and category_id = ?";
 		return template.queryForList(query, examId, categoryId);
 	}
 
 	public boolean startExam(int examId, int language) {
-		String query = "UPDATE exam	SET	start_time = now(),end_time = 0,question_answered = 0,"
-				+ "question_correct = 0,mark_correct = 0,mark_negative = 0 WHERE exam_id = ?";
-		template.update(query, examId);
-		return false;
+		String query = "UPDATE exam	SET	start_time = now(),end_time = now(),question_answered = 0,"
+				+ "question_correct = 0,mark_correct = 0,mark_negative = 0,language = ? WHERE exam_id = ?";
+		if (template.update(query, language, examId) > 0)
+			return true;
+		else
+			return false;
 	}
+
+	// public boolean stopExam(int examId) {
+	// String query = "UPDATE exam SET start_time = now(),end_time =
+	// now(),question_answered = 0,"
+	// + "question_correct = 0,mark_correct = 0,mark_negative = 0,language = ?
+	// WHERE exam_id = ?";
+	// if (template.update(query, examId) > 0)
+	// return true;
+	// else
+	// return false;
+	// }
 
 	public int createExam(int testId, int isDemo) {
 		int examId = 0;
@@ -104,6 +118,13 @@ public class ExamDAO {
 		String query = "select last_update_time from exam_category_time where exam_id = ?";
 		Date time = template.queryForObject(query, Date.class, examId);
 		return time;
+	}
+
+	public Integer getQuestionPaperIdFromExamId(int examId) {
+		String query = "select bqp.question_paper_id from exam e inner join test t on e.test_id = t.test_id"
+				+ " inner join bundle_question_paper bqp on bqp.bundle_question_paper_id = t.bundle_question_paper_id"
+				+ " where e.exam_id = ?";
+		return template.queryForObject(query, Integer.class, examId);
 	}
 
 }
