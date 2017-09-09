@@ -56,8 +56,12 @@ public class ExamService {
 		return questionDAO.getQuestion(examId, qNo);
 	}
 
-	public int saveQuestion(SaveQuestionVO question) {
-		return questionDAO.saveQuestion(question);
+	public boolean saveExam(SaveQuestionVO[] question, int examId) {
+		boolean status = false;
+		for (SaveQuestionVO q : question) {
+		status = questionDAO.saveQuestion(q, examId);
+		}
+		return status;
 	}
 
 	public boolean saveTime(int examId, int categoryId) {

@@ -21,52 +21,52 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/exam")
 public class ExamController {
 
-    @Autowired
-    ExamService examService;
+	@Autowired
+	ExamService examService;
 
-    @RequestMapping(value = "/categories/{examId}", method = RequestMethod.GET)
-    public Response getCategorieList(@PathVariable("examId") int examId)
-            throws Exception {
-        return Response.ok(examService.getExamCategoryDetails(examId)).build();
-    }
-    
-    @RequestMapping(value = "{examId}/startexam/{language}", method = RequestMethod.POST)
-    public Response startExam(@PathVariable("examId") int examId, @PathVariable("language") int language) throws Exception {
-        return Response.ok(examService.startExam(examId, language)).build();
-    }
-    
-    @RequestMapping(value = "/{testId}/create/{isDemo}", method = RequestMethod.POST)
-    public Response createExam(@PathVariable("testId") int testId, @PathVariable("isDemo") int isDemo) throws Exception {
-        return Response.ok(examService.createExam(testId, isDemo)).build();
-    }
-    
-    @RequestMapping(value = "/{examId}/category/{categoryId}/qstatus", method = RequestMethod.GET)
-    public Response getCategoryQStatusList(@PathVariable("examId") int examId, @PathVariable("categoryId") int categoryId)
-            throws Exception {
-        return Response.ok(examService.getCategoryQStatusList(examId, categoryId)).build();
-    }
-    
-    @RequestMapping(value = "/{examId}/question/{qNo}", method = RequestMethod.GET)
-    public Response getQuestion(@PathVariable("examId") int examId, @PathVariable("qNo") int qNo)
-            throws Exception {
-        return Response.ok(examService.getQuestion(examId, qNo)).build();
-    }
-    
-    @RequestMapping(value = "/save/question", method = RequestMethod.POST)
-    public Response saveQuestion(HttpServletRequest request, HttpServletResponse response,
-            @RequestBody SaveQuestionVO question) throws Exception {
-        return Response.ok(examService.saveQuestion(question)).build();
-    }
-    
-    @RequestMapping(value = "/save/{examId}/time/{categoryId}", method = RequestMethod.POST)
-    public Response saveTime(@PathVariable("examId") int examId, @PathVariable("categoryId") int categoryId) throws Exception {
-        return Response.ok(examService.saveTime(examId, categoryId)).build();
-    }
-    
-    @RequestMapping(value = "/{examId}/questions", method = RequestMethod.GET)
-    public Response getExamWithFullQuestionDetails(@PathVariable("examId") int examId)
-            throws Exception {
-        return Response.ok(examService.getExamWithFullQuestionDetails(examId)).build();
-    }
+	@RequestMapping(value = "/categories/{examId}", method = RequestMethod.GET)
+	public Response getCategorieList(@PathVariable("examId") int examId) throws Exception {
+		return Response.ok(examService.getExamCategoryDetails(examId)).build();
+	}
+
+	@RequestMapping(value = "{examId}/startexam/{language}", method = RequestMethod.POST)
+	public Response startExam(@PathVariable("examId") int examId, @PathVariable("language") int language)
+			throws Exception {
+		return Response.ok(examService.startExam(examId, language)).build();
+	}
+
+	@RequestMapping(value = "/{testId}/create/{isDemo}", method = RequestMethod.POST)
+	public Response createExam(@PathVariable("testId") int testId, @PathVariable("isDemo") int isDemo)
+			throws Exception {
+		return Response.ok(examService.createExam(testId, isDemo)).build();
+	}
+
+	@RequestMapping(value = "/{examId}/category/{categoryId}/qstatus", method = RequestMethod.GET)
+	public Response getCategoryQStatusList(@PathVariable("examId") int examId,
+			@PathVariable("categoryId") int categoryId) throws Exception {
+		return Response.ok(examService.getCategoryQStatusList(examId, categoryId)).build();
+	}
+
+	@RequestMapping(value = "/{examId}/question/{qNo}", method = RequestMethod.GET)
+	public Response getQuestion(@PathVariable("examId") int examId, @PathVariable("qNo") int qNo) throws Exception {
+		return Response.ok(examService.getQuestion(examId, qNo)).build();
+	}
+
+	@RequestMapping(value = "/saveexam/{examId}", method = RequestMethod.POST)
+	public Response saveQuestion(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("examId") int examId, @RequestBody SaveQuestionVO[] question) throws Exception {
+		return Response.ok(examService.saveExam(question, examId)).build();
+	}
+
+	@RequestMapping(value = "/save/{examId}/time/{categoryId}", method = RequestMethod.POST)
+	public Response saveTime(@PathVariable("examId") int examId, @PathVariable("categoryId") int categoryId)
+			throws Exception {
+		return Response.ok(examService.saveTime(examId, categoryId)).build();
+	}
+
+	@RequestMapping(value = "/{examId}/questions", method = RequestMethod.GET)
+	public Response getExamWithFullQuestionDetails(@PathVariable("examId") int examId) throws Exception {
+		return Response.ok(examService.getExamWithFullQuestionDetails(examId)).build();
+	}
 
 }

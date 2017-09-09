@@ -10,8 +10,6 @@ public class SaveQuestionVO implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private int examId;
-
     private int questionNo;
 
     private int optionNo;
@@ -19,14 +17,6 @@ public class SaveQuestionVO implements Serializable {
     private int status;
 
     private int questionId;
-
-	public int getExamId() {
-		return examId;
-	}
-
-	public void setExamId(int examId) {
-		this.examId = examId;
-	}
 
 	public int getQuestionNo() {
 		return questionNo;

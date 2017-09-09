@@ -15,29 +15,33 @@ import java.util.Map;
 @Repository
 public class QuestionDAO {
 
-    private JdbcTemplate template;
+	private JdbcTemplate template;
 
-    @Autowired
-    public QuestionDAO(JdbcTemplate template) {
-        this.template = template;
-    }
+	@Autowired
+	public QuestionDAO(JdbcTemplate template) {
+		this.template = template;
+	}
 
-    public List<States> getStates() {
+	public List<States> getStates() {
 
-        String query = "SELECT * FROM states";
+		String query = "SELECT * FROM states";
 
-        return template.query(query, (ResultSet result, int arg1) ->
-                new States(result.getInt("state_id"), result.getString("name")));
-    }
+		return template.query(query,
+				(ResultSet result, int arg1) -> new States(result.getInt("state_id"), result.getString("name")));
+	}
 
 	public QuestionPopulateVO getQuestion(int examId, int qNo) {
 		return null;
 	}
 
-	public int saveQuestion(SaveQuestionVO question) {
-		int qStatus = 0;
-		// TODO Auto-generated method stub
-		return qStatus;
+	public boolean saveQuestion(SaveQuestionVO question, int examId) {
+		String query = "INSERT INTO career_focus.exam_question(exam_id,question_id,"
+				+ "question_no,option_entered,question_status) VALUES (?,?,?,?,?)";
+		if (template.update(query, examId, question.getQuestionId(), question.getQuestionNo(), question.getOptionNo(),
+				question.getStatus()) > 0)
+			return true;
+		else
+			return false;
 	}
 
 	public Map<String, Object> getQuestionId(int examId) {
