@@ -7,7 +7,6 @@ import com.careerfocus.model.request.SaveQuestionVO;
 import com.careerfocus.model.response.QuestionPopulateVO;
 import com.careerfocus.repository.QuestionPaperRepository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +42,7 @@ public class ExamService {
 			for (Map<String, Object> m : categoryBasedQList) {
 				int categoryId = (Integer) m.get("category_id");
 				examDAO.createExamCategoryTime(examId, categoryId);
+				examDAO.createExamCategoryMark(examId, categoryId);
 			}
 		}
 		return examId;
@@ -56,9 +56,9 @@ public class ExamService {
 		return questionDAO.getQuestion(examId, qNo);
 	}
 
-	public boolean saveExam(SaveQuestionVO[] question, int examId) {
+	public boolean saveExam(SaveQuestionVO[] questions, int examId) {
 		boolean status = false;
-		for (SaveQuestionVO q : question) {
+		for (SaveQuestionVO q : questions) {
 		status = questionDAO.saveQuestion(q, examId);
 		}
 		return status;
@@ -71,5 +71,5 @@ public class ExamService {
 	public QuestionPaper getExamWithFullQuestionDetails(int examId) {
 		return qPaperRepository.findOne(examDAO.getQuestionPaperIdFromExamId(examId));
     }
-
+	
 }

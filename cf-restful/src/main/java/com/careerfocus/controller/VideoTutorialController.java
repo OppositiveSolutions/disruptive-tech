@@ -2,8 +2,11 @@ package com.careerfocus.controller;
 
 import com.careerfocus.constants.UIMessages;
 import com.careerfocus.entity.VideoTutorial;
+import com.careerfocus.service.QuestionPaperService;
 import com.careerfocus.service.VideoTutorialService;
 import com.careerfocus.util.response.Response;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/video-tutorial")
 public class VideoTutorialController {
 
-
+    private static final Logger log = Logger.getLogger(VideoTutorialController.class);
+	
     @Autowired
     VideoTutorialService service;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public Response getAllVideoTutorials(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	log.debug("Entered VideoTutorialController.getAllVideoTutorials");
         return Response.ok(service.getAllVideoTutorials()).build();
     }
 

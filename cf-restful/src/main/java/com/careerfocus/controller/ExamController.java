@@ -54,8 +54,8 @@ public class ExamController {
 
 	@RequestMapping(value = "/saveexam/{examId}", method = RequestMethod.POST)
 	public Response saveQuestion(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable("examId") int examId, @RequestBody SaveQuestionVO[] question) throws Exception {
-		return Response.ok(examService.saveExam(question, examId)).build();
+			@PathVariable("examId") int examId, @RequestBody SaveQuestionVO[] questions) throws Exception {
+		return Response.ok(examService.saveExam(questions, examId)).build();
 	}
 
 	@RequestMapping(value = "/save/{examId}/time/{categoryId}", method = RequestMethod.POST)

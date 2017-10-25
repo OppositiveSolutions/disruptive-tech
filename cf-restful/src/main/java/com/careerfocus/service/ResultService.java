@@ -1,8 +1,10 @@
 package com.careerfocus.service;
 
+import com.careerfocus.dao.ExamDAO;
 import com.careerfocus.dao.ResultDAO;
-import com.careerfocus.entity.Bundle;
-import com.careerfocus.repository.BundleRepository;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,28 +15,31 @@ public class ResultService {
 
     @Autowired
     ResultDAO resultDAO;
+    
+    @Autowired
+    ExamDAO examDAO;
 
-	public String getScoreCard(int examId, int isDemo) {
-		// TODO Auto-generated method stub
-		return resultDAO.getScoreCard(examId);
+	public List<Map<String,Object>> getScoreCard(int userId) {
+		return resultDAO.getScoreCard(userId);
 	}
 
-	public String getCategoryScore(int examId, int categoryId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String,Object>> getExamCategoriesScoreList(int examId) {
+		return resultDAO.getExamCategoriesScoreList(examId);
 	}
 
-	public String getCategoryScoreGraph(int examId, int categoryId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String,Object>> getExamCategoriesScoreGraph(int examId) {
+		return resultDAO.getExamCategoriesScoreGraph(examId);
 	}
 
-	public String getCategoryTime(int examId, int categoryId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String,Object>> getExamCategoryTimeList(int examId) {
+		return examDAO.getTotalTimeTakenPerCategory(examId);
 	}
 
-	public String getTopTenScore(int userId, int examId) {
+	public List<Map<String,Object>> getTopTenScore(int examId) {
+		return resultDAO.getTopTenScore(examId);
+	}
+
+	public String getExamCategoriesTimeGraph(int examId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

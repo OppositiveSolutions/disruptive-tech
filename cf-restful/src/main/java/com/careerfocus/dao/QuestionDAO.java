@@ -44,7 +44,7 @@ public class QuestionDAO {
 			return false;
 	}
 
-	public Map<String, Object> getQuestionId(int examId) {
+	public Map<String, Object> getQuestionIds(int examId) {
 		// TODO Auto-generated method stub
 		String query = "select category_id, question_id, question_no from question_paper_question qpq"
 				+ " inner join question_paper_sub_category qpsc on qpq.question_paper_sub_category_id=qpsc.question_paper_sub_category_id"

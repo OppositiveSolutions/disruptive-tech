@@ -83,14 +83,18 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 		PathMatcher pathMatcher = new AntPathMatcher();
 		return pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
 				|| pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
-				|| pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial*", uri)
+				|| pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial", uri)
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/bundle")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
-				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam");
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/result")
+				|| (pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
+						&& requestMethod.equalsIgnoreCase("GET"));
 	}
 
 	private boolean checkAuthorizationForSuperAdmin(String uri, String requestMethod) {
+		log.debug("entered MainIntercepter.checkAuthorizationForSuperAdmin");
 		PathMatcher pathMatcher = new AntPathMatcher();
 		return pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
 				|| pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
@@ -102,7 +106,8 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/bundle")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
-				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement");
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/video-tutorial");
 	}
 
 	private boolean checkAuthorisationForBranchAdmin(String uri, String requestMethod) {
