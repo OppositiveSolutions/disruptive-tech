@@ -23,9 +23,9 @@ public class ExamService {
 
 	@Autowired
 	QuestionDAO questionDAO;
-	
+
 	@Autowired
-    QuestionPaperRepository qPaperRepository;
+	QuestionPaperRepository qPaperRepository;
 
 	public Map<String, Object> getExamCategoryDetails(int examId) {
 		return examDAO.getExamCategoryDetails(examId);
@@ -59,7 +59,13 @@ public class ExamService {
 	public boolean saveExam(SaveQuestionVO[] questions, int examId) {
 		boolean status = false;
 		for (SaveQuestionVO q : questions) {
-		status = questionDAO.saveQuestion(q, examId);
+			status = questionDAO.saveQuestion(q, examId);
+		}
+		if (status) {
+			status = false;
+			if (examDAO.updateExam(examId))
+				if (examDAO.updateCategoryMark(examId))
+					status = true;
 		}
 		return status;
 	}
@@ -67,9 +73,9 @@ public class ExamService {
 	public boolean saveTime(int examId, int categoryId) {
 		return examDAO.saveTime(examId, categoryId);
 	}
-	
+
 	public QuestionPaper getExamWithFullQuestionDetails(int examId) {
 		return qPaperRepository.findOne(examDAO.getQuestionPaperIdFromExamId(examId));
-    }
-	
+	}
+
 }

@@ -206,5 +206,29 @@ public class ExamDAO {
 				examId, categoryId) > 0 ? true : false;
 		return status;
 	}
+	
+	public boolean updateExam(int examId) {
+		boolean status = false;
+		float correctOption = 0;
+		float isUpdated = 0;
+		String query = "SELECT * FROM exam_question where exam_id = ?";
+		List<Map<String, Object>> examQs = template.queryForList(query, examId);
+		for (Map<String, Object> q : examQs) {
+			query = "SELECT correct_option_no FROM question where question_id = ?";
+			correctOption = template.queryForObject(query, Integer.class, q.get("question_id"));
+			if (Integer.parseInt(q.get("option_entered").toString()) == correctOption)
+			query = "UPDATE exam_question SET is_correct = 1 where exam_question_id = ?";
+			else
+				query = "UPDATE exam_question SET is_correct = 0 where exam_question_id = ?";
+			isUpdated = template.update(query, q.get("exam_question_id"));
+			if (isUpdated == 0) {
+				status = false;
+				break;
+			} else
+				status = true;
+		}
+		return status;
+	}
+
 
 }
