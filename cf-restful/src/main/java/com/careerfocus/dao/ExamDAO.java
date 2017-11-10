@@ -175,29 +175,34 @@ public class ExamDAO {
 				+ " inner join exam e on e.test_id = t.test_id where e.exam_id = ?";
 		List<Integer> categories = template.queryForList(query, Integer.class, examId);
 		for (int c : categories) {
+			System.out.println("Cate = " + c);
 			query = "SELECT correct_answer_mark FROM question_paper_category qpc"
 					+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qpc.question_paper_id"
 					+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 					+ " inner join exam e on t.test_id = e.exam_id where category_id = ? and e.exam_id = ?";
-			correctMarkPerQ = template.queryForObject(query, Integer.class, c, examId);
+			correctMarkPerQ = template.queryForObject(query, Float.class, c, examId);
 			query = "SELECT negative_mark FROM question_paper_category qpc"
 					+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qpc.question_paper_id"
 					+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 					+ " inner join exam e on t.test_id = e.exam_id where category_id = ? and e.exam_id = ?";
-			negativeMarkPerQ = template.queryForObject(query, Integer.class, c, examId);
-			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ? and exam_id = ?";
+			negativeMarkPerQ = template.queryForObject(query, Float.class, c, examId);
+			query = "SELECT count(exam_question_id) FROM exam_question where question_status = 1 and category_id = ? and exam_id = ?";
 			totalAttended = template.queryForObject(query, Integer.class, c, examId);
-			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ? and exam_id = ? and is_correct = 1";
+			query = "SELECT count(exam_question_id) FROM exam_question where question_status = 1 and category_id = ? and exam_id = ? and is_correct = 1";
 			totalCorrect = template.queryForObject(query, Integer.class, c, examId);
+			System.out.println("Mark = " + correctMarkPerQ + " - " + negativeMarkPerQ);
 			if (totalCorrect > 0)
 				correctMark = correctMarkPerQ * totalCorrect;
-			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ? and exam_id = ? and is_correct = 0";
+			query = "SELECT count(exam_question_id) FROM exam_question where question_status = 1 and category_id = ? and exam_id = ? and is_correct = 0";
 			totalWrong = template.queryForObject(query, Integer.class, c, examId);
 			if (totalWrong > 0)
 				negativeMark = negativeMarkPerQ * totalWrong;
 			totalMark = correctMark - negativeMark;
+			System.out.println(c + " - " + examId + " - " + totalMark + " - " + correctMark + " - " + negativeMark
+					+ " - " + totalAttended + " - " + totalCorrect + " - " + totalWrong);
 			status = saveCategoryMark(c, examId, totalMark, correctMark, negativeMark, totalAttended, totalCorrect,
 					totalWrong);
+			System.out.println("status = " + status);
 			if (!status)
 				break;
 		}
@@ -212,6 +217,7 @@ public class ExamDAO {
 				+ " negative_mark = ?, total_mark = ? WHERE exam_id = ? AND category_id = ?";
 		status = template.update(query, totalCorrect, totalWrong, totalAttended, correctMark, negativeMark, totalMark,
 				examId, categoryId) > 0 ? true : false;
+		System.out.println("s = " + status);
 		return status;
 	}
 
