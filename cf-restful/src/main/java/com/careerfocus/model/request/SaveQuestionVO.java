@@ -4,19 +4,20 @@ import java.io.Serializable;
 
 public class SaveQuestionVO implements Serializable {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+	private int questionNo;
 
-    private int questionNo;
+	private int optionNo;
 
-    private int optionNo;
-    
-    private int status;
+	private int status;
 
-    private int questionId;
+	private int questionId;
+
+	private int categoryId;
 
 	public int getQuestionNo() {
 		return questionNo;
@@ -48,6 +49,14 @@ public class SaveQuestionVO implements Serializable {
 
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public static long getSerialversionuid() {

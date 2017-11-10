@@ -110,9 +110,11 @@ public class ExamDAO {
 		Map<String, Object> qIdDetails = questionDAO.getQuestionIds(examId);
 		int categoryId = (Integer) qIdDetails.get("category_id");
 		int qId = (Integer) qIdDetails.get("no_of_questions");
-		String query = "INSERT INTO exam_question (exam_id,question_id,question_no,"
-				+ "question_status,is_correct,category_id) VALUES()";
-		int examQId = template.update(query, examId, qId, 0, 0, categoryId);
+		String query = "DELETE FROM exam_question WHERE exam_id = ? and exam_question_id > 0";
+		template.update(query, examId);
+		query = "INSERT INTO exam_question (exam_id,question_id,question_no,"
+				+ "question_status,is_correct,category_id) VALUES(?,?,?,?,?,?)";
+		int examQId = template.update(query, examId, qId, 0, 0, 0, categoryId);
 		return examQId;
 	}
 
@@ -173,18 +175,24 @@ public class ExamDAO {
 				+ " inner join exam e on e.test_id = t.test_id where e.exam_id = ?";
 		List<Integer> categories = template.queryForList(query, Integer.class, examId);
 		for (int c : categories) {
-			query = "SELECT correct_answer_mark FROM question_paper_category where category_id = ?";
-			correctMarkPerQ = template.queryForObject(query, Integer.class, c);
-			query = "SELECT negative_mark FROM question_paper_category where category_id = ?";
-			negativeMarkPerQ = template.queryForObject(query, Integer.class, c);
-			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ?";
-			totalAttended = template.queryForObject(query, Integer.class, examId);
-			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ? and is_correct = 1";
-			totalCorrect = template.queryForObject(query, Integer.class, c);
+			query = "SELECT correct_answer_mark FROM question_paper_category qpc"
+					+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qpc.question_paper_id"
+					+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+					+ " inner join exam e on t.test_id = e.exam_id where category_id = ? and e.exam_id = ?";
+			correctMarkPerQ = template.queryForObject(query, Integer.class, c, examId);
+			query = "SELECT negative_mark FROM question_paper_category qpc"
+					+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qpc.question_paper_id"
+					+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+					+ " inner join exam e on t.test_id = e.exam_id where category_id = ? and e.exam_id = ?";
+			negativeMarkPerQ = template.queryForObject(query, Integer.class, c, examId);
+			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ? and exam_id = ?";
+			totalAttended = template.queryForObject(query, Integer.class, c, examId);
+			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ? and exam_id = ? and is_correct = 1";
+			totalCorrect = template.queryForObject(query, Integer.class, c, examId);
 			if (totalCorrect > 0)
 				correctMark = correctMarkPerQ * totalCorrect;
-			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ? and is_correct = 0";
-			totalWrong = template.queryForObject(query, Integer.class, c);
+			query = "SELECT count(exam_question_id) FROM exam_question where category_id = ? and exam_id = ? and is_correct = 0";
+			totalWrong = template.queryForObject(query, Integer.class, c, examId);
 			if (totalWrong > 0)
 				negativeMark = negativeMarkPerQ * totalWrong;
 			totalMark = correctMark - negativeMark;
@@ -206,7 +214,7 @@ public class ExamDAO {
 				examId, categoryId) > 0 ? true : false;
 		return status;
 	}
-	
+
 	public boolean updateExam(int examId) {
 		boolean status = false;
 		float correctOption = 0;
@@ -215,9 +223,14 @@ public class ExamDAO {
 		List<Map<String, Object>> examQs = template.queryForList(query, examId);
 		for (Map<String, Object> q : examQs) {
 			query = "SELECT correct_option_no FROM question where question_id = ?";
-			correctOption = template.queryForObject(query, Integer.class, q.get("question_id"));
+			try {
+				System.out.println("QId = " + q.get("question_id"));
+				correctOption = template.queryForObject(query, Integer.class, q.get("question_id"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (Integer.parseInt(q.get("option_entered").toString()) == correctOption)
-			query = "UPDATE exam_question SET is_correct = 1 where exam_question_id = ?";
+				query = "UPDATE exam_question SET is_correct = 1 where exam_question_id = ?";
 			else
 				query = "UPDATE exam_question SET is_correct = 0 where exam_question_id = ?";
 			isUpdated = template.update(query, q.get("exam_question_id"));
@@ -229,6 +242,5 @@ public class ExamDAO {
 		}
 		return status;
 	}
-
 
 }

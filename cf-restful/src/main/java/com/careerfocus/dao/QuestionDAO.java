@@ -35,10 +35,18 @@ public class QuestionDAO {
 	}
 
 	public boolean saveQuestion(SaveQuestionVO question, int examId) {
-		String query = "INSERT INTO career_focus.exam_question(exam_id,question_id,"
-				+ "question_no,option_entered,question_status) VALUES (?,?,?,?,?)";
+		String query = "INSERT INTO exam_question(exam_id,question_id,"
+				+ "question_no,option_entered,question_status,category_id) VALUES (?,?,?,?,?,?)";
 		if (template.update(query, examId, question.getQuestionId(), question.getQuestionNo(), question.getOptionNo(),
-				question.getStatus()) > 0)
+				question.getStatus(), question.getCategoryId()) > 0)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean clearExamQuestion(int examId) {
+		String query = "DELETE FROM exam_question WHERE exam_id = ? and exam_question_id > 0";
+		if (template.update(query, examId) > 0)
 			return true;
 		else
 			return false;
