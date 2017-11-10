@@ -161,11 +161,11 @@ public class ExamDAO {
 
 	public boolean updateCategoryMark(int examId) {
 		boolean status = false;
-		float totalMark = 0;
-		float correctMark = 0;
-		float negativeMark = 0;
-		float correctMarkPerQ = 0;
-		float negativeMarkPerQ = 0;
+		double totalMark = 0.0;
+		double correctMark = 0;
+		double negativeMark = 0;
+		double correctMarkPerQ = 0;
+		double negativeMarkPerQ = 0;
 		int totalAttended = 0;
 		int totalCorrect = 0;
 		int totalWrong = 0;
@@ -180,12 +180,12 @@ public class ExamDAO {
 					+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qpc.question_paper_id"
 					+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 					+ " inner join exam e on t.test_id = e.exam_id where category_id = ? and e.exam_id = ?";
-			correctMarkPerQ = template.queryForObject(query, Float.class, c, examId);
+			correctMarkPerQ = template.queryForObject(query, Double.class, c, examId);
 			query = "SELECT negative_mark FROM question_paper_category qpc"
 					+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qpc.question_paper_id"
 					+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 					+ " inner join exam e on t.test_id = e.exam_id where category_id = ? and e.exam_id = ?";
-			negativeMarkPerQ = template.queryForObject(query, Float.class, c, examId);
+			negativeMarkPerQ = template.queryForObject(query, Double.class, c, examId);
 			query = "SELECT count(exam_question_id) FROM exam_question where question_status = 1 and category_id = ? and exam_id = ?";
 			totalAttended = template.queryForObject(query, Integer.class, c, examId);
 			query = "SELECT count(exam_question_id) FROM exam_question where question_status = 1 and category_id = ? and exam_id = ? and is_correct = 1";
@@ -209,7 +209,7 @@ public class ExamDAO {
 		return status;
 	}
 
-	private boolean saveCategoryMark(int categoryId, int examId, float totalMark, float correctMark, float negativeMark,
+	private boolean saveCategoryMark(int categoryId, int examId, double totalMark, double correctMark, double negativeMark,
 			int totalAttended, int totalCorrect, int totalWrong) {
 		boolean status = true;
 		String query = "UPDATE exam_category_mark SET no_of_correct_questions = ?,"
