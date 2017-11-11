@@ -223,7 +223,7 @@ public class ExamDAO {
 			if (totalWrong > 0)
 				negativeMark = negativeMarkPerQ * totalWrong;
 			else
-				totalWrong = 0;
+				negativeMark = 0;
 			totalMark = correctMark - negativeMark;
 			System.out.println(c + " - " + examId + " - " + totalMark + " - " + correctMark + " - " + negativeMark
 					+ " - " + totalAttended + " - " + totalCorrect + " - " + totalWrong);
@@ -284,10 +284,12 @@ public class ExamDAO {
 				+ " sum(total_mark) as total_mark FROM exam_category_mark WHERE exam_id = ?";
 		List<Map<String, Object>> result = template.queryForList(query, examId);
 		Map<String, Object> marks = result.get(0);
+		query = "SELECT sum(total_time) FROM exam_category_time WHERE exam_id = ?";
+		int time = template.queryForObject(query, Integer.class, examId);
 		query = "UPDATE exam SET question_answered = ?, question_correct_count = ?, question_wrong_count = ?,"
-				+ "mark_correct = ?, mark_negative = ?, total_mark = ? WHERE exam_id = ?";
+				+ "mark_correct = ?, mark_negative = ?, total_mark = ?, total_time = ? WHERE exam_id = ?";
 		if (template.update(query, marks.get("total_attended"), marks.get("correct_count"), marks.get("wrong_count"),
-				marks.get("correct_mark"), marks.get("negative_mark"), marks.get("total_mark"), examId) > 0)
+				marks.get("correct_mark"), marks.get("negative_mark"), marks.get("total_mark"), time, examId) > 0)
 			status = true;
 		else
 			status = false;

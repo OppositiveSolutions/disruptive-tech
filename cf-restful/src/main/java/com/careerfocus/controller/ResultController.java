@@ -55,4 +55,19 @@ public class ResultController {
 		return Response.ok(null).build();
 	}
 
+	@RequestMapping(value = "/{userId}/accuracy", method = RequestMethod.GET)
+	public Response getUserAccuracy(@PathVariable("userId") int userId) throws Exception {
+		return Response.ok(resultService.getUserAccuracy(userId)).build();
+	}
+
+	@RequestMapping(value = "/{userId}/avgtime", method = RequestMethod.GET)
+	public Response getUserAverageTimePerQuestion(@PathVariable("userId") int userId) throws Exception {
+		return Response.ok(resultService.getUserAverageTimePerQuestion(userId)).build();
+	}
+
+	@RequestMapping(value = "/{userId}/examcount", method = RequestMethod.GET)
+	public Response getUserExamAndTestCount(@PathVariable("userId") int userId) throws Exception {
+		return Response.ok(resultService.getUserExamAndTestCount(userId)).build();
+	}
+
 }

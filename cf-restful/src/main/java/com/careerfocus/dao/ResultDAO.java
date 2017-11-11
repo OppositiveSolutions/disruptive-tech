@@ -73,4 +73,34 @@ public class ResultDAO {
 		return topTenList;
 	}
 
+	public double getUserAccuracy(int userId) {
+		String query = "select (sum(question_correct_count) / sum(question_answered)) * 100 as accuracy"
+				+ " from exam e inner join test t on t.test_id = e.test_id"
+				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
+		return template.queryForObject(query, Double.class, userId);
+	}
+
+	public double getUserAverageTimePerQuestion(int userId) {
+		String query = "select sum(total_time) / sum(question_answered) as time"
+				+ " from exam e inner join test t on t.test_id = e.test_id"
+				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
+		return template.queryForObject(query, Double.class, userId);
+	}
+
+	public double getUserTestCount(int userId) {
+		String query = "select count(t.test_id) as count from test t "
+				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
+		return template.queryForObject(query, Integer.class, userId);
+	}
+
+	public double getUserExamCount(int userId) {
+		String query = "select count(e.exam_id) as count from exam e inner join test t on t.test_id = e.test_id"
+				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
+		return template.queryForObject(query, Integer.class, userId);
+	}
+
 }
