@@ -2,8 +2,12 @@ package com.careerfocus.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +57,7 @@ public class ExamDAO {
 
 	public boolean startExam(int examId, int language) {
 		String query = "UPDATE exam	SET	start_time = now(),end_time = now(),question_answered = 0,"
-				+ "question_count = 0,mark_correct = 0,mark_negative = 0,language = ? WHERE exam_id = ?";
+				+ "question_correct_count = 0,mark_correct = 0,mark_negative = 0,language = ? WHERE exam_id = ?";
 		if (template.update(query, language, examId) > 0)
 			return true;
 		else
@@ -72,10 +76,15 @@ public class ExamDAO {
 	// }
 
 	public int createExam(int testId, int isDemo) {
-		int examId = 0;
 		String query = "INSERT INTO exam(test_id,is_demo) VALUES (?,?)";
-		examId = template.update(query, testId, isDemo);
-		return examId;
+		KeyHolder holder = new GeneratedKeyHolder();
+		template.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, testId);
+			ps.setInt(2, isDemo);
+			return ps;
+		}, holder);
+		return holder.getKey().intValue();
 	}
 
 	public boolean saveTime(int examId, int categoryId) {
@@ -225,6 +234,34 @@ public class ExamDAO {
 	}
 
 	public boolean updateExam(int examId) {
+		boolean status = false;
+		float correctOption = 0;
+		float isUpdated = 0;
+		String query = "SELECT * FROM exam_question where exam_id = ?";
+		List<Map<String, Object>> examQs = template.queryForList(query, examId);
+		for (Map<String, Object> q : examQs) {
+			query = "SELECT correct_option_no FROM question where question_id = ?";
+			try {
+				System.out.println("QId = " + q.get("question_id"));
+				correctOption = template.queryForObject(query, Integer.class, q.get("question_id"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (Integer.parseInt(q.get("option_entered").toString()) == correctOption)
+				query = "UPDATE exam_question SET is_correct = 1 where exam_question_id = ?";
+			else
+				query = "UPDATE exam_question SET is_correct = 0 where exam_question_id = ?";
+			isUpdated = template.update(query, q.get("exam_question_id"));
+			if (isUpdated == 0) {
+				status = false;
+				break;
+			} else
+				status = true;
+		}
+		return status;
+	}
+
+	public boolean updateExamResult(int examId) {
 		boolean status = false;
 		float correctOption = 0;
 		float isUpdated = 0;
