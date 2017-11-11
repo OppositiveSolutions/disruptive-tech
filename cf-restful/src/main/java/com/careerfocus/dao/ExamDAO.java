@@ -263,29 +263,19 @@ public class ExamDAO {
 
 	public boolean updateExamResult(int examId) {
 		boolean status = false;
-		float correctOption = 0;
-		float isUpdated = 0;
-		String query = "SELECT * FROM exam_question where exam_id = ?";
-		List<Map<String, Object>> examQs = template.queryForList(query, examId);
-		for (Map<String, Object> q : examQs) {
-			query = "SELECT correct_option_no FROM question where question_id = ?";
-			try {
-				System.out.println("QId = " + q.get("question_id"));
-				correctOption = template.queryForObject(query, Integer.class, q.get("question_id"));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			if (Integer.parseInt(q.get("option_entered").toString()) == correctOption)
-				query = "UPDATE exam_question SET is_correct = 1 where exam_question_id = ?";
-			else
-				query = "UPDATE exam_question SET is_correct = 0 where exam_question_id = ?";
-			isUpdated = template.update(query, q.get("exam_question_id"));
-			if (isUpdated == 0) {
-				status = false;
-				break;
-			} else
-				status = true;
-		}
+		String query = "SELECT count(no_of_correct_questions) as correct_count,"
+				+ " count(no_of_wrong_questions) as wrong_count, count(total_attended) as total_attended,"
+				+ " count(correct_mark) as correct_mark, count(negative_mark) as negative_mark,"
+				+ " count(total_mark) as total_mark FROM exam_category_mark";
+		List<Map<String, Object>> result = template.queryForList(query, examId);
+		Map<String, Object> marks = result.get(0);
+		query = "UPDATE exam SET question_answered = ?, question_correct_count = ?, question_wrong_count = ?,"
+				+ "mark_correct = ?, mark_negative = ?, total_mark = ? WHERE exam_id = ?";
+		if (template.update(query, marks.get("total_attended"), marks.get("correct_count"), marks.get("wrong_count"),
+				marks.get("correct_mark"), marks.get("negative_mark"), marks.get("total_mark"), examId) > 0)
+			status = true;
+		else
+			status = false;
 		return status;
 	}
 

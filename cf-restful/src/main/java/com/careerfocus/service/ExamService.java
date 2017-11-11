@@ -37,12 +37,12 @@ public class ExamService {
 
 	public int createExam(int testId, int isDemo) {
 		int examId = examDAO.createExam(testId, isDemo);
-			List<Map<String, Object>> categoryBasedQList = examDAO.getNoOfQsPerCategory(examId);
-			for (Map<String, Object> m : categoryBasedQList) {
-				int categoryId = (Integer) m.get("category_id");
-				examDAO.createExamCategoryTime(examId, categoryId);
-				examDAO.createExamCategoryMark(examId, categoryId);
-			}
+		List<Map<String, Object>> categoryBasedQList = examDAO.getNoOfQsPerCategory(examId);
+		for (Map<String, Object> m : categoryBasedQList) {
+			int categoryId = (Integer) m.get("category_id");
+			examDAO.createExamCategoryTime(examId, categoryId);
+			examDAO.createExamCategoryMark(examId, categoryId);
+		}
 		return examId;
 	}
 
@@ -64,7 +64,8 @@ public class ExamService {
 			status = false;
 			if (examDAO.updateExam(examId))
 				if (examDAO.updateCategoryMark(examId))
-					status = true;
+					if (examDAO.updateExamResult(examId))
+						status = true;
 		}
 		return status;
 	}
