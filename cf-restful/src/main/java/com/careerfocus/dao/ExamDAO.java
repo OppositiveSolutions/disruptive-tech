@@ -55,10 +55,19 @@ public class ExamDAO {
 		return template.queryForList(query, examId, categoryId);
 	}
 
-	public boolean startExam(int examId, int language) {
-		String query = "UPDATE exam	SET	start_time = now(),end_time = now(),question_answered = 0,"
-				+ "question_correct_count = 0,mark_correct = 0,mark_negative = 0,language = ? WHERE exam_id = ?";
+	public boolean initializeExam(int examId, int language) {
+		String query = "UPDATE exam	SET	start_time = now(), end_time = now(), question_answered = 0,"
+				+ " question_correct_count = 0, question_wrong_count = 0, mark_correct = 0,"
+				+ " mark_negative = 0, total_mark = 0, language = ? WHERE exam_id = ?";
 		if (template.update(query, language, examId) > 0)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean initializeExamCategoryTime(int examId) {
+		String query = "UPDATE exam_category_time	SET	last_update_time = now(), total_time = 0 WHERE exam_id = ?";
+		if (template.update(query, examId) > 0)
 			return true;
 		else
 			return false;
@@ -139,15 +148,17 @@ public class ExamDAO {
 
 	public boolean createExamCategoryMark(int examId, int categoryId) {
 		boolean status = true;
-		String query = "INSERT INTO exam_category_mark (exam_id,category_id) VALUES (?,?)";
+		String query = "INSERT INTO exam_category_mark (exam_id, category_id, no_of_correct_questions,"
+				+ " no_of_wrong_questions, total_attended, correct_mark, negative_mark, total_mark)"
+				+ " VALUES (?,?,0,0,0,0,0,0)";
 		status = template.update(query, examId, categoryId) > 0 ? true : false;
 		return status;
 	}
 
 	public Date getCategoryLastUpdateTime(int examId, int categoryId) {
 		String query = "select last_update_time from exam_category_time where exam_id = ?";
-		Date time = template.queryForObject(query, Date.class, examId);
-		return time;
+		List<Date> time = template.queryForList(query, Date.class, examId);
+		return time.get(0);
 	}
 
 	public Float getCategoryMark(int examId, int categoryId) {
@@ -191,12 +202,12 @@ public class ExamDAO {
 			query = "SELECT correct_answer_mark FROM question_paper_category qpc"
 					+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qpc.question_paper_id"
 					+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
-					+ " inner join exam e on t.test_id = e.exam_id where category_id = ? and e.exam_id = ?";
+					+ " inner join exam e on t.test_id = e.test_id where category_id = ? and e.exam_id = ?";
 			correctMarkPerQ = template.queryForObject(query, Double.class, c, examId);
 			query = "SELECT negative_mark FROM question_paper_category qpc"
 					+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qpc.question_paper_id"
 					+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
-					+ " inner join exam e on t.test_id = e.exam_id where category_id = ? and e.exam_id = ?";
+					+ " inner join exam e on t.test_id = e.test_id where category_id = ? and e.exam_id = ?";
 			negativeMarkPerQ = template.queryForObject(query, Double.class, c, examId);
 			query = "SELECT count(exam_question_id) FROM exam_question where question_status = 1 and category_id = ? and exam_id = ?";
 			totalAttended = template.queryForObject(query, Integer.class, c, examId);
@@ -205,10 +216,14 @@ public class ExamDAO {
 			System.out.println("Mark = " + correctMarkPerQ + " - " + negativeMarkPerQ);
 			if (totalCorrect > 0)
 				correctMark = correctMarkPerQ * totalCorrect;
+			else
+				correctMark = 0;
 			query = "SELECT count(exam_question_id) FROM exam_question where question_status = 1 and category_id = ? and exam_id = ? and is_correct = 0";
 			totalWrong = template.queryForObject(query, Integer.class, c, examId);
 			if (totalWrong > 0)
 				negativeMark = negativeMarkPerQ * totalWrong;
+			else
+				totalWrong = 0;
 			totalMark = correctMark - negativeMark;
 			System.out.println(c + " - " + examId + " - " + totalMark + " - " + correctMark + " - " + negativeMark
 					+ " - " + totalAttended + " - " + totalCorrect + " - " + totalWrong);
@@ -263,10 +278,10 @@ public class ExamDAO {
 
 	public boolean updateExamResult(int examId) {
 		boolean status = false;
-		String query = "SELECT count(no_of_correct_questions) as correct_count,"
-				+ " count(no_of_wrong_questions) as wrong_count, count(total_attended) as total_attended,"
-				+ " count(correct_mark) as correct_mark, count(negative_mark) as negative_mark,"
-				+ " count(total_mark) as total_mark FROM exam_category_mark";
+		String query = "SELECT sum(no_of_correct_questions) as correct_count,"
+				+ " sum(no_of_wrong_questions) as wrong_count, sum(total_attended) as total_attended,"
+				+ " sum(correct_mark) as correct_mark, sum(negative_mark) as negative_mark,"
+				+ " sum(total_mark) as total_mark FROM exam_category_mark WHERE exam_id = ?";
 		List<Map<String, Object>> result = template.queryForList(query, examId);
 		Map<String, Object> marks = result.get(0);
 		query = "UPDATE exam SET question_answered = ?, question_correct_count = ?, question_wrong_count = ?,"

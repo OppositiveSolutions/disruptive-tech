@@ -32,7 +32,10 @@ public class ExamService {
 	}
 
 	public boolean startExam(int examId, int language) {
-		return examDAO.startExam(examId, language);
+		if (examDAO.initializeExam(examId, language))
+			return examDAO.initializeExamCategoryTime(examId);
+		else
+			return false;
 	}
 
 	public int createExam(int testId, int isDemo) {
@@ -56,10 +59,10 @@ public class ExamService {
 
 	public boolean saveExam(SaveQuestionVO[] questions, int examId) {
 		boolean status = false;
-		if (questionDAO.clearExamQuestion(examId))
-			for (SaveQuestionVO q : questions) {
-				status = questionDAO.saveQuestion(q, examId);
-			}
+		questionDAO.clearExamQuestion(examId);
+		for (SaveQuestionVO q : questions) {
+			status = questionDAO.saveQuestion(q, examId);
+		}
 		if (status) {
 			status = false;
 			if (examDAO.updateExam(examId))

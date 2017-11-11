@@ -2,7 +2,9 @@ package com.careerfocus.dao;
 
 import com.careerfocus.model.request.SaveQuestionVO;
 import com.careerfocus.model.response.QuestionPopulateVO;
+import com.careerfocus.util.DateUtils;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,8 @@ import java.util.Map;
 public class QuestionDAO {
 
 	private JdbcTemplate template;
+
+	private static final Logger log = Logger.getLogger(QuestionDAO.class.getClass());
 
 	@Autowired
 	public QuestionDAO(JdbcTemplate template) {
@@ -33,12 +37,13 @@ public class QuestionDAO {
 			return false;
 	}
 
-	public boolean clearExamQuestion(int examId) {
+	public void clearExamQuestion(int examId) {
 		String query = "DELETE FROM exam_question WHERE exam_id = ? and exam_question_id > 0";
-		if (template.update(query, examId) > 0)
-			return true;
-		else
-			return false;
+		try {
+			template.update(query, examId);
+		} catch (Exception e) {
+			log.debug("Not Exam_Question to Delete...");
+		}
 	}
 
 	public Map<String, Object> getQuestionIds(int examId) {
