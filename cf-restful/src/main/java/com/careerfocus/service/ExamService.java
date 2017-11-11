@@ -37,14 +37,12 @@ public class ExamService {
 
 	public int createExam(int testId, int isDemo) {
 		int examId = examDAO.createExam(testId, isDemo);
-		if (examDAO.createExamQuestions(examId) > 0) {
 			List<Map<String, Object>> categoryBasedQList = examDAO.getNoOfQsPerCategory(examId);
 			for (Map<String, Object> m : categoryBasedQList) {
 				int categoryId = (Integer) m.get("category_id");
 				examDAO.createExamCategoryTime(examId, categoryId);
 				examDAO.createExamCategoryMark(examId, categoryId);
 			}
-		}
 		return examId;
 	}
 

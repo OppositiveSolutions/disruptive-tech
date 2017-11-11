@@ -53,7 +53,7 @@ public class ExamDAO {
 
 	public boolean startExam(int examId, int language) {
 		String query = "UPDATE exam	SET	start_time = now(),end_time = now(),question_answered = 0,"
-				+ "question_correct = 0,mark_correct = 0,mark_negative = 0,language = ? WHERE exam_id = ?";
+				+ "question_count = 0,mark_correct = 0,mark_negative = 0,language = ? WHERE exam_id = ?";
 		if (template.update(query, language, examId) > 0)
 			return true;
 		else
@@ -101,22 +101,25 @@ public class ExamDAO {
 	public List<Map<String, Object>> getNoOfQsPerCategory(int examId) {
 		String query = "select category_id, qpc.no_of_questions from question_paper_category qpc"
 				+ " inner join question_paper qp on qpc.question_paper_id = qp.question_paper_id"
-				+ " inner join test t on t.question_paper_id= qp.question_paper_id where t.exam_id = ?";
+				+ " inner join bundle_question_paper bqp on bqp.question_paper_id = qp.question_paper_id"
+				+ " inner join test t on t.bundle_question_paper_id= bqp.bundle_question_paper_id"
+				+ " inner join exam e on e.test_id = t.test_id where e.exam_id = ?";
 		List<Map<String, Object>> results = template.queryForList(query, examId);
 		return results;
 	}
 
-	public int createExamQuestions(int examId) {
-		Map<String, Object> qIdDetails = questionDAO.getQuestionIds(examId);
-		int categoryId = (Integer) qIdDetails.get("category_id");
-		int qId = (Integer) qIdDetails.get("no_of_questions");
-		String query = "DELETE FROM exam_question WHERE exam_id = ? and exam_question_id > 0";
-		template.update(query, examId);
-		query = "INSERT INTO exam_question (exam_id,question_id,question_no,"
-				+ "question_status,is_correct,category_id) VALUES(?,?,?,?,?,?)";
-		int examQId = template.update(query, examId, qId, 0, 0, 0, categoryId);
-		return examQId;
-	}
+	// public int createExamQuestions(int examId) {
+	// Map<String, Object> qIdDetails = questionDAO.getQuestionIds(examId);
+	// int categoryId = (Integer) qIdDetails.get("category_id");
+	// int qId = (Integer) qIdDetails.get("no_of_questions");
+	// String query = "DELETE FROM exam_question WHERE exam_id = ? and
+	// exam_question_id > 0";
+	// template.update(query, examId);
+	// query = "INSERT INTO exam_question (exam_id,question_id,question_no,"
+	// + "question_status,is_correct,category_id) VALUES(?,?,?,?,?,?)";
+	// int examQId = template.update(query, examId, qId, 0, 0, 0, categoryId);
+	// return examQId;
+	// }
 
 	public boolean createExamCategoryTime(int examId, int categoryId) {
 		boolean status = true;
@@ -209,8 +212,8 @@ public class ExamDAO {
 		return status;
 	}
 
-	private boolean saveCategoryMark(int categoryId, int examId, double totalMark, double correctMark, double negativeMark,
-			int totalAttended, int totalCorrect, int totalWrong) {
+	private boolean saveCategoryMark(int categoryId, int examId, double totalMark, double correctMark,
+			double negativeMark, int totalAttended, int totalCorrect, int totalWrong) {
 		boolean status = true;
 		String query = "UPDATE exam_category_mark SET no_of_correct_questions = ?,"
 				+ " no_of_wrong_questions = ?, total_attended = ?, correct_mark = ?,"
