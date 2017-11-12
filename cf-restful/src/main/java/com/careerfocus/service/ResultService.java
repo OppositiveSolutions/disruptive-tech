@@ -46,12 +46,12 @@ public class ResultService {
 		return null;
 	}
 
-	public String getUserAccuracy(int userId) {
-		return getUserAccuracy(userId);
+	public double getUserAccuracy(int userId) {
+		return resultDAO.getUserAccuracy(userId);
 	}
 
-	public String getUserAverageTimePerQuestion(int userId) {
-		return getUserAverageTimePerQuestion(userId);
+	public double getUserAverageTimePerQuestion(int userId) {
+		return resultDAO.getUserAverageTimePerQuestion(userId);
 	}
 
 	public Map<String, Object> getUserExamAndTestCount(int userId) {
