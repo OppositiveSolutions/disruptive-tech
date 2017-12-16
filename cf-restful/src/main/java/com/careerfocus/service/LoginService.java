@@ -107,6 +107,7 @@ public class LoginService {
         session.setMaxInactiveInterval(-1);
 
         session.setAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, user.getUserId() + "");
+        session.setAttribute("userId", user.getUserId());
         session.setAttribute("role", user.getRole());
         session.setAttribute("firstName", user.getFirstName());
         session.setAttribute("lastName", user.getLastName());
