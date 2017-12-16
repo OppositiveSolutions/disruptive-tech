@@ -2,6 +2,10 @@ package com.careerfocus.controller;
 
 import com.careerfocus.service.ResultService;
 import com.careerfocus.util.response.Response;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +22,10 @@ public class ResultController {
 	@Autowired
 	ResultService resultService;
 
-	@RequestMapping(value = "/{userId}/scorecard", method = RequestMethod.GET)
-	public Response getScoreCard(@PathVariable("userId") int userId) throws Exception {
+	@RequestMapping(value = "/scorecard", method = RequestMethod.GET)
+	public Response getScoreCard(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		return Response.ok(resultService.getScoreCard(userId)).build();
 	}
 
@@ -55,18 +61,24 @@ public class ResultController {
 		return Response.ok(null).build();
 	}
 
-	@RequestMapping(value = "/{userId}/accuracy", method = RequestMethod.GET)
-	public Response getUserAccuracy(@PathVariable("userId") int userId) throws Exception {
+	@RequestMapping(value = "/accuracy", method = RequestMethod.GET)
+	public Response getUserAccuracy(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		return Response.ok(resultService.getUserAccuracy(userId)).build();
 	}
 
-	@RequestMapping(value = "/{userId}/avgtime", method = RequestMethod.GET)
-	public Response getUserAverageTimePerQuestion(@PathVariable("userId") int userId) throws Exception {
+	@RequestMapping(value = "/avgtime", method = RequestMethod.GET)
+	public Response getUserAverageTimePerQuestion(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		return Response.ok(resultService.getUserAverageTimePerQuestion(userId)).build();
 	}
 
-	@RequestMapping(value = "/{userId}/examcount", method = RequestMethod.GET)
-	public Response getUserExamAndTestCount(@PathVariable("userId") int userId) throws Exception {
+	@RequestMapping(value = "/examcount", method = RequestMethod.GET)
+	public Response getUserExamAndTestCount(HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		return Response.ok(resultService.getUserExamAndTestCount(userId)).build();
 	}
 

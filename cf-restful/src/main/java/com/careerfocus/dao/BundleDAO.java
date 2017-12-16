@@ -23,6 +23,11 @@ public class BundleDAO {
 		String query = "select * from bundle where coaching_type = ?";
 		return template.queryForList(query, coachingType);
 	}
+	
+	public List<Map<String, Object>> getCoachingTypeList() {
+		String query = "select * from bundle_category";
+		return template.queryForList(query);
+	}
 
 	public List<Map<String, Object>> getPurchasedQPBundleList(int userId) {
 		String query = "select * from bundle b inner join bundle_purchase bp"

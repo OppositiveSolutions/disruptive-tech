@@ -31,6 +31,10 @@ public class BundleService {
 	public List<Map<String, Object>> getQPBundleList(Integer coachingType) {
 		return bundleDAO.getQPBundleList(coachingType);
 	}
+	
+	public List<Map<String, Object>> getCoachingTypeList() {
+		return bundleDAO.getCoachingTypeList();
+	}
 
 	public Response editBundle(Bundle bundle) {
 		Bundle existingBundle = bundleRepository.findOne(bundle.getBundleId());
