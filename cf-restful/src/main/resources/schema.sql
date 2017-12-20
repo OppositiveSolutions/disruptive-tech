@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   COMMENT '1 - student\n2 - super admin\n3 - branch admin',
   `username`     VARCHAR(45) NOT NULL,
   `password`     VARCHAR(45) NOT NULL,
-  `created_date` DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_date` DATETIME,
   `role`         INT(2)      NOT NULL,
   `first_name`   VARCHAR(46) NOT NULL,
   `last_name`    VARCHAR(46) NOT NULL,
@@ -280,8 +280,8 @@ CREATE TABLE IF NOT EXISTS `question_paper` (
   COMMENT 'minutes',
   `no_of_questions`   INT(11)      NOT NULL,
   `no_of_options`     INT(2)       NOT NULL,
-  `created_date`      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_modified`     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_date`      DATETIME,
+  `last_modified`     DATETIME,
   `is_demo`           TINYINT(1)   NOT NULL DEFAULT '0',
   `duration_type`     INT(11)      NOT NULL DEFAULT '1',
   PRIMARY KEY (`question_paper_id`)
@@ -646,7 +646,7 @@ CREATE TABLE IF NOT EXISTS `announcements` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `announcement_image` (
   `announcement_id` INT(11) NOT NULL,
-  `image`           BLOB    NOT NULL,
+  `image`           LONGBLOB    NOT NULL,
   PRIMARY KEY (`announcement_id`),
   UNIQUE KEY `accouncement_id_UNIQUE` (`announcement_id`)
 )
