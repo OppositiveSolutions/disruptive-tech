@@ -20,10 +20,15 @@ public class BundleDAO {
 	}
 
 	public List<Map<String, Object>> getQPBundleList(int coachingType) {
-		String query = "select * from bundle where coaching_type = ?";
+		String query = "select b.*,1 as is_added_to_cart from bundle b"
+				+ " inner join cart c on b.bundle_id = c.bundle_id"
+				+ " where coaching_type = 1 and c.user_id = 1 and c.bundle_id is not null"
+				+ " union select b.*,0 as is_added_to_cart from bundle b"
+				+ " left join cart c on b.bundle_id = c.bundle_id"
+				+ " where coaching_type = 1 and c.bundle_id is null group by bundle_id";
 		return template.queryForList(query, coachingType);
 	}
-	
+
 	public List<Map<String, Object>> getCoachingTypeList() {
 		String query = "select * from bundle_category";
 		return template.queryForList(query);
