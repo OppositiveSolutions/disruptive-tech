@@ -32,6 +32,10 @@ public class Announcements {
     @Column(name = "announcement_order", columnDefinition = "INT")
     private int order;
 
+    @Basic
+    @Column(name = "img_file_name")
+    private String imgFileName;
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "announcements", cascade = CascadeType.MERGE)
     private AnnouncementImage announcementImage;
@@ -89,6 +93,14 @@ public class Announcements {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public String getImgFileName() {
+        return imgFileName;
+    }
+
+    public void setImgFileName(String imgFileName) {
+        this.imgFileName = imgFileName;
     }
 
     @Override

@@ -33,8 +33,9 @@ public class AnnouncementService {
 
     @Transactional
     public Response saveAnnouncement(String announcementJson, MultipartFile image)
-            throws JsonParseException, JsonMappingException, IOException {
+            throws IOException {
         Announcements announcement = new ObjectMapper().readValue(announcementJson, Announcements.class);
+        announcement.setImgFileName(image.getOriginalFilename());
         List<Error> errors = validateAnnouncement(announcement);
         if (errors != null && !errors.isEmpty()) {
             return Response.status(ErrorCodes.VALIDATION_FAILED)
