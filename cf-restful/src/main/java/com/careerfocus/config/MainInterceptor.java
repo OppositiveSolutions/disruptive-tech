@@ -90,7 +90,9 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/result")
 				|| (pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
-						&& requestMethod.equalsIgnoreCase("GET"));
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
+				&& requestMethod.equalsIgnoreCase("GET"));
 	}
 
 	private boolean checkAuthorizationForSuperAdmin(String uri, String requestMethod) {

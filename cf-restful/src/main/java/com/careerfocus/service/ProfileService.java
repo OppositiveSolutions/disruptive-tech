@@ -1,7 +1,10 @@
 package com.careerfocus.service;
 
 import com.careerfocus.dao.ProfileDAO;
-import com.careerfocus.model.request.AddStudentVO;
+import com.careerfocus.entity.Student;
+import com.careerfocus.repository.StudentRepository;
+import com.careerfocus.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +13,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProfileService {
 
-    @Autowired
-    ProfileDAO profileDAO;
+	@Autowired
+	StudentRepository studentRepository;
 
-	public String getDetailsForMyProfile(int userId) {
-		// TODO Auto-generated method stub
-		return profileDAO.getDetailsForMyProfile(userId);
-	}
+	@Autowired
+	UserRepository userRepository;
 
-	public String editMyProfile(AddStudentVO student) {
-		// TODO Auto-generated method stub
-		return null;
+	@Autowired
+	ProfileDAO profileDAO;
+
+	public Student getStudentDetails(int userId) {
+
+		return studentRepository.findOne(userId);
 	}
 
 }
