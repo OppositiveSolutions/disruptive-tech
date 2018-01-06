@@ -89,7 +89,7 @@ public class AchieversService {
 	    private List<Error> validateAchiever(Achievers achiever) {
 	        List<Error> subErrors = new ArrayList<Error>();
 	        if (achiever.getName() == null || achiever.getName().isEmpty()) {
-	            subErrors.add(new Error(ErrorCodes.ANNOUNCEMENT_NAME_EMPTY, ErrorCodes.ANNOUNCEMENT_NAME_EMPTY_MSG));
+	            subErrors.add(new Error(ErrorCodes.ACHIEVER_NAME_EMPTY, ErrorCodes.ACHIEVER_NAME_EMPTY_MSG));
 	        }
 	        return subErrors;
 	    }
