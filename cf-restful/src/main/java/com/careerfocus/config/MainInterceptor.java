@@ -104,12 +104,14 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/student")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/staff")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/center")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/bundle")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
-				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/video-tutorial");
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/video-tutorial")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial");
 	}
 
 	private boolean checkAuthorisationForBranchAdmin(String uri, String requestMethod) {
