@@ -68,5 +68,11 @@ public class AchieversController {
 	                                       @PathVariable("achieverId") int achieverId) throws Exception {
 	        return service.getAchieverImage(achieverId);
 	    }
+	    
+	    @RequestMapping(value = "/{achieverId}", method = RequestMethod.DELETE)
+	    public Response removeAchievers(HttpServletRequest request, HttpServletResponse response,
+                @PathVariable("achieverId") int achieverId) throws Exception {
+	        return Response.ok(service.removeAchievers(achieverId)).build();
+	    }
 
 }

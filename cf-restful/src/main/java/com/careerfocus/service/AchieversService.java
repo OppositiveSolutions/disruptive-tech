@@ -22,87 +22,96 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class AchieversService {
-	
+
 	private final Logger log = Logger.getLogger(this.getClass());
 
-    @Autowired
-    AchieversRepository achieverRepository;
-	
-	 @Autowired
-	    AchieversImageRepository aiRepository;
-	 
-	 @Transactional
-	    public Response saveAchiever(String achieverJson, MultipartFile image)
-	            throws IOException {
-	        Achievers achiever = new ObjectMapper().readValue(achieverJson, Achievers.class);
-	        achiever.setImgFileName(image.getOriginalFilename());
-	        List<Error> errors = validateAchiever(achiever);
-	        if (errors != null && !errors.isEmpty()) {
-	            return Response.status(ErrorCodes.VALIDATION_FAILED)
-	                    .error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
-	        }
+	@Autowired
+	AchieversRepository achieverRepository;
 
-	        achiever = achieverRepository.save(achiever);
+	@Autowired
+	AchieversImageRepository aiRepository;
 
-	        AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), image.getBytes());
-	        aiRepository.save(aImage);
+	@Transactional
+	public Response saveAchiever(String achieverJson, MultipartFile image) throws IOException {
+		Achievers achiever = new ObjectMapper().readValue(achieverJson, Achievers.class);
+		achiever.setImgFileName(image.getOriginalFilename());
+		List<Error> errors = validateAchiever(achiever);
+		if (errors != null && !errors.isEmpty()) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED)
+					.error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
+		}
 
-	        if (achiever.isIsCurrent()) {
-	            updateCurrentAchieversOrder(achiever);
-	        }
-	        return Response.ok(achiever).build();
-	    }
+		achiever = achieverRepository.save(achiever);
 
-	    public Achievers editAchiever(Achievers achiever) {
-	        achiever = achieverRepository.save(achiever);
-	        if (achiever.isIsCurrent()) {
-	            updateCurrentAchieversOrder(achiever);
-	        }
-	        return achiever;
-	    }
+		AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), image.getBytes());
+		aiRepository.save(aImage);
 
-	    public List<Achievers> editAchievers(List<Achievers> achievers) {
-	        return achieverRepository.save(achievers);
-	    }
+		if (achiever.isIsCurrent()) {
+			updateCurrentAchieversOrder(achiever);
+		}
+		return Response.ok(achiever).build();
+	}
 
-	    public void editAchieverImage(int achieverId, MultipartFile image) throws IOException {
-	        AchieverImage aImage = new AchieverImage(achieverId, image.getBytes());
-	        aiRepository.save(aImage);
-	    }
+	public Achievers editAchiever(Achievers achiever) {
+		achiever = achieverRepository.save(achiever);
+		if (achiever.isIsCurrent()) {
+			updateCurrentAchieversOrder(achiever);
+		}
+		return achiever;
+	}
 
-	    public List<Achievers> getAllAchievers() {
-	        return achieverRepository.findAllByOrderByIsCurrentDescOrderAsc();
-	    }
+	public List<Achievers> editAchievers(List<Achievers> achievers) {
+		return achieverRepository.save(achievers);
+	}
 
-	    public List<Achievers> getCurrentAchievers() {
-	        return achieverRepository.findByIsCurrentOrderByOrderAsc(true);
-	    }
+	public void editAchieverImage(int achieverId, MultipartFile image) throws IOException {
+		AchieverImage aImage = new AchieverImage(achieverId, image.getBytes());
+		aiRepository.save(aImage);
+	}
 
-	    public List<Achievers> getOldAchievers() {
-	        return achieverRepository.findByIsCurrentOrderByOrderAsc(false);
-	    }
+	public List<Achievers> getAllAchievers() {
+		return achieverRepository.findAllByOrderByIsCurrentDescOrderAsc();
+	}
 
-	    public byte[] getAchieverImage(int achieverId) {
-	        return aiRepository.findOne(achieverId).getImage();
-	    }
+	public List<Achievers> getCurrentAchievers() {
+		return achieverRepository.findByIsCurrentOrderByOrderAsc(true);
+	}
 
-	    private List<Error> validateAchiever(Achievers achiever) {
-	        List<Error> subErrors = new ArrayList<Error>();
-	        if (achiever.getName() == null || achiever.getName().isEmpty()) {
-	            subErrors.add(new Error(ErrorCodes.ACHIEVER_NAME_EMPTY, ErrorCodes.ACHIEVER_NAME_EMPTY_MSG));
-	        }
-	        return subErrors;
-	    }
+	public List<Achievers> getOldAchievers() {
+		return achieverRepository.findByIsCurrentOrderByOrderAsc(false);
+	}
 
-	    private void updateCurrentAchieversOrder(Achievers achiever) {
-	        List<Achievers> aList = achieverRepository.findByIsCurrentAndOrderGreaterThan(true,
-	                achiever.getOrder() - 1);
-	        aList.forEach(ancment -> {
-	            log.debug("Achiever Name:" + achiever.getName());
-	            if (ancment.getAchieverId() != achiever.getAchieverId())
-	                ancment.setOrder(ancment.getOrder() + 1);
-	        });
-	        achieverRepository.save(aList);
-	    }
+	public byte[] getAchieverImage(int achieverId) {
+		return aiRepository.findOne(achieverId).getImage();
+	}
+
+	private List<Error> validateAchiever(Achievers achiever) {
+		List<Error> subErrors = new ArrayList<Error>();
+		if (achiever.getName() == null || achiever.getName().isEmpty()) {
+			subErrors.add(new Error(ErrorCodes.ACHIEVER_NAME_EMPTY, ErrorCodes.ACHIEVER_NAME_EMPTY_MSG));
+		}
+		return subErrors;
+	}
+
+	private void updateCurrentAchieversOrder(Achievers achiever) {
+		List<Achievers> aList = achieverRepository.findByIsCurrentAndOrderGreaterThan(true, achiever.getOrder() - 1);
+		aList.forEach(ancment -> {
+			log.debug("Achiever Name:" + achiever.getName());
+			if (ancment.getAchieverId() != achiever.getAchieverId())
+				ancment.setOrder(ancment.getOrder() + 1);
+		});
+		achieverRepository.save(aList);
+	}
+
+	public boolean removeAchievers(int achieverId) {
+		try {
+			achieverRepository.delete(achieverId);
+			aiRepository.delete(achieverId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
 }
