@@ -1,6 +1,9 @@
 package com.careerfocus.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,6 +28,24 @@ public class Testimonial implements Serializable {
     @Basic
     @Column(nullable = false, length = 45)
     private String content;
+    
+    @Basic
+    @Column(nullable = false, length = 1000)
+    private String name;
+
+    @Basic
+    private String description;
+    
+    @Basic
+    private String contact;
+    
+    @Basic
+    @Column(name = "img_file_name")
+    private String imgFileName;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "testimonials", cascade = CascadeType.MERGE)
+    private TestimonialImage testimonialImage;
 
     @Basic
     @Column(nullable = false)
@@ -52,7 +73,47 @@ public class Testimonial implements Serializable {
         this.content = content;
     }
 
-    public Date getDate() {
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getImgFileName() {
+		return imgFileName;
+	}
+
+	public void setImgFileName(String imgFileName) {
+		this.imgFileName = imgFileName;
+	}
+
+	public TestimonialImage getTestimonialImage() {
+		return testimonialImage;
+	}
+
+	public void setTestimonialImage(TestimonialImage testimonialImage) {
+		this.testimonialImage = testimonialImage;
+	}
+
+	public Date getDate() {
         return date;
     }
 
