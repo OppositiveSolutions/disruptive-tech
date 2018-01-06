@@ -64,7 +64,10 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 
 	private boolean requestUriRequiresSession(String uri) {
 		// api's which can be accessed without session goes here.
-		return !uri.equals(Constants.RESTFUL_PATH_PREFIX + "/login");
+		if ((uri.equals(Constants.RESTFUL_PATH_PREFIX + "/login"))
+				||(uri.equals(Constants.RESTFUL_PATH_PREFIX + "/achievers")))
+		return false;
+		return true;
 	}
 
 	private boolean roleHasAuthorisation(int role, String uri, String requestMethod) {
