@@ -2,12 +2,9 @@ package com.careerfocus.entity;
 
 import javax.persistence.*;
 
-import org.joda.time.DateTime;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
