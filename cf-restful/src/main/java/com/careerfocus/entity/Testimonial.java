@@ -53,7 +53,7 @@ public class Testimonial implements Serializable {
 	@Basic
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
-	private DateTime date;
+	private Date date;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "user_id", columnDefinition = "INT", nullable = false)
@@ -61,12 +61,12 @@ public class Testimonial implements Serializable {
 
 	@PrePersist
 	public void prePersist() {
-		this.date = DateTime.now();
+		this.date = new Date();
 	}
 
 	@PreUpdate
 	public void preUpdate() {
-		this.date = DateTime.now();
+		this.date = new Date();
 	}
 
 	public Testimonial() {
@@ -124,11 +124,11 @@ public class Testimonial implements Serializable {
 		this.testimonialImage = testimonialImage;
 	}
 
-	public DateTime getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(DateTime date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
