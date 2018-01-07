@@ -12,8 +12,8 @@ public class SliderImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "slider_id", columnDefinition = "INT")
-    private int sliderId;
+    @Column(name = "slider_image_id", columnDefinition = "INT")
+    private int sliderImageId;
     
     @Basic
     @Column(name = "is_current")
@@ -30,17 +30,17 @@ public class SliderImage {
         this.image = image;
     }
 
-    public SliderImage(int sliderId, byte[] image) {
-        this.sliderId = sliderId;
+    public SliderImage(int sliderImageId, byte[] image) {
+        this.sliderImageId = sliderImageId;
         this.image = image;
     }
 
-    public int getsliderId() {
-        return sliderId;
+    public int getSliderImageId() {
+        return sliderImageId;
     }
 
-    public void setsliderId(int sliderId) {
-        this.sliderId = sliderId;
+    public void setSliderImageId(int sliderImageId) {
+        this.sliderImageId = sliderImageId;
     }
     
     public boolean isIsCurrent() {

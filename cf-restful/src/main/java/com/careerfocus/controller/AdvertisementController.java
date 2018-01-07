@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @RequestMapping("/advertisement")
@@ -23,7 +22,7 @@ public class AdvertisementController {
     AdvertisementService service;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response saveSlider(HttpServletRequest request, HttpServletResponse response,
+    public Response saveSliderImage(HttpServletRequest request, HttpServletResponse response,
                                      @RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
         log.debug("image: " + image.toString());
         return service.saveSliderImage(image);
@@ -38,8 +37,28 @@ public class AdvertisementController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Response getAllSlides(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return Response.ok(service.getAllSlides()).build();
+    public Response getAllSliderImages(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return Response.ok(service.getAllSliderImages()).build();
+    }
+    
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Response saveSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
+                                     @RequestPart(value = "file", required = true) String announcement) throws Exception {
+        log.debug("image: " + announcement.toString());
+        return service.saveSliderAnnouncement(announcement);
+    }
+
+    @RequestMapping(value = "/{sliderId}/image", method = RequestMethod.PUT)
+    public Response updateSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
+                                          @RequestPart(required = true) String sliderId,
+                                          @RequestPart(required = true) String announcement) throws Exception {
+        service.editSliderAnnouncement(Integer.valueOf(sliderId), announcement);
+        return Response.ok().build();
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public Response getAllSliderAnnouncements(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return Response.ok(service.getAllSliderAnnouncements()).build();
     }
 
 }
