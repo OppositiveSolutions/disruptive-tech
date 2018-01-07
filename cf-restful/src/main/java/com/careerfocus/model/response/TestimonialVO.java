@@ -33,11 +33,11 @@ public class TestimonialVO {
 		super();
 		this.testimonialId = testimonialId;
 		this.content = content;
-		this.name = contact;
-		this.name = description;
+		this.contact = contact;
+		this.description = description;
 		this.name = name;
 		this.date = date;
-		this.name = userName;
+		this.userName = userName;
 		this.userId = userId;
 		this.profilePicUrl = Constants.RESTFUL_PATH_PREFIX;
 	}
