@@ -1,6 +1,5 @@
 package com.careerfocus.controller;
 
-import com.careerfocus.entity.Testimonial;
 import com.careerfocus.service.TestimonialService;
 import com.careerfocus.util.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class TestimonialController {
     TestimonialService service;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Response saveTestimonials(HttpServletRequest request, @RequestPart Testimonial testimonial,
+    public Response saveTestimonials(HttpServletRequest request, @RequestPart String testimonial,
     		@RequestPart(value = "file", required = true) final MultipartFile image)
             throws Exception {
         return Response.ok(service.saveTestimonials(request, testimonial, image)).build();

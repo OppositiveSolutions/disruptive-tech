@@ -6,6 +6,8 @@ import com.careerfocus.entity.User;
 import com.careerfocus.model.response.TestimonialVO;
 import com.careerfocus.repository.TestimonialImageRepository;
 import com.careerfocus.repository.TestimonialRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.stereotype.Service;
@@ -26,9 +28,10 @@ public class TestimonialService {
 	@Autowired
 	TestimonialImageRepository tiRepository;
 
-	public Testimonial saveTestimonials(HttpServletRequest request, Testimonial testimonial, MultipartFile image)
+	public Testimonial saveTestimonials(HttpServletRequest request, String testimonialJson, MultipartFile image)
 			throws IOException {
 		HttpSession session = request.getSession();
+		Testimonial testimonial = new ObjectMapper().readValue(testimonialJson, Testimonial.class);
 		testimonial.setUser(new User(Integer
 				.valueOf(session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME).toString())));
 		testimonialRepo.save(testimonial);
