@@ -21,7 +21,7 @@ import java.util.List;
 public class TestimonialService {
 
 	@Autowired
-	TestimonialRepository testiclesRepo;
+	TestimonialRepository testimonialRepo;
 
 	@Autowired
 	TestimonialImageRepository tiRepository;
@@ -31,21 +31,21 @@ public class TestimonialService {
 		HttpSession session = request.getSession();
 		testimonial.setUser(new User(Integer
 				.valueOf(session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME).toString())));
-		testiclesRepo.save(testimonial);
+		testimonialRepo.save(testimonial);
 		TestimonialImage aImage = new TestimonialImage(testimonial.getTestimonialId(), image.getBytes());
 		tiRepository.save(aImage);
 		return testimonial;
 	}
 
 	public List<TestimonialVO> getAllTestimonials() {
-		return testiclesRepo.getAllTestimonials();
+		return testimonialRepo.getAllTestimonials();
 	}
 
 	public List<TestimonialVO> getAllTestimonialsOfUser(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		int userId = Integer
 				.valueOf(session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME).toString());
-		return testiclesRepo.getAllTestimonials(userId);
+		return testimonialRepo.getAllTestimonials(userId);
 	}
 
 }

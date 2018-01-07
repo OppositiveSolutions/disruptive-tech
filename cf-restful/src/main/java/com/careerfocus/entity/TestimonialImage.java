@@ -9,12 +9,12 @@ import javax.persistence.*;
  * org.apache.openjpa.jdbc.meta.ReverseMappingTool$AnnotatedCodeGenerator
  */
 @Entity
-@Table(name = "achiever_image")
+@Table(name = "testimonial_image")
 public class TestimonialImage {
 
     @Id
-    @Column(name = "achiever_id", columnDefinition = "INT")
-    private int achieverId;
+    @Column(name = "testimonial_id", columnDefinition = "INT")
+    private int testimonialId;
 
     @Basic
     @Column(columnDefinition = "BLOB", nullable = false)
@@ -22,27 +22,28 @@ public class TestimonialImage {
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "achiever_id", columnDefinition = "INT")
-    private Achievers achievers;
+    @JoinColumn(name = "testimonial_id", columnDefinition = "INT")
+    private Testimonial testimonial;
+    
 
     public TestimonialImage() {
     }
 
-    public TestimonialImage(int achieverId) {
-        this.achieverId = achieverId;
+    public TestimonialImage(int testimonialId) {
+        this.testimonialId = testimonialId;
     }
 
-    public TestimonialImage(int achieverId, byte[] image) {
-        this.achieverId = achieverId;
+    public TestimonialImage(int testimonialId, byte[] image) {
+        this.testimonialId = testimonialId;
         this.image = image;
     }
 
-    public int getachieverId() {
-        return achieverId;
+    public int gettestimonialId() {
+        return testimonialId;
     }
 
-    public void setachieverId(int achieverId) {
-        this.achieverId = achieverId;
+    public void settestimonialId(int testimonialId) {
+        this.testimonialId = testimonialId;
     }
 
     public byte[] getImage() {
@@ -53,11 +54,11 @@ public class TestimonialImage {
         this.image = image;
     }
 
-    public Achievers getAchievers() {
-        return achievers;
+    public Testimonial getTestimonial() {
+        return testimonial;
     }
 
-    public void setAchievers(Achievers achievers) {
-        this.achievers = achievers;
+    public void setTestimonial(Testimonial testimonial) {
+        this.testimonial = testimonial;
     }
 }

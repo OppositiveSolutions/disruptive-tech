@@ -44,7 +44,7 @@ public class Testimonial implements Serializable {
     private String imgFileName;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "testimonials", cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "testimonial", cascade = CascadeType.MERGE)
     private TestimonialImage testimonialImage;
 
     @Basic
