@@ -21,6 +21,8 @@ public class TestimonialVO {
 	private String userName;
 
 	private int userId;
+	
+	private byte[] image;
 
 	private String profilePicUrl;
 
@@ -29,7 +31,7 @@ public class TestimonialVO {
 	}
 
 	public TestimonialVO(int testimonialId, String content, String contact, String description, String name, Date date,
-			String userName, int userId) {
+			String userName, int userId, byte[] image) {
 		super();
 		this.testimonialId = testimonialId;
 		this.content = content;
@@ -39,6 +41,7 @@ public class TestimonialVO {
 		this.date = date;
 		this.userName = userName;
 		this.userId = userId;
+		this.image = image;
 		this.profilePicUrl = Constants.RESTFUL_PATH_PREFIX;
 	}
 
@@ -104,6 +107,14 @@ public class TestimonialVO {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 
 	public String getProfilePicUrl() {

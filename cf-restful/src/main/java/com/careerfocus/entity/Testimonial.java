@@ -45,6 +45,7 @@ public class Testimonial implements Serializable {
 
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "testimonial", cascade = CascadeType.MERGE)
+	@JoinColumn(name = "testimonial_id", columnDefinition = "INT", nullable = false)
 	private TestimonialImage testimonialImage;
 
 	@Basic
