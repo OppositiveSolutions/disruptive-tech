@@ -26,7 +26,7 @@ public class Testimonial implements Serializable {
 	private int testimonialId;
 
 	@Basic
-	@Column(nullable = false, length = 45)
+	@Column(nullable = false)
 	private String content;
 
 	@Basic
