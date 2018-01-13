@@ -12,12 +12,14 @@ public interface TestimonialRepository extends JpaRepository<Testimonial, Intege
 
     List<Testimonial> findAllByOrderByDateDesc();
 
-    @Query("SELECT new com.careerfocus.model.response.TestimonialVO(t.testimonialId, t.content, t.date, CONCAT(u.firstName, ' ', u.lastName), u.userId) "
-            + "FROM Testimonial t INNER JOIN t.user u")
+    @Query("SELECT new com.careerfocus.model.response.TestimonialVO(t.testimonialId, t.content,"
+    		+ "t.contact,t.description,t.name, t.date, CONCAT(u.firstName, ' ', u.lastName), u.userId, ti.image) "
+            + "FROM Testimonial t INNER JOIN t.user u INNER JOIN t.testimonialImage ti")
     List<TestimonialVO> getAllTestimonials();
 
-    @Query("SELECT new com.careerfocus.model.response.TestimonialVO(t.testimonialId, t.content, t.date, CONCAT(u.firstName, ' ', u.lastName), u.userId) "
-            + "FROM Testimonial t INNER JOIN t.user u WHERE u.userId = :userId")
+    @Query("SELECT new com.careerfocus.model.response.TestimonialVO(t.testimonialId, t.content,"
+    		+ "t.contact,t.description,t.name,t.date, CONCAT(u.firstName, ' ', u.lastName), u.userId, ti.image) "
+            + "FROM Testimonial t INNER JOIN t.user u INNER JOIN t.testimonialImage ti WHERE u.userId = :userId")
     List<TestimonialVO> getAllTestimonials(@Param("userId") int userId);
 
 }

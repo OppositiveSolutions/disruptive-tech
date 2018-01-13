@@ -67,9 +67,4 @@ public class StaffService {
         return staffRepository.searchStaffsByNameOrEmail("%" + key + "%", request);
     }
 
-    @Transactional
-    public void updateStaffExpiry(int userId, String expiryDate) {
-        staffRepository.updateStaffExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate), userId);
-    }
-
 }

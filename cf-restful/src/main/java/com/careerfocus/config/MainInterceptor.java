@@ -64,7 +64,14 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 
 	private boolean requestUriRequiresSession(String uri) {
 		// api's which can be accessed without session goes here.
-		return !uri.equals(Constants.RESTFUL_PATH_PREFIX + "/login");
+		if ((uri.equals(Constants.RESTFUL_PATH_PREFIX + "/login"))
+				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/achievers"))
+				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/student"))
+				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/advertisement"))
+				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial"))
+				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/bundle")))
+			return false;
+		return true;
 	}
 
 	private boolean roleHasAuthorisation(int role, String uri, String requestMethod) {
@@ -84,15 +91,16 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 		return pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
 				|| pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
 				|| pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial", uri)
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/student")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/bundle")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/result")
 				|| (pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
-				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile")
-				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
-				&& requestMethod.equalsIgnoreCase("GET"));
+						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile")
+						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
+								&& requestMethod.equalsIgnoreCase("GET"));
 	}
 
 	private boolean checkAuthorizationForSuperAdmin(String uri, String requestMethod) {
@@ -104,12 +112,16 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/student")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/staff")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/center")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/bundle")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
-				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/video-tutorial");
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/achievers")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/advertisement")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/video-tutorial")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial");
 	}
 
 	private boolean checkAuthorisationForBranchAdmin(String uri, String requestMethod) {

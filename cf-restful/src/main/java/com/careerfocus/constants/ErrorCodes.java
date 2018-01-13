@@ -35,4 +35,7 @@ public class ErrorCodes {
     public static int INVALID_BUNDLE = 708;
     public static String INVALID_BUNDLE_MSG = "Bundle does not exist";
 
+    public static int ACHIEVER_NAME_EMPTY = 709;
+    public static String ACHIEVER_NAME_EMPTY_MSG = "Achiever name cannot be empty";
+    
 }

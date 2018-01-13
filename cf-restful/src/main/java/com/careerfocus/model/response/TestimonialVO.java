@@ -6,79 +6,123 @@ import java.util.Date;
 
 public class TestimonialVO {
 
-    private int testimonialId;
+	private int testimonialId;
 
-    private String content;
+	private String content;
 
-    private Date date;
+	private String contact;
 
-    private String name;
+	private String description;
 
-    private int userId;
+	private String name;
 
-    private String profilePicUrl;
+	private Date date;
 
+	private String userName;
 
-    public TestimonialVO() {
+	private int userId;
+	
+	private byte[] image;
 
-    }
+	private String profilePicUrl;
 
-    public TestimonialVO(int testimonialId, String content, Date date, String name, int userId) {
-        super();
-        this.testimonialId = testimonialId;
-        this.content = content;
-        this.date = date;
-        this.name = name;
-        this.userId = userId;
-        this.profilePicUrl = Constants.RESTFUL_PATH_PREFIX;
-    }
+	public TestimonialVO() {
 
-    public int getTestimonialId() {
-        return testimonialId;
-    }
+	}
 
-    public void setTestimonialId(int testimonialId) {
-        this.testimonialId = testimonialId;
-    }
+	public TestimonialVO(int testimonialId, String content, String contact, String description, String name, Date date,
+			String userName, int userId, byte[] image) {
+		super();
+		this.testimonialId = testimonialId;
+		this.content = content;
+		this.contact = contact;
+		this.description = description;
+		this.name = name;
+		this.date = date;
+		this.userName = userName;
+		this.userId = userId;
+		this.image = image;
+		this.profilePicUrl = Constants.RESTFUL_PATH_PREFIX;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public int getTestimonialId() {
+		return testimonialId;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setTestimonialId(int testimonialId) {
+		this.testimonialId = testimonialId;
+	}
 
-    public Date getDate() {
-        return date;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public Date getDate() {
+		return date;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-    public int getUserId() {
-        return userId;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getProfilePicUrl() {
-        return profilePicUrl;
-    }
+	public String getContact() {
+		return contact;
+	}
 
-    public void setProfilePicUrl(String profilePicUrl) {
-        this.profilePicUrl = profilePicUrl;
-    }
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public String getProfilePicUrl() {
+		return profilePicUrl;
+	}
+
+	public void setProfilePicUrl(String profilePicUrl) {
+		this.profilePicUrl = profilePicUrl;
+	}
 
 }
