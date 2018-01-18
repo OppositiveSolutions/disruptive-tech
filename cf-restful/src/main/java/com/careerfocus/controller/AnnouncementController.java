@@ -2,7 +2,9 @@ package com.careerfocus.controller;
 
 import com.careerfocus.entity.Announcements;
 import com.careerfocus.service.AnnouncementService;
+import com.careerfocus.util.CommonUtils;
 import com.careerfocus.util.response.Response;
+import com.sun.imageio.plugins.common.ImageUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +61,12 @@ public class AnnouncementController {
     @RequestMapping(value = "/{announcementId}/image", method = RequestMethod.GET)
     public byte[] getAnnouncementImage(HttpServletRequest request, HttpServletResponse response,
                                        @PathVariable("announcementId") int announcementId) throws Exception {
-        return service.getAnnouncementImage(announcementId);
+        byte[] data = service.getAnnouncementImage(announcementId);
+        String contentType = CommonUtils.getImageTypeFromByteArray(data);
+        log.info("ContentType: " + contentType);
+        response.setContentType("image/" + contentType);
+        response.flushBuffer();
+        return data;
     }
 
 }
