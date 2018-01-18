@@ -34,9 +34,15 @@ public class AdvertisementController {
 		return Response.ok().build();
 	}
 
-	@RequestMapping(value = "/image", method = RequestMethod.GET)
+	@RequestMapping(value = "/image/all", method = RequestMethod.GET)
 	public Response getAllSliderImages(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return Response.ok(service.getAllSliderImages()).build();
+	}
+
+	@RequestMapping(value = "{sliderImageId}/image", method = RequestMethod.GET)
+	public Response getSliderImage(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(required = true) int sliderImageId) throws Exception {
+		return Response.ok(service.getSliderImage(sliderImageId)).build();
 	}
 
 	@RequestMapping(value = "/announcement", method = RequestMethod.POST)
@@ -54,10 +60,16 @@ public class AdvertisementController {
 		return Response.ok().build();
 	}
 
-	@RequestMapping(value = "/announcement", method = RequestMethod.GET)
+	@RequestMapping(value = "/announcement/all", method = RequestMethod.GET)
 	public Response getAllSliderAnnouncements(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		return Response.ok(service.getAllSliderAnnouncements()).build();
+	}
+
+	@RequestMapping(value = "/{sliderAnnouncementId}/announcement", method = RequestMethod.GET)
+	public Response getSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(required = true) int sliderAnnouncementId) throws Exception {
+		return Response.ok(service.getSliderAnnouncement(sliderAnnouncementId)).build();
 	}
 
 }

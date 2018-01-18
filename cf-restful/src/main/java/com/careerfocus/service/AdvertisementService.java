@@ -54,6 +54,10 @@ public class AdvertisementService {
 		return siRepository.findAll();
 	}
 
+	public byte[] getSliderImage(int sliderImageId) {
+		return siRepository.findOne(sliderImageId).getImage();
+	}
+
 	@Transactional
 	public Response saveSliderAnnouncement(String announcement) throws IOException {
 		if (announcement == null || announcement.equalsIgnoreCase("")) {
@@ -73,6 +77,10 @@ public class AdvertisementService {
 
 	public List<SliderAnnouncement> getAllSliderAnnouncements() {
 		return saRepository.findAll();
+	}
+
+	public String getSliderAnnouncement(int sliderAnnouncementId) {
+		return saRepository.findOne(sliderAnnouncementId).getAnnouncement();
 	}
 
 }
