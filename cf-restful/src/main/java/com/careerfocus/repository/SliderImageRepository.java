@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface SliderImageRepository extends JpaRepository<SliderImage, Integer> {
 
-	@Query(value = "select si from SliderImage si where si.isCurrent = 1 ORDER BY si.sliderImageId", nativeQuery = false)
+	@Query(value = "select si from SliderImage si where si.isCurrent = 1 ORDER BY si.sliderImageId DESC", nativeQuery = false)
 	public List<SliderImage> findAllByIsCurrentOrderByIdAsc();
 
 }
