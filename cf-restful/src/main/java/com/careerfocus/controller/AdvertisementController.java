@@ -40,9 +40,9 @@ public class AdvertisementController {
 	}
 
 	@RequestMapping(value = "{sliderImageId}/image", method = RequestMethod.GET)
-	public Response getSliderImage(HttpServletRequest request, HttpServletResponse response,
+	public byte[] getSliderImage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable(required = true) int sliderImageId) throws Exception {
-		return Response.ok(service.getSliderImage(sliderImageId)).build();
+		return service.getSliderImage(sliderImageId);
 	}
 
 	@RequestMapping(value = "/announcement", method = RequestMethod.POST)
@@ -67,9 +67,9 @@ public class AdvertisementController {
 	}
 
 	@RequestMapping(value = "/{sliderAnnouncementId}/announcement", method = RequestMethod.GET)
-	public Response getSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
+	public String getSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable(required = true) int sliderAnnouncementId) throws Exception {
-		return Response.ok(service.getSliderAnnouncement(sliderAnnouncementId)).build();
+		return service.getSliderAnnouncement(sliderAnnouncementId);
 	}
 
 }
