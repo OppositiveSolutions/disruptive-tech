@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,7 +50,7 @@ public class AdvertisementService {
 	}
 
 	public List<SliderImage> getAllSliderImages() {
-		return siRepository.findAll();
+		return siRepository.findAllByIsCurrentOrderByIdAsc();
 	}
 
 	public byte[] getSliderImage(int sliderImageId) {
