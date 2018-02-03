@@ -40,5 +40,12 @@ public class StaffController {
                                  @PathVariable("pageNo") int pageNo) throws Exception {
         return Response.ok(staffService.findStaffsByName(key, pageSize, pageNo)).build();
     }
+    
+    @RequestMapping(value = "/{userId}/expiry", method = RequestMethod.PUT, consumes = { "text/plain" })
+	public Response updateStudentExpiry(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("userId") int userId) throws Exception {
+    	staffService.updateStaffExpiry(userId);
+		return Response.ok().build();
+	}
 
 }

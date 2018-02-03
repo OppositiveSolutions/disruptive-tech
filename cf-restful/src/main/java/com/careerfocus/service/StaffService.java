@@ -66,5 +66,10 @@ public class StaffService {
         Pageable request = new PageRequest(pageNo - 1, pageSize);
         return staffRepository.searchStaffsByNameOrEmail("%" + key + "%", request);
     }
+    
+    @Transactional
+    public void updateStaffExpiry(int userId) {
+        staffRepository.updateStaffExpiry(userId);
+    }
 
 }

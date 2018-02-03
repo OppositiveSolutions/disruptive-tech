@@ -28,4 +28,8 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 			+ " ORDER BY u.firstName, u.lastName", nativeQuery = false)
 	Page<StaffVO> searchStaffsByNameOrEmail(@Param("key") String key, Pageable page);
 
+	@Modifying
+	@Query("UPDATE Staff s SET s.status = 0 WHERE s.userId = ?")
+	void updateStaffExpiry(int userId);
+
 }

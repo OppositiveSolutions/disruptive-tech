@@ -4,7 +4,6 @@ import com.careerfocus.entity.Announcements;
 import com.careerfocus.service.AnnouncementService;
 import com.careerfocus.util.CommonUtils;
 import com.careerfocus.util.response.Response;
-import com.sun.imageio.plugins.common.ImageUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
