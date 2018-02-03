@@ -45,12 +45,12 @@ public class AdvertisementController {
 		return service.getSliderImage(sliderImageId);
 	}
 	
-	 @RequestMapping(value = "/{sliderImageId}/isCurrent", method = RequestMethod.PUT, consumes = { "text/plain" })
-		public Response updateSliderImageId(HttpServletRequest request, HttpServletResponse response,
-				@PathVariable("sliderImageId") int sliderImageId) throws Exception {
-		 service.updateSliderImageId(sliderImageId);
-			return Response.ok().build();
-		}
+//	 @RequestMapping(value = "/iscurrent/{sliderImageId}/image", method = RequestMethod.PUT, consumes = { "text/plain" })
+//		public Response updateSliderImageIsCurrent(HttpServletRequest request, HttpServletResponse response,
+//				@PathVariable("sliderImageId") int sliderImageId) throws Exception {
+//		 service.updateSliderImageIsCurrent(sliderImageId);
+//			return Response.ok().build();
+//		}
 
 	@RequestMapping(value = "/announcement", method = RequestMethod.POST)
 	public Response saveSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
@@ -79,11 +79,11 @@ public class AdvertisementController {
 		return service.getSliderAnnouncement(sliderAnnouncementId);
 	}
 	
-	 @RequestMapping(value = "/{sliderAnnouncementId}/isCurrent", method = RequestMethod.PUT, consumes = { "text/plain" })
-		public Response updateSliderAnnouncementId(HttpServletRequest request, HttpServletResponse response,
-				@PathVariable("sliderAnnouncementId") int sliderAnnouncementId) throws Exception {
-		 service.updateSliderAnnouncementId(sliderAnnouncementId);
-			return Response.ok().build();
-		}
+//	 @RequestMapping(value = "/iscurrent/{sliderAnnouncementId}/announcement", method = RequestMethod.PUT, consumes = { "text/plain" })
+//		public Response updateSliderAnnouncementIsCurrent(HttpServletRequest request, HttpServletResponse response,
+//				@PathVariable("sliderAnnouncementId") int sliderAnnouncementId) throws Exception {
+//		 service.updateSliderAnnouncementIsCurrent(sliderAnnouncementId);
+//			return Response.ok().build();
+//		}
 
 }

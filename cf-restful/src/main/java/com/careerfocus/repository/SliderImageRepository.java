@@ -13,9 +13,9 @@ public interface SliderImageRepository extends JpaRepository<SliderImage, Intege
 	@Query(value = "select si from SliderImage si where si.isCurrent = 1 ORDER BY si.sliderImageId DESC", nativeQuery = false)
 	public List<SliderImage> findAllByIsCurrentOrderByIdAsc();
 	
-	@Modifying
-	@Query("UPDATE SliderImage s SET s.isCurrent = !s.isCurrent WHERE s.SliderImageId = ?")
-	void updateSliderImage(int SliderImageId);
+//	@Modifying
+//	@Query("UPDATE SliderImage s SET s.isCurrent = !s.isCurrent WHERE s.SliderImageId = ?")
+//	void updateSliderImageIsCurrent(int SliderImageId);
 
 
 }

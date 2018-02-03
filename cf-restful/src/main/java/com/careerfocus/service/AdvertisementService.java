@@ -1,20 +1,11 @@
 package com.careerfocus.service;
 
 import com.careerfocus.constants.ErrorCodes;
-import com.careerfocus.entity.AnnouncementImage;
-import com.careerfocus.entity.Announcements;
 import com.careerfocus.entity.SliderAnnouncement;
 import com.careerfocus.entity.SliderImage;
-import com.careerfocus.repository.AnnouncementImageRepository;
-import com.careerfocus.repository.AnnouncementRepository;
 import com.careerfocus.repository.SliderAnnouncementRepository;
 import com.careerfocus.repository.SliderImageRepository;
-import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,9 +49,9 @@ public class AdvertisementService {
 		return siRepository.findOne(sliderImageId).getImage();
 	}
 	
-	public void updateSliderImage(int sliderImageId) throws IOException {
-		siRepository.updateSliderImage(sliderImageId);
-	}
+//	public void updateSliderImageIsCurrent(int sliderImageId) throws IOException {
+//		siRepository.updateSliderImageIsCurrent(sliderImageId);
+//	}
 
 	@Transactional
 	public Response saveSliderAnnouncement(String announcement) throws IOException {
@@ -87,8 +78,8 @@ public class AdvertisementService {
 		return saRepository.findOne(sliderAnnouncementId).getAnnouncement();
 	}
 	
-	public void updateSliderAnnouncement(int sliderAnnouncementId) throws IOException {
-		saRepository.updateSliderAnnouncement(sliderAnnouncementId);
-	}
+//	public void updateSliderAnnouncementIsCurrent(int sliderAnnouncementId) throws IOException {
+//		saRepository.updateSliderAnnouncementIsCurrent(sliderAnnouncementId);
+//	}
 
 }
