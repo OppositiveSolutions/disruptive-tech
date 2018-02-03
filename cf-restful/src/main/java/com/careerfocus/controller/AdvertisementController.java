@@ -44,6 +44,13 @@ public class AdvertisementController {
 			@PathVariable(required = true) int sliderImageId) throws Exception {
 		return service.getSliderImage(sliderImageId);
 	}
+	
+	 @RequestMapping(value = "/{sliderImageId}/isCurrent", method = RequestMethod.PUT, consumes = { "text/plain" })
+		public Response updateSliderImageId(HttpServletRequest request, HttpServletResponse response,
+				@PathVariable("sliderImageId") int sliderImageId) throws Exception {
+		 service.updateSliderImageId(sliderImageId);
+			return Response.ok().build();
+		}
 
 	@RequestMapping(value = "/announcement", method = RequestMethod.POST)
 	public Response saveSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
@@ -71,5 +78,12 @@ public class AdvertisementController {
 			@PathVariable(required = true) int sliderAnnouncementId) throws Exception {
 		return service.getSliderAnnouncement(sliderAnnouncementId);
 	}
+	
+	 @RequestMapping(value = "/{sliderAnnouncementId}/isCurrent", method = RequestMethod.PUT, consumes = { "text/plain" })
+		public Response updateSliderAnnouncementId(HttpServletRequest request, HttpServletResponse response,
+				@PathVariable("sliderAnnouncementId") int sliderAnnouncementId) throws Exception {
+		 service.updateSliderAnnouncementId(sliderAnnouncementId);
+			return Response.ok().build();
+		}
 
 }

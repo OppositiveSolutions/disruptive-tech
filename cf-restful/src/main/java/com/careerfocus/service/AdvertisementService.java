@@ -39,6 +39,7 @@ public class AdvertisementService {
 		}
 
 		SliderImage sImage = new SliderImage(image.getBytes());
+		sImage.setIsCurrent(true);
 		siRepository.save(sImage);
 
 		return Response.ok().build();
@@ -55,6 +56,10 @@ public class AdvertisementService {
 
 	public byte[] getSliderImage(int sliderImageId) {
 		return siRepository.findOne(sliderImageId).getImage();
+	}
+	
+	public void updateSliderImage(int sliderImageId) throws IOException {
+		siRepository.updateSliderImage(sliderImageId);
 	}
 
 	@Transactional
@@ -80,6 +85,10 @@ public class AdvertisementService {
 
 	public String getSliderAnnouncement(int sliderAnnouncementId) {
 		return saRepository.findOne(sliderAnnouncementId).getAnnouncement();
+	}
+	
+	public void updateSliderAnnouncement(int sliderAnnouncementId) throws IOException {
+		saRepository.updateSliderAnnouncement(sliderAnnouncementId);
 	}
 
 }
