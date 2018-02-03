@@ -30,7 +30,7 @@ public class AdvertisementService {
 		}
 
 		SliderImage sImage = new SliderImage(image.getBytes());
-		sImage.setIsCurrent(true);
+		sImage.setIsCurrent(1);
 		siRepository.save(sImage);
 
 		return Response.ok().build();
@@ -48,10 +48,16 @@ public class AdvertisementService {
 	public byte[] getSliderImage(int sliderImageId) {
 		return siRepository.findOne(sliderImageId).getImage();
 	}
-	
-//	public void updateSliderImageIsCurrent(int sliderImageId) throws IOException {
-//		siRepository.updateSliderImageIsCurrent(sliderImageId);
-//	}
+
+	public void deleteSliderImage(Integer sliderImageId) {
+		siRepository.delete(sliderImageId);
+
+	}
+
+	// public void updateSliderImageIsCurrent(int sliderImageId) throws
+	// IOException {
+	// siRepository.updateSliderImageIsCurrent(sliderImageId);
+	// }
 
 	@Transactional
 	public Response saveSliderAnnouncement(String announcement) throws IOException {
@@ -77,9 +83,15 @@ public class AdvertisementService {
 	public String getSliderAnnouncement(int sliderAnnouncementId) {
 		return saRepository.findOne(sliderAnnouncementId).getAnnouncement();
 	}
-	
-//	public void updateSliderAnnouncementIsCurrent(int sliderAnnouncementId) throws IOException {
-//		saRepository.updateSliderAnnouncementIsCurrent(sliderAnnouncementId);
-//	}
+
+	public void deleteSliderAnnouncement(Integer sliderAnnouncementId) {
+		saRepository.delete(sliderAnnouncementId);
+
+	}
+
+	// public void updateSliderAnnouncementIsCurrent(int sliderAnnouncementId)
+	// throws IOException {
+	// saRepository.updateSliderAnnouncementIsCurrent(sliderAnnouncementId);
+	// }
 
 }
