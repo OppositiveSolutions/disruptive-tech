@@ -1,11 +1,9 @@
 package com.careerfocus.service;
 
-import com.careerfocus.constants.Constants;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.StudentDAO;
 import com.careerfocus.entity.Address;
 import com.careerfocus.entity.Center;
-import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.entity.Student;
 import com.careerfocus.entity.User;
 import com.careerfocus.entity.UserPhone;
@@ -14,7 +12,6 @@ import com.careerfocus.model.response.StudentVO;
 import com.careerfocus.repository.StudentRepository;
 import com.careerfocus.repository.UserRepository;
 import com.careerfocus.util.DateUtils;
-import com.careerfocus.util.PasswordGenerator;
 import com.careerfocus.util.StudentUtils;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;

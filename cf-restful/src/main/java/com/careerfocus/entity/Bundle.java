@@ -34,6 +34,15 @@ public class Bundle {
 
     @Basic
     private String name;
+    
+    @Basic
+    @Column(name = "created_date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date createdDate = new Date();
+    
+    @Basic
+    @Column(name="validity_days", columnDefinition="INT")
+    private int validityDays = 60;
 
     @ManyToMany(targetEntity=QuestionPaper.class, cascade=CascadeType.MERGE)
     @JoinTable(name="bundle_question_paper", joinColumns=@JoinColumn(name="bundle_id", columnDefinition="INT", nullable=false), inverseJoinColumns=@JoinColumn(name="question_paper_id", columnDefinition="INT"))
@@ -90,11 +99,39 @@ public class Bundle {
         this.imageUrl = imageUrl;
     }
 
-    public boolean isIsAvailable() {
-        return isAvailable;
-    }
+    public boolean isAvailable() {
+		return isAvailable;
+	}
 
-    public void setIsAvailable(boolean isAvailable) {
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public int getValidityDays() {
+		return validityDays;
+	}
+
+	public void setValidityDays(int validityDays) {
+		this.validityDays = validityDays;
+	}
+
+	public float getCoachingType() {
+		return coachingType;
+	}
+
+	public void setCoachingType(float coachingType) {
+		this.coachingType = coachingType;
+	}
+
+	public void setIsAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 

@@ -19,6 +19,13 @@ public class BundleDAO {
 		this.template = template;
 	}
 
+	public List<Map<String, Object>> getBundles() {
+		String query = "SELECT bundle_id as bundleId, name, description, mrp, selling_price as sellingPrice,"
+				+ " is_available as isAvailavble, discount_percent as discountPercent,"
+				+ " created_date as createdDate, validity_days as validityDays FROM bundle";
+		return template.queryForList(query);
+	}
+
 	public List<Map<String, Object>> getQPBundleList(int coachingType) {
 		String query = "select b.*,1 as is_added_to_cart from bundle b"
 				+ " inner join cart c on b.bundle_id = c.bundle_id"
