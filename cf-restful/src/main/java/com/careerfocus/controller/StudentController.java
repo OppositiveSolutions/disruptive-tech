@@ -1,5 +1,6 @@
 package com.careerfocus.controller;
 
+import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StudentService;
 import com.careerfocus.util.response.Response;
@@ -22,6 +23,11 @@ public class StudentController {
 			@RequestBody AddStudentVO student) throws Exception {
 		return studentService.addStudent(student);
 	}
+	
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response editStudent(@RequestBody AddStudentVO student) throws Exception {
+        return Response.ok(studentService.editStudent(student)).build();
+    }
 
 	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
 	public Response getStudent(HttpServletRequest request, HttpServletResponse response,

@@ -1,6 +1,7 @@
 package com.careerfocus.controller;
 
 import com.careerfocus.model.request.AddStaffVO;
+import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StaffService;
 import com.careerfocus.util.response.Response;
 
@@ -26,6 +27,11 @@ public class StaffController {
     public Response addStaff(HttpServletRequest request, HttpServletResponse response,
                                @RequestBody AddStaffVO staff) throws Exception {
         return staffService.addStaff(staff);
+    }
+    
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response editStudent(@RequestBody AddStaffVO staff) throws Exception {
+        return Response.ok(staffService.editStaff(staff)).build();
     }
 
     @RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)

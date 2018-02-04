@@ -122,7 +122,15 @@ public class Student {
         this.userId = userId;
     }
 
-    public Center getCenter() {
+    public int getCenterId() {
+		return centerId;
+	}
+
+	public void setCenterId(int centerId) {
+		this.centerId = centerId;
+	}
+
+	public Center getCenter() {
         return center;
     }
 
