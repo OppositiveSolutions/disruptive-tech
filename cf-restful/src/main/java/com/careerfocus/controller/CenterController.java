@@ -1,6 +1,7 @@
 package com.careerfocus.controller;
 
 import com.careerfocus.entity.Center;
+import com.careerfocus.model.request.AddStaffVO;
 import com.careerfocus.service.CenterService;
 import com.careerfocus.util.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,11 @@ public class CenterController {
     public Response getCenter(HttpServletRequest request, HttpServletResponse response,
                               @PathVariable("centerId") int centerId) throws Exception {
         return Response.ok(service.getCenter(centerId)).build();
+    }
+    
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response editStudent(@RequestBody Center center) throws Exception {
+        return Response.ok(service.editCenter(center)).build();
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
