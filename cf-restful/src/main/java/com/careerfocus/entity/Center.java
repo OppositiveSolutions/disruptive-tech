@@ -42,6 +42,10 @@ public class Center {
     @Basic
     @Column(name = "is_franchise")
     private boolean isFranchise;
+    
+    @Basic
+    @Column(name = "state", nullable = false, length = 45)
+    private int state;
 
     @JsonIgnore
     @OneToMany(targetEntity = Student.class, mappedBy = "center", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -78,7 +82,15 @@ public class Center {
         this.centerId = centerId;
     }
 
-    public String getCenterLatitude() {
+    public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public String getCenterLatitude() {
         return centerLatitude;
     }
 
