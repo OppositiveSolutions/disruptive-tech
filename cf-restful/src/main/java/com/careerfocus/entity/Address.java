@@ -22,6 +22,12 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "address_id", columnDefinition = "INT")
     private int addressId;
+    
+    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId", scope = User.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", columnDefinition = "INT", nullable = false)
+    private User user;
 
     @Basic
     @Column(name = "street_address", length = 2000)
@@ -67,6 +73,14 @@ public class Address {
 
     public int getAddressId() {
         return addressId;
+    }
+    
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setAddressId(int addressId) {

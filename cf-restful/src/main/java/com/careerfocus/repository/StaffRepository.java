@@ -10,8 +10,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Date;
-
 public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
 	@Query(value = "SELECT new com.careerfocus.model.response.StaffVO(u.userId, CONCAT(u.firstName, ' ', u.lastName), "

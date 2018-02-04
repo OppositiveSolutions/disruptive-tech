@@ -48,6 +48,7 @@ public class StaffUtils {
 
         Address address = new Address(staffVO.getAddress(), staffVO.getLandMark(), staffVO.getCity(),
                 staffVO.getState(), staffVO.getPinCode());
+        address.setUser(user);
         Set<Address> addressSet = new HashSet<>();
         addressSet.add(address);
         user.setAddress(addressSet);
