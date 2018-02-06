@@ -1,6 +1,5 @@
 package com.careerfocus.controller;
 
-import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StudentService;
 import com.careerfocus.util.response.Response;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/student")

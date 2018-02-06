@@ -76,9 +76,10 @@ public class StudentService {
 		user.setLastName(studentVO.getLastName());
 		user.setGender(studentVO.getGender());
 		user.setDob(DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
-
+		
+//		studentDAO.deleteUserAddress(studentVO.getUserId());
 		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
-				studentVO.getState(), studentVO.getPinCode());
+				studentVO.getState(), studentVO.getPinCode(), studentVO.getUserId());
 		Set<Address> addressSet = new HashSet<>();
 		addressSet.add(address);
 		user.setAddress(addressSet);

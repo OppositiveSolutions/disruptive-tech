@@ -24,7 +24,8 @@ public class StudentDAO {
         		+ " state_id as stateId, pin_code as pinCode, phone_no as phoneNo FROM student s"
         		+ " INNER JOIN user u ON s.user_id = u.user_id"
         		+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
-        		+ " LEFT JOIN address a on a.user_id = s.user_id ORDER BY first_name, last_name ";
+        		+ " LEFT JOIN user_address ua on s.user_id = ua.user_id "
+        		+ " LEFT JOIN address a on ua.address_id = a.address_id ORDER BY first_name, last_name ";
 
         if (pageSize > 0 && pageNo > 0) {
             query += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
@@ -40,7 +41,8 @@ public class StudentDAO {
         		+ " land_mark as landMark, city, state_id as stateId, pin_code as pinCode, phone_no as phoneNo"
         		+ " FROM staff s INNER JOIN user u ON s.user_id = u.user_id"
         		+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
-        		+ " LEFT JOIN address a on a.user_id = s.user_id ORDER BY first_name, last_name ";
+        		+ " LEFT JOIN user_address ua on s.user_id = ua.user_id "
+        		+ " LEFT JOIN address a on ua.address_id = a.address_id ORDER BY first_name, last_name ";
 
         if (pageSize > 0 && pageNo > 0) {
             query += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
@@ -66,4 +68,9 @@ public class StudentDAO {
             return null;
         });
     }
+
+	public boolean deleteUserAddress(int userId) {
+		String query = "delete from user_address where user_id = ?";
+		return template.update(query) > 0 ? true : false;
+	}
 }

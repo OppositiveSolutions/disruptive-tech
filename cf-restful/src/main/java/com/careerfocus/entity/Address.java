@@ -59,12 +59,13 @@ public class Address {
     public Address() {
     }
 
-    public Address(String streetAddress, String landMark, String city, States state, int pinCode) {
+    public Address(String streetAddress, String landMark, String city, States state, int pinCode, int user) {
         this.streetAddress = streetAddress;
         this.landMark = landMark;
         this.city = city;
         this.state = state;
         this.pinCode = pinCode;
+        this.user = new User(user);
     }
 
     public Address(int addressId) {

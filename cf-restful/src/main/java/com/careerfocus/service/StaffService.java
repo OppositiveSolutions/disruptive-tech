@@ -78,9 +78,10 @@ public class StaffService {
         user.setLastName(staffVO.getLastName());
         user.setGender(staffVO.getGender());
         user.setDob(DateUtils.convertMMDDYYYYToJavaDate(staffVO.getDob()));
-
+        
+//		studentDAO.deleteUserAddress(staffVO.getUserId());
         Address address = new Address(staffVO.getAddress(), staffVO.getLandMark(), staffVO.getCity(),
-                staffVO.getState(), staffVO.getPinCode());
+                staffVO.getState(), staffVO.getPinCode(), staffVO.getUserId());
         address.setUser(user);
         Set<Address> addressSet = new HashSet<>();
         addressSet.add(address);

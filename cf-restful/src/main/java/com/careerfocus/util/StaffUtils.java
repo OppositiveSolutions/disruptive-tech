@@ -47,7 +47,7 @@ public class StaffUtils {
                 DateUtils.convertMMDDYYYYToJavaDate(staffVO.getDob()));
 
         Address address = new Address(staffVO.getAddress(), staffVO.getLandMark(), staffVO.getCity(),
-                staffVO.getState(), staffVO.getPinCode());
+                staffVO.getState(), staffVO.getPinCode(), user.getUserId());
         address.setUser(user);
         Set<Address> addressSet = new HashSet<>();
         addressSet.add(address);
