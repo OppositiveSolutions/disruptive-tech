@@ -117,7 +117,7 @@ public class StudentService {
 
 	@Transactional
 	public void updateStudentExpiry(int userId, String expiryDate) {
-		studentRepository.updateStudentExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate), userId);
+		studentRepository.updateStudentExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate,"MM/dd/yyyy"), userId);
 	}
 
 }
