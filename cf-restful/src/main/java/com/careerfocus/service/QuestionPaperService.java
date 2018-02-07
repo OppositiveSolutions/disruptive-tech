@@ -72,6 +72,10 @@ public class QuestionPaperService {
     public Collection<QuestionPaper> getAllQuestionPapersWithFullDetails() {
         return qPaperRepository.findAll();
     }
+    
+    public List<Map<String, Object>> getAllQuestionPapers() {
+        return qPaperDAO.getAllQuestionPapers();
+    }
 
     public Page<QuestionPaperVO> getAllQuestionPapers(int pageSize, int pageNo) {
         Pageable page = new PageRequest(pageNo - 1, pageSize);

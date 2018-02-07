@@ -45,6 +45,11 @@ public class QuestionPaperController {
     public Response getAllQuestionPapersFullDetails() throws Exception {
         return Response.ok(qPaperService.getAllQuestionPapersWithFullDetails()).build();
     }
+    
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public Response getAllQuestionPapers() throws Exception {
+        return Response.ok(qPaperService.getAllQuestionPapers()).build();
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Response getQuestionPaper(@PathVariable("id") Integer id) throws Exception {
