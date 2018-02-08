@@ -13,13 +13,5 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MainInterceptor()).addPathPatterns("/**");
     }
-    
-    @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver getCommonsMultipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(20971520);   // 20MB
-        multipartResolver.setMaxInMemorySize(1048576);  // 1MB
-        return multipartResolver;
-    }
 
 }

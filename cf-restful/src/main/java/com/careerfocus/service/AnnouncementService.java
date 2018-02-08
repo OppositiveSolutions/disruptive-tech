@@ -7,8 +7,6 @@ import com.careerfocus.repository.AnnouncementImageRepository;
 import com.careerfocus.repository.AnnouncementRepository;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
