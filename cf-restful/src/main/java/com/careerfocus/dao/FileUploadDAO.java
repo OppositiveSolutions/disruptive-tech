@@ -11,20 +11,20 @@ import com.careerfocus.entity.UploadFile;
 @Repository
 public class FileUploadDAO {
 
-	@Autowired
-	private FactoryBean<SessionFactory> sessionFactory;
-
-	public FileUploadDAO() {
-	}
-
-	@Transactional
-	public void save(UploadFile uploadFile) {
-		try {
-			sessionFactory.getObject().getCurrentSession().save(uploadFile);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	@Autowired
+//	private FactoryBean<SessionFactory> sessionFactory;
+//
+//	public FileUploadDAO() {
+//	}
+//
+//	@Transactional
+//	public void save(UploadFile uploadFile) {
+//		try {
+//			sessionFactory.getObject().getCurrentSession().save(uploadFile);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 }

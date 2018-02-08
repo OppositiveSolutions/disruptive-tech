@@ -5,7 +5,6 @@ import com.careerfocus.entity.SliderImage;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface SliderImageRepository extends JpaRepository<SliderImage, Integer> {
@@ -13,9 +12,4 @@ public interface SliderImageRepository extends JpaRepository<SliderImage, Intege
 	@Query(value = "select si from SliderImage si where si.isCurrent = 1 ORDER BY si.sliderImageId DESC", nativeQuery = false)
 	public List<SliderImage> findAllByIsCurrentOrderByIdAsc();
 	
-//	@Modifying
-//	@Query("UPDATE SliderImage s SET s.isCurrent = !s.isCurrent WHERE s.SliderImageId = ?")
-//	void updateSliderImageIsCurrent(int SliderImageId);
-
-
 }

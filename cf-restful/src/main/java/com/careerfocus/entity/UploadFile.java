@@ -3,39 +3,37 @@ package com.careerfocus.entity;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "FILES_UPLOAD")
+@Table(name = "files_upload")
 public class UploadFile {
-	private long id;
+	private int id;
 	private String fileName;
 	private byte[] data;
 	private int coachingType;
+	private int isCurrent = 1;
 
 	public UploadFile() {
 		super();
 	}
 
-	public UploadFile(String fileName, byte[] data, int coachingType) {
+	public UploadFile(String fileName, byte[] data, int coachingType, int isCurrent) {
 		super();
 		this.coachingType = coachingType;
 		this.fileName = fileName;
 		this.data = data;
+		this.isCurrent = isCurrent;
 	}
 
 	@Id
-	@GeneratedValue
 	@Column(name = "file_id")
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -65,5 +63,13 @@ public class UploadFile {
 
 	public void setCoachingType(int coachingType) {
 		this.coachingType = coachingType;
+	}
+
+	public int getIsCurrent() {
+		return isCurrent;
+	}
+
+	public void setIsCurrent(int isCurrent) {
+		this.isCurrent = isCurrent;
 	}
 }
