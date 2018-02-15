@@ -66,7 +66,7 @@ public class QuestionPaperCategory {
     private int order;
 
     @Basic
-    @Column(columnDefinition = "INT")
+    @Column(name = "duration", columnDefinition = "INT")
     private int duration;
 
     public QuestionPaperCategory() {
