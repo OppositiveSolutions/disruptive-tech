@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionPaperService {
@@ -103,7 +104,10 @@ public class QuestionPaperService {
                 findByQuestionPaperCategoryIdIn(QuestionPaperUtils.getCategoryIds(categoryList));
 
         List<QuestionPaperCategory> cListToDelete = new ArrayList<>(oldCList);
-        cListToDelete.remove(cListToUpdate);
+
+        cListToDelete = cListToDelete.stream().filter(c1 -> cListToUpdate.stream().noneMatch(c2 ->
+                c1.getQuestionPaperCategoryId() == c2.getQuestionPaperCategoryId()))
+                .collect(Collectors.toList());
 
         QuestionPaperUtils.copyCategoryListByCategoryId(cListToUpdate, categoryList);
 
