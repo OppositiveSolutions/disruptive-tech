@@ -1,7 +1,10 @@
 package com.careerfocus.service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -12,9 +15,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.careerfocus.constants.ErrorCodes;
+import com.careerfocus.dao.StudentDAO;
+import com.careerfocus.entity.Address;
 import com.careerfocus.entity.Center;
 import com.careerfocus.entity.Staff;
 import com.careerfocus.entity.User;
+import com.careerfocus.entity.UserPhone;
 import com.careerfocus.model.request.AddStaffVO;
 import com.careerfocus.model.response.StaffVO;
 import com.careerfocus.repository.StaffRepository;
@@ -32,6 +38,9 @@ public class StaffService {
 
     @Autowired
     UserRepository userRepository;
+    
+    @Autowired
+    StudentDAO studentDAO;
 
     @Transactional
     public Response addStaff(AddStaffVO staffVO) {
@@ -47,7 +56,7 @@ public class StaffService {
         User user = StaffUtils.createUserEntity(staffVO);
         user = userRepository.save(user);
 
-        Staff staff = new Staff(user.getUserId(), staffVO.getQualification(), 1, "101", "dummy value",
+        Staff staff = new Staff(user.getUserId(), staffVO.getQualification(), 1, staffVO.getCenterId()+"", "dummy value",
                 new Date(), new Center(staffVO.getCenterId()));
         staffRepository.save(staff);
 
@@ -55,16 +64,62 @@ public class StaffService {
 
         return Response.ok(staffVO).build();
     }
+    
+    public Response editStaff(AddStaffVO  staffVO) {
 
-    public Page<StaffVO> getStaff(int pageSize, int pageNo) {
-        Pageable request = new PageRequest(pageNo - 1, pageSize);
-        return staffRepository.findAllStaffs(request);
+    	User user = userRepository.findOne(staffVO.getUserId());
+    	Staff staff = staffRepository.findOne(staffVO.getUserId());
+        if (user == null || staff == null) {
+            throw new RuntimeException();
+        }
+
+        user.setUsername(staffVO.getEmailId());
+        user.setFirstName(staffVO.getFirstName());
+        user.setLastName(staffVO.getLastName());
+        user.setGender(staffVO.getGender());
+        user.setDob(DateUtils.convertMMDDYYYYToJavaDate(staffVO.getDob()));
+        
+//		studentDAO.deleteUserAddress(staffVO.getUserId());
+        Address address = new Address(staffVO.getAddress(), staffVO.getLandMark(), staffVO.getCity(),
+                staffVO.getState(), staffVO.getPinCode(), staffVO.getUserId());
+        address.setUser(user);
+        Set<Address> addressSet = new HashSet<>();
+        addressSet.add(address);
+        user.setAddress(addressSet);
+
+        if (staffVO.getMobileNo() != null && !staffVO.getMobileNo().isEmpty()) {
+            UserPhone phone = new UserPhone(staffVO.getMobileNo(), 1, true);
+            phone.setUser(user);
+            Set<UserPhone> phones = new HashSet<>();
+            phones.add(phone);
+            user.setUserPhones(phones);
+        }
+        user = userRepository.save(user);
+
+        staff.setQualification(staffVO.getQualification());
+        staff.setCenter(new Center(staffVO.getCenterId()));
+        staffRepository.save(staff);
+
+        staffVO.setUserId(user.getUserId());
+
+        return Response.ok(staffVO).build();
+    }
+
+    public List<Map<String,Object>> getStaff(int pageSize, int pageNo) {
+//        Pageable request = new PageRequest(pageNo - 1, pageSize);
+//        return staffRepository.findAllStaffs(request);
+    	return studentDAO.getStaffs(pageSize, pageNo);
     }
 
     public Page<StaffVO> findStaffsByName(String key, int pageSize, int pageNo) {
 
         Pageable request = new PageRequest(pageNo - 1, pageSize);
         return staffRepository.searchStaffsByNameOrEmail("%" + key + "%", request);
+    }
+    
+    @Transactional
+    public void updateStaffExpiry(int userId) {
+        staffRepository.updateStaffExpiry(userId);
     }
 
 }

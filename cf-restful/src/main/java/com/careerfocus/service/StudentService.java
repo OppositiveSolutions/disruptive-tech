@@ -1,9 +1,12 @@
 package com.careerfocus.service;
 
 import com.careerfocus.constants.ErrorCodes;
+import com.careerfocus.dao.StudentDAO;
+import com.careerfocus.entity.Address;
 import com.careerfocus.entity.Center;
 import com.careerfocus.entity.Student;
 import com.careerfocus.entity.User;
+import com.careerfocus.entity.UserPhone;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.model.response.StudentVO;
 import com.careerfocus.repository.StudentRepository;
@@ -20,54 +23,101 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class StudentService {
 
-    @Autowired
-    StudentRepository studentRepository;
+	@Autowired
+	StudentRepository studentRepository;
 
-    @Autowired
-    UserRepository userRepository;
+	@Autowired
+	UserRepository userRepository;
 
-    @Transactional
-    public Response addStudent(AddStudentVO studentVO) {
-        List<Error> errors = StudentUtils.validate(studentVO);
-        if (userRepository.findByUsername(studentVO.getEmailId()) != null)
-            errors.add(new Error(ErrorCodes.EMAIL_EXISTS, ErrorCodes.EMAIL_EXISTS_MSG));
+	@Autowired
+	StudentDAO studentDAO;
 
-        if (errors != null && !errors.isEmpty()) {
-            return Response.status(ErrorCodes.VALIDATION_FAILED)
-                    .error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
-        }
+	@Transactional
+	public Response addStudent(AddStudentVO studentVO) {
+		List<Error> errors = StudentUtils.validate(studentVO);
+		if (userRepository.findByUsername(studentVO.getEmailId()) != null)
+			errors.add(new Error(ErrorCodes.EMAIL_EXISTS, ErrorCodes.EMAIL_EXISTS_MSG));
 
-        User user = StudentUtils.createUserEntity(studentVO);
-        user = userRepository.save(user);
+		if (errors != null && !errors.isEmpty()) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED)
+					.error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
+		}
 
-        Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, "101", "dummy value",
-                new Date(), new Center(studentVO.getCenterId()));
-        studentRepository.save(student);
+		User user = StudentUtils.createUserEntity(studentVO);
+		user = userRepository.save(user);
 
-        studentVO.setUserId(user.getUserId());
+		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, studentVO.getCenterId() + "",
+				"paid", new Date(), new Center(studentVO.getCenterId()));
+		studentRepository.save(student);
 
-        return Response.ok(studentVO).build();
-    }
+		studentVO.setUserId(user.getUserId());
 
-    public Page<StudentVO> getStudent(int pageSize, int pageNo) {
-        Pageable request = new PageRequest(pageNo - 1, pageSize);
-        return studentRepository.findAllStudents(request);
-    }
+		return Response.ok(studentVO).build();
+	}
 
-    public Page<StudentVO> findStudentsByName(String key, int pageSize, int pageNo) {
+	public Response editStudent(AddStudentVO studentVO) {
 
-        Pageable request = new PageRequest(pageNo - 1, pageSize);
-        return studentRepository.searchStudentsByNameOrEmail("%" + key + "%", request);
-    }
+		User user = userRepository.findOne(studentVO.getUserId());
+		Student student = studentRepository.findOne(studentVO.getUserId());
+		if (user == null || student == null) {
+			throw new RuntimeException();
+		}
 
-    @Transactional
-    public void updateStudentExpiry(int userId, String expiryDate) {
-        studentRepository.updateStudentExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate), userId);
-    }
-    
+		user.setUsername(studentVO.getEmailId());
+		user.setFirstName(studentVO.getFirstName());
+		user.setLastName(studentVO.getLastName());
+		user.setGender(studentVO.getGender());
+		user.setDob(DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
+		
+//		studentDAO.deleteUserAddress(studentVO.getUserId());
+		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
+				studentVO.getState(), studentVO.getPinCode(), studentVO.getUserId());
+		Set<Address> addressSet = new HashSet<>();
+		addressSet.add(address);
+		user.setAddress(addressSet);
+
+		if (studentVO.getMobileNo() != null && !studentVO.getMobileNo().isEmpty()) {
+			UserPhone phone = new UserPhone(studentVO.getMobileNo(), 1, true);
+			phone.setUser(user);
+			Set<UserPhone> phones = new HashSet<>();
+			phones.add(phone);
+			user.setUserPhones(phones);
+		}
+		user = userRepository.save(user);
+
+		student.setQualification(studentVO.getQualification());
+		student.setCenter(new Center(studentVO.getCenterId()));
+		student.setCenterId(studentVO.getCenterId());
+		studentRepository.save(student);
+
+		studentVO.setUserId(user.getUserId());
+
+		return Response.ok(studentVO).build();
+	}
+
+	public List<Map<String, Object>> getStudent(int pageSize, int pageNo) {
+		// Pageable request = new PageRequest(pageNo - 1, pageSize);
+		// return studentRepository.findAllStudents(request);
+		return studentDAO.getStudents(pageSize, pageNo);
+	}
+
+	public Page<StudentVO> findStudentsByName(String key, int pageSize, int pageNo) {
+
+		Pageable request = new PageRequest(pageNo - 1, pageSize);
+		return studentRepository.searchStudentsByNameOrEmail("%" + key + "%", request);
+	}
+
+	@Transactional
+	public void updateStudentExpiry(int userId, String expiryDate) {
+		studentRepository.updateStudentExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate,"MM/dd/yyyy"), userId);
+	}
+
 }

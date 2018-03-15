@@ -1,6 +1,7 @@
 package com.careerfocus.controller;
 
 import com.careerfocus.model.request.AddStaffVO;
+import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StaffService;
 import com.careerfocus.util.response.Response;
 
@@ -27,6 +28,11 @@ public class StaffController {
                                @RequestBody AddStaffVO staff) throws Exception {
         return staffService.addStaff(staff);
     }
+    
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public Response editStudent(@RequestBody AddStaffVO staff) throws Exception {
+        return Response.ok(staffService.editStaff(staff)).build();
+    }
 
     @RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
     public Response getStaff(HttpServletRequest request, HttpServletResponse response,
@@ -40,5 +46,12 @@ public class StaffController {
                                  @PathVariable("pageNo") int pageNo) throws Exception {
         return Response.ok(staffService.findStaffsByName(key, pageSize, pageNo)).build();
     }
+    
+    @RequestMapping(value = "/{userId}/expiry", method = RequestMethod.PUT, consumes = { "text/plain" })
+	public Response updateStudentExpiry(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("userId") int userId) throws Exception {
+    	staffService.updateStaffExpiry(userId);
+		return Response.ok().build();
+	}
 
 }

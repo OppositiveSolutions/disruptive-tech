@@ -1,23 +1,17 @@
 package com.careerfocus.dao;
 
-import com.careerfocus.entity.States;
-
-import org.apache.commons.net.ntp.NTPUDPClient;
-import org.apache.commons.net.ntp.TimeInfo;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-import java.io.IOException;
-import java.net.InetAddress;
 import java.sql.ResultSet;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.careerfocus.entity.States;
 
 @Repository
 public class CommonDAO {
@@ -30,7 +24,6 @@ public class CommonDAO {
 	}
 
 	public List<States> getStates() {
-
 		String query = "SELECT * FROM states";
 
 		return template.query(query,
@@ -61,6 +54,12 @@ public class CommonDAO {
 	    System.out.println("Time in minutes: " + diffMinutes + " minutes.");
 	    System.out.println("Time in hours: " + diffHours + " hours.");
 		return diffSeconds;
+	}
+
+	public List<Map<String,Object>> getCoachingTypes() {
+		String query = "SELECT coaching_type_id as coachingTypeId, name FROM coaching_type";
+
+		return template.queryForList(query);
 	}
 	
 //	public DateTime getCurrentIST() {

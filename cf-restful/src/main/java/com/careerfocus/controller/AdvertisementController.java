@@ -1,5 +1,6 @@
 package com.careerfocus.controller;
 
+import com.careerfocus.constants.UIMessages;
 import com.careerfocus.service.AdvertisementService;
 import com.careerfocus.util.response.Response;
 import org.apache.log4j.Logger;
@@ -34,10 +35,30 @@ public class AdvertisementController {
 		return Response.ok().build();
 	}
 
-	@RequestMapping(value = "/image", method = RequestMethod.GET)
+	@RequestMapping(value = "/image/all", method = RequestMethod.GET)
 	public Response getAllSliderImages(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return Response.ok(service.getAllSliderImages()).build();
 	}
+
+	@RequestMapping(value = "{sliderImageId}/image", method = RequestMethod.GET)
+	public byte[] getSliderImage(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(required = true) int sliderImageId) throws Exception {
+		return service.getSliderImage(sliderImageId);
+	}
+	
+//	 @RequestMapping(value = "/iscurrent/{sliderImageId}/image", method = RequestMethod.PUT, consumes = { "text/plain" })
+//		public Response updateSliderImageIsCurrent(HttpServletRequest request, HttpServletResponse response,
+//				@PathVariable("sliderImageId") int sliderImageId) throws Exception {
+//		 service.updateSliderImageIsCurrent(sliderImageId);
+//			return Response.ok().build();
+//		}
+	
+	@RequestMapping(value = "image/{id}", method = RequestMethod.DELETE)
+    public Response deleteSliderImage(HttpServletRequest request, HttpServletResponse response,
+                                        @PathVariable("id") Integer id) throws Exception {
+        service.deleteSliderImage(id);
+        return Response.ok().message(UIMessages.SLIDER_IMAGE_DELETED).build();
+    }
 
 	@RequestMapping(value = "/announcement", method = RequestMethod.POST)
 	public Response saveSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
@@ -54,10 +75,30 @@ public class AdvertisementController {
 		return Response.ok().build();
 	}
 
-	@RequestMapping(value = "/announcement", method = RequestMethod.GET)
+	@RequestMapping(value = "/announcement/all", method = RequestMethod.GET)
 	public Response getAllSliderAnnouncements(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		return Response.ok(service.getAllSliderAnnouncements()).build();
 	}
+
+	@RequestMapping(value = "/{sliderAnnouncementId}/announcement", method = RequestMethod.GET)
+	public String getSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(required = true) int sliderAnnouncementId) throws Exception {
+		return service.getSliderAnnouncement(sliderAnnouncementId);
+	}
+	
+//	 @RequestMapping(value = "/iscurrent/{sliderAnnouncementId}/announcement", method = RequestMethod.PUT, consumes = { "text/plain" })
+//		public Response updateSliderAnnouncementIsCurrent(HttpServletRequest request, HttpServletResponse response,
+//				@PathVariable("sliderAnnouncementId") int sliderAnnouncementId) throws Exception {
+//		 service.updateSliderAnnouncementIsCurrent(sliderAnnouncementId);
+//			return Response.ok().build();
+//		}
+	
+	@RequestMapping(value = "announcement/{id}", method = RequestMethod.DELETE)
+    public Response deleteSliderAnnouncement(HttpServletRequest request, HttpServletResponse response,
+                                        @PathVariable("id") Integer id) throws Exception {
+        service.deleteSliderAnnouncement(id);
+        return Response.ok().message(UIMessages.SLIDER_ANNOUNCEMENT_DELETED).build();
+    }
 
 }

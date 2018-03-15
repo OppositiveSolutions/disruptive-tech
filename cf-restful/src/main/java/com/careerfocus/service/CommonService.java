@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommonService {
@@ -90,4 +91,8 @@ public class CommonService {
 
         return Response.ok().build();
     }
+
+	public List<Map<String,Object>> getCoachingTypes() {
+		return commonDAO.getCoachingTypes();
+	}
 }

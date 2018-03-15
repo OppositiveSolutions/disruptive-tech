@@ -47,7 +47,7 @@ public class StudentUtils {
                 DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
 
         Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
-                studentVO.getState(), studentVO.getPinCode());
+                studentVO.getState(), studentVO.getPinCode(), user.getUserId());
         Set<Address> addressSet = new HashSet<>();
         addressSet.add(address);
         user.setAddress(addressSet);

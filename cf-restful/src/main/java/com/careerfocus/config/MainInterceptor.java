@@ -69,7 +69,8 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/student"))
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/advertisement"))
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial"))
-				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/bundle")))
+				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/bundle"))
+			|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/material")))
 			return false;
 		return true;
 	}
@@ -97,6 +98,7 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/result")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
 				|| (pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
 						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile")
 						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
@@ -121,7 +123,8 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/achievers")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/advertisement")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/video-tutorial")
-				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial");
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/material");
 	}
 
 	private boolean checkAuthorisationForBranchAdmin(String uri, String requestMethod) {

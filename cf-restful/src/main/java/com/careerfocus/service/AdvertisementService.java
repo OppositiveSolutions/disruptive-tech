@@ -1,27 +1,17 @@
 package com.careerfocus.service;
 
 import com.careerfocus.constants.ErrorCodes;
-import com.careerfocus.entity.AnnouncementImage;
-import com.careerfocus.entity.Announcements;
 import com.careerfocus.entity.SliderAnnouncement;
 import com.careerfocus.entity.SliderImage;
-import com.careerfocus.repository.AnnouncementImageRepository;
-import com.careerfocus.repository.AnnouncementRepository;
 import com.careerfocus.repository.SliderAnnouncementRepository;
 import com.careerfocus.repository.SliderImageRepository;
-import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,6 +30,7 @@ public class AdvertisementService {
 		}
 
 		SliderImage sImage = new SliderImage(image.getBytes());
+		sImage.setIsCurrent(1);
 		siRepository.save(sImage);
 
 		return Response.ok().build();
@@ -51,8 +42,22 @@ public class AdvertisementService {
 	}
 
 	public List<SliderImage> getAllSliderImages() {
-		return siRepository.findAll();
+		return siRepository.findAllByIsCurrentOrderByIdAsc();
 	}
+
+	public byte[] getSliderImage(int sliderImageId) {
+		return siRepository.findOne(sliderImageId).getImage();
+	}
+
+	public void deleteSliderImage(Integer sliderImageId) {
+		siRepository.delete(sliderImageId);
+
+	}
+
+	// public void updateSliderImageIsCurrent(int sliderImageId) throws
+	// IOException {
+	// siRepository.updateSliderImageIsCurrent(sliderImageId);
+	// }
 
 	@Transactional
 	public Response saveSliderAnnouncement(String announcement) throws IOException {
@@ -74,5 +79,19 @@ public class AdvertisementService {
 	public List<SliderAnnouncement> getAllSliderAnnouncements() {
 		return saRepository.findAll();
 	}
+
+	public String getSliderAnnouncement(int sliderAnnouncementId) {
+		return saRepository.findOne(sliderAnnouncementId).getAnnouncement();
+	}
+
+	public void deleteSliderAnnouncement(Integer sliderAnnouncementId) {
+		saRepository.delete(sliderAnnouncementId);
+
+	}
+
+	// public void updateSliderAnnouncementIsCurrent(int sliderAnnouncementId)
+	// throws IOException {
+	// saRepository.updateSliderAnnouncementIsCurrent(sliderAnnouncementId);
+	// }
 
 }

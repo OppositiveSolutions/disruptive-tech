@@ -10,8 +10,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Date;
-
 public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
 	@Query(value = "SELECT new com.careerfocus.model.response.StaffVO(u.userId, CONCAT(u.firstName, ' ', u.lastName), "
@@ -27,5 +25,9 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 			+ " AND (LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(:key) OR LOWER(u.username) LIKE LOWER(:key))"
 			+ " ORDER BY u.firstName, u.lastName", nativeQuery = false)
 	Page<StaffVO> searchStaffsByNameOrEmail(@Param("key") String key, Pageable page);
+
+	@Modifying
+	@Query("UPDATE Staff s SET s.status = 0 WHERE s.userId = ?")
+	void updateStaffExpiry(int userId);
 
 }

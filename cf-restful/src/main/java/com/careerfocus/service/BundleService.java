@@ -32,6 +32,10 @@ public class BundleService {
 		return bundleDAO.getQPBundleList(coachingType);
 	}
 	
+	public List<Map<String, Object>> getBundles() {
+		return bundleDAO.getBundles();
+	}
+	
 	public List<Map<String, Object>> getCoachingTypeList() {
 		return bundleDAO.getCoachingTypeList();
 	}
@@ -41,7 +45,7 @@ public class BundleService {
 		if (existingBundle == null) {
 			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.INVALID_BUNDLE_MSG).build();
 		}
-		existingBundle.setIsAvailable(bundle.isIsAvailable());
+		existingBundle.setIsAvailable(bundle.isAvailable());
 		existingBundle.setBundleCategory(bundle.getBundleCategory());
 		existingBundle.setBundleId(bundle.getBundleId());
 		existingBundle.setDescription(bundle.getDescription());

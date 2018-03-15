@@ -17,7 +17,7 @@ public class SliderAnnouncement {
     
     @Basic
     @Column(name = "is_current")
-    private boolean isCurrent;
+    private int isCurrent;
 
     @Basic
     private String announcement;
@@ -42,11 +42,11 @@ public class SliderAnnouncement {
         this.sliderAnnouncementId = sliderAnnouncementId;
     }
     
-    public boolean isIsCurrent() {
+    public int isIsCurrent() {
         return isCurrent;
     }
 
-    public void setIsCurrent(boolean isCurrent) {
+    public void setIsCurrent(int isCurrent) {
         this.isCurrent = isCurrent;
     }
 

@@ -17,7 +17,7 @@ public class SliderImage {
     
     @Basic
     @Column(name = "is_current")
-    private boolean isCurrent;
+    private int isCurrent;
 
     @Basic
     @Column(columnDefinition = "BLOB", nullable = false)
@@ -43,11 +43,11 @@ public class SliderImage {
         this.sliderImageId = sliderImageId;
     }
     
-    public boolean isIsCurrent() {
+    public int isIsCurrent() {
         return isCurrent;
     }
 
-    public void setIsCurrent(boolean isCurrent) {
+    public void setIsCurrent(int isCurrent) {
         this.isCurrent = isCurrent;
     }
 

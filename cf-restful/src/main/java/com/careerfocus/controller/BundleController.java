@@ -34,6 +34,11 @@ public class BundleController {
 	public Response editBundle(@RequestBody Bundle bundle) throws Exception {
 		return Response.ok(service.editBundle(bundle)).build();
 	}
+	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public Response getBundles() throws Exception {
+		return Response.ok(service.getBundles()).build();
+	}
 
 	@RequestMapping(value = "/list/{coachingType}", method = RequestMethod.GET)
 	public Response getQPBundleList(@PathVariable("coachingType") Integer coachingType) throws Exception {
