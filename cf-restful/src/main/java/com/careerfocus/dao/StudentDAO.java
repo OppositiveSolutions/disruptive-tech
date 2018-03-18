@@ -109,8 +109,6 @@ public class StudentDAO {
 
 	private Collection<StudentVO> StudentVO(String query, Object... params) {
 		return template.query(query, params, (result, arg1) -> {
-			// String name = result.getString("first_name") + " " +
-			// result.getString("last_name");
 			return null;
 		});
 	}
@@ -118,5 +116,10 @@ public class StudentDAO {
 	public boolean deleteUserAddress(int userId) {
 		String query = "delete from user_address where user_id = ?";
 		return template.update(query) > 0 ? true : false;
+	}
+
+	public int getStudentType(int userId) {
+		String query = "select type from student where user_id = ?";
+		return template.queryForObject(query, Integer.class);
 	}
 }

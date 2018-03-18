@@ -1,14 +1,20 @@
 package com.careerfocus.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.BundleDAO;
+import com.careerfocus.entity.AnnouncementImage;
 import com.careerfocus.entity.Bundle;
+import com.careerfocus.entity.BundleImage;
+import com.careerfocus.repository.AnnouncementImageRepository;
+import com.careerfocus.repository.BundleImageRepository;
 import com.careerfocus.repository.BundleRepository;
 import com.careerfocus.util.response.Response;
 
@@ -24,28 +30,38 @@ public class BundleService {
 	@Autowired
 	BundleDAO bundleDAO;
 
-	public Bundle saveBundle(Bundle bundle) {
-		return bundleRepository.save(bundle);
+	@Autowired
+	BundleImageRepository biRepository;
+
+	public Bundle saveBundle(Bundle bundle, MultipartFile image) throws IOException {
+		bundle = bundleRepository.save(bundle);
+		BundleImage bImage = new BundleImage(bundle.getBundleId(), image.getBytes());
+		biRepository.save(bImage);
+		return bundle;
 	}
 
 	public List<Map<String, Object>> getQPBundleList(Integer coachingType) {
 		return bundleDAO.getQPBundleList(coachingType);
 	}
-	
+
 	public List<Map<String, Object>> getBundles() {
 		return bundleDAO.getBundles();
 	}
-	
+
 	public List<Map<String, Object>> getCoachingTypeList() {
 		return bundleDAO.getCoachingTypeList();
 	}
+
+	public static int NOT_AVAILABLE = 0;
+	public static int AVAILABLE = 1;
+	public static int DELETED = 2;
 
 	public Response editBundle(Bundle bundle) {
 		Bundle existingBundle = bundleRepository.findOne(bundle.getBundleId());
 		if (existingBundle == null) {
 			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.INVALID_BUNDLE_MSG).build();
 		}
-		existingBundle.setIsAvailable(bundle.isAvailable());
+		existingBundle.setIsAvailable(bundle.getIsAvailable());
 		existingBundle.setBundleCategory(bundle.getBundleCategory());
 		existingBundle.setBundleId(bundle.getBundleId());
 		existingBundle.setDescription(bundle.getDescription());
@@ -56,7 +72,7 @@ public class BundleService {
 		existingBundle.setSellingPrice(bundle.getSellingPrice());
 		return Response.ok(bundleRepository.save(existingBundle)).build();
 	}
-	
+
 	public int purchaseBundle(int userId, int bundleId) {
 		return bundleDAO.purchaseBundle(userId, bundleId);
 	}
@@ -65,7 +81,7 @@ public class BundleService {
 		return bundleRepository.findOne(bundleId);
 	}
 
-	public List<Map<String,Object>> getQPBundleQPs(Integer bundleId) {
+	public List<Map<String, Object>> getQPBundleQPs(Integer bundleId) {
 		return bundleDAO.getBundleQPs(bundleId);
 	}
 
@@ -77,18 +93,23 @@ public class BundleService {
 		return bundleDAO.removeQpFromBundle(bundleId, qpId);
 	}
 
-	public boolean deleteBundle(Integer bundleId) {
-		boolean status = true;
-		try {
-			bundleRepository.delete(bundleId);
-		} catch (Exception e) {
-			e.printStackTrace();
-			status = false;
+	public Response deleteBundle(Integer bundleId) {
+		// boolean status = true;
+		// try {
+		// bundleRepository.delete(bundleId);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// status = false;
+		// }
+		Bundle existingBundle = bundleRepository.findOne(bundleId);
+		if (existingBundle == null) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.INVALID_BUNDLE_MSG).build();
 		}
-		return status;
+		existingBundle.setIsAvailable(DELETED);
+		return Response.ok(bundleRepository.save(existingBundle)).build();
 	}
 
-	public List<Map<String,Object>> getPurchasedQPBundleList(Integer userId) {
+	public List<Map<String, Object>> getPurchasedQPBundleList(Integer userId) {
 		return bundleDAO.getPurchasedQPBundleList(userId);
 	}
 

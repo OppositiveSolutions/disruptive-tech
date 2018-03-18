@@ -5,6 +5,7 @@ import com.careerfocus.util.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,6 +42,11 @@ public class LoginController {
     public Response logoutAllDevices(HttpServletRequest request) throws Exception {
         loginService.logoutAllDevices(request);
         return Response.ok().build();
+    }
+    
+    @RequestMapping(value = "/hasemail", method = RequestMethod.GET)
+    public Response logout(HttpServletRequest request, @RequestParam("emailId") String emailId) throws Exception {
+        return Response.ok(loginService.hasEmail(emailId)).build();
     }
 
 }

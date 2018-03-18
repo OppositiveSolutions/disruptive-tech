@@ -18,12 +18,18 @@ public class ExamDAO {
 
 	@Autowired
 	private JdbcTemplate template;
+
 	@Autowired
 	private categoryDAO categoryDAO;
+
 	@Autowired
 	private CommonDAO commonDAO;
+
+//	@Autowired
+//	private QuestionDAO questionDAO;
+
 	@Autowired
-	private QuestionDAO questionDAO;
+	private StudentDAO studentDAO;
 
 	@Autowired
 	public ExamDAO(JdbcTemplate template) {
@@ -248,12 +254,13 @@ public class ExamDAO {
 		return status;
 	}
 
-	public boolean updateExam(int examId) {
+	public boolean updateExam(int id, int userId) {
+		// id = examId or QpId
 		boolean status = false;
 		float correctOption = 0;
 		float isUpdated = 0;
 		String query = "SELECT * FROM exam_question where exam_id = ?";
-		List<Map<String, Object>> examQs = template.queryForList(query, examId);
+		List<Map<String, Object>> examQs = template.queryForList(query, id);
 		for (Map<String, Object> q : examQs) {
 			query = "SELECT correct_option_no FROM question where question_id = ?";
 			try {
@@ -273,6 +280,15 @@ public class ExamDAO {
 			} else
 				status = true;
 		}
+		if (status)
+			if (studentDAO.getStudentType(userId) == 2) {
+				query = "UPDATE test t inner join exam e on t.test_id = e.test_id"
+						+ " SET is_written = 1 where e.exam_id = ?";
+				isUpdated = template.update(query, id);
+			} else if (studentDAO.getStudentType(userId) == 1) {
+				query = "INSERT INTO student_question_paper(user_id,question_paper_id) VALUES (?,?)";
+				isUpdated = template.update(query, userId, id);
+			}
 		return status;
 	}
 

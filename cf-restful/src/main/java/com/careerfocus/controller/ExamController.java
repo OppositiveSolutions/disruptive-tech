@@ -6,6 +6,7 @@ import com.careerfocus.util.response.Response;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +56,9 @@ public class ExamController {
 	@RequestMapping(value = "/saveexam/{examId}", method = RequestMethod.POST)
 	public Response saveQuestion(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("examId") int examId, @RequestBody SaveQuestionVO[] questions) throws Exception {
-		return Response.ok(examService.saveExam(questions, examId)).build();
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
+		return Response.ok(examService.saveExam(questions, examId, userId)).build();
 	}
 
 	@RequestMapping(value = "/save/{examId}/time/{categoryId}", method = RequestMethod.POST)

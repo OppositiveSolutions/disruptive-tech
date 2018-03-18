@@ -14,115 +14,129 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "student")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Student {
 
-    @Id
-    @Column(name = "user_id", columnDefinition = "INT")
-    private int userId;
+	@Id
+	@Column(name = "user_id", columnDefinition = "INT")
+	private int userId;
 
-    @Basic
-    @Column(name = "expiry_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date expiryDate;
+	@Basic
+	@Column(name = "expiry_date", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date expiryDate;
 
-    @Basic
-    @Column(name = "fee_status", nullable = false, length = 45)
-    private String feeStatus;
+	@Basic
+	@Column(name = "fee_status", nullable = false, length = 45)
+	private String feeStatus;
 
-    @Basic
-    private String qualification;
+	@Basic
+	private String qualification;
 
-    @Column(name = "center_id", insertable = false, updatable = false)
-    private int centerId;
+	@Column(name = "center_id", insertable = false, updatable = false)
+	private int centerId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "center_id", columnDefinition = "INT", nullable = false)
-    private Center center;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "center_id", columnDefinition = "INT", nullable = false)
+	private Center center;
 
-    @Basic
-    @Column(columnDefinition = "INT")
-    private int status;
+	@Basic
+	@Column(columnDefinition = "INT")
+	private int status;
 
-    @JsonManagedReference
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId", scope = User.class)
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id", columnDefinition = "INT")
-    private User user;
+	@Basic
+	@Column(columnDefinition = "INT")
+	private int type;
 
-    public Student() {
-    }
+	@JsonManagedReference
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId", scope = User.class)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "user_id", columnDefinition = "INT")
+	private User user;
 
-    public Student(int userId) {
-        this.userId = userId;
-    }
+	public Student() {
+	}
 
-    public Student(int userId, String qualification, int status, String centerId, String feeStatus, Date expiryDate, Center center) {
-        this.userId = userId;
-        this.qualification = qualification;
-        this.status = status;
-        this.feeStatus = feeStatus;
-        this.expiryDate = expiryDate;
-        this.center = center;
-    }
+	public Student(int userId) {
+		this.userId = userId;
+	}
 
-//	public String getCenterId() {
-//		return centerId;
-//	}
-//
-//	public void setCenterId(String centerId) {
-//		this.centerId = centerId;
-//	}
+	public Student(int userId, String qualification, int status, String centerId, String feeStatus, Date expiryDate,
+			Center center, int type) {
+		this.userId = userId;
+		this.qualification = qualification;
+		this.status = status;
+		this.feeStatus = feeStatus;
+		this.expiryDate = expiryDate;
+		this.center = center;
+		this.type = type;
+	}
 
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
+	// public String getCenterId() {
+	// return centerId;
+	// }
+	//
+	// public void setCenterId(String centerId) {
+	// this.centerId = centerId;
+	// }
 
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
 
-    public String getFeeStatus() {
-        return feeStatus;
-    }
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
+	}
 
-    public void setFeeStatus(String feeStatus) {
-        this.feeStatus = feeStatus;
-    }
+	public String getFeeStatus() {
+		return feeStatus;
+	}
 
-    public String getQualification() {
-        return qualification;
-    }
+	public void setFeeStatus(String feeStatus) {
+		this.feeStatus = feeStatus;
+	}
 
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
+	public String getQualification() {
+		return qualification;
+	}
 
-    public int getStatus() {
-        return status;
-    }
+	public void setQualification(String qualification) {
+		this.qualification = qualification;
+	}
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+	public int getStatus() {
+		return status;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public int getType() {
+		return type;
+	}
 
-    public int getUserId() {
-        return userId;
-    }
+	public void setType(int type) {
+		this.type = type;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public int getCenterId() {
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int getCenterId() {
 		return centerId;
 	}
 
@@ -131,12 +145,11 @@ public class Student {
 	}
 
 	public Center getCenter() {
-        return center;
-    }
+		return center;
+	}
 
-    public void setCenter(Center center) {
-        this.center = center;
-    }
-
+	public void setCenter(Center center) {
+		this.center = center;
+	}
 
 }

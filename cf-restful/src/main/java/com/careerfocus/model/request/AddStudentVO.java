@@ -38,6 +38,8 @@ public class AddStudentVO implements Serializable {
     private String mobileNo;
 
     private int centerId;
+    
+    private int type;
 
     public int getUserId() {
         return userId;
@@ -150,5 +152,13 @@ public class AddStudentVO implements Serializable {
     public void setCenterId(int centerId) {
         this.centerId = centerId;
     }
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 
 }

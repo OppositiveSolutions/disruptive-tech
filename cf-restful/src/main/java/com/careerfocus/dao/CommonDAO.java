@@ -35,48 +35,55 @@ public class CommonDAO {
 		Date date = new Date();
 		String timeCurrent = format.format(date);
 		String timePrevious = format.format(timeLastUpdated);
-		
-	    Date d1 = null;
-	    Date d2 = null;
-	    try {
-	        d1 = format.parse(timePrevious);
-	        d2 = format.parse(timeCurrent);
-	    } catch (ParseException e) {
-	        e.printStackTrace();
-	    }
 
-	    // Get msec from each, and subtract.
-	    long diff = d2.getTime() - d1.getTime();
-	    long diffSeconds = diff / 1000 % 60;
-	    long diffMinutes = diff / (60 * 1000) % 60;
-	    long diffHours = diff / (60 * 60 * 1000);
-	    System.out.println("Time in seconds: " + diffSeconds + " seconds.");
-	    System.out.println("Time in minutes: " + diffMinutes + " minutes.");
-	    System.out.println("Time in hours: " + diffHours + " hours.");
+		Date d1 = null;
+		Date d2 = null;
+		try {
+			d1 = format.parse(timePrevious);
+			d2 = format.parse(timeCurrent);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		// Get msec from each, and subtract.
+		long diff = d2.getTime() - d1.getTime();
+		long diffSeconds = diff / 1000 % 60;
+		long diffMinutes = diff / (60 * 1000) % 60;
+		long diffHours = diff / (60 * 60 * 1000);
+		System.out.println("Time in seconds: " + diffSeconds + " seconds.");
+		System.out.println("Time in minutes: " + diffMinutes + " minutes.");
+		System.out.println("Time in hours: " + diffHours + " hours.");
 		return diffSeconds;
 	}
 
-	public List<Map<String,Object>> getCoachingTypes() {
+	public List<Map<String, Object>> getCoachingTypes() {
 		String query = "SELECT coaching_type_id as coachingTypeId, name FROM coaching_type";
-
 		return template.queryForList(query);
 	}
-	
-//	public DateTime getCurrentIST() {
-//		String TIME_SERVER = "time-a.nist.gov";
-//		NTPUDPClient timeClient = new NTPUDPClient();
-//		InetAddress inetAddress;
-//		DateTime time = null;
-//		try {
-//			inetAddress = InetAddress.getByName(TIME_SERVER);
-//			TimeInfo timeInfo;
-//			timeInfo = timeClient.getTime(inetAddress);
-//			long returnTime = timeInfo.getMessage().getTransmitTimeStamp().getTime();
-//			time = new DateTime(returnTime).withZone(DateTimeZone.UTC);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return time;
-//	}
+
+	public boolean hasEmail(String emailId) {
+		String query = "SELECT username FROM user WHERE username = ?";
+		if (template.queryForList(query).size() > 0)
+			return true;
+		else
+			return false;
+	}
+
+	// public DateTime getCurrentIST() {
+	// String TIME_SERVER = "time-a.nist.gov";
+	// NTPUDPClient timeClient = new NTPUDPClient();
+	// InetAddress inetAddress;
+	// DateTime time = null;
+	// try {
+	// inetAddress = InetAddress.getByName(TIME_SERVER);
+	// TimeInfo timeInfo;
+	// timeInfo = timeClient.getTime(inetAddress);
+	// long returnTime = timeInfo.getMessage().getTransmitTimeStamp().getTime();
+	// time = new DateTime(returnTime).withZone(DateTimeZone.UTC);
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// return time;
+	// }
 
 }

@@ -55,7 +55,7 @@ public class StudentService {
 		user = userRepository.save(user);
 
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, studentVO.getCenterId() + "",
-				"paid", new Date(), new Center(studentVO.getCenterId()));
+				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType());
 		studentRepository.save(student);
 
 		studentVO.setUserId(user.getUserId());
@@ -76,8 +76,8 @@ public class StudentService {
 		user.setLastName(studentVO.getLastName());
 		user.setGender(studentVO.getGender());
 		user.setDob(DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
-		
-//		studentDAO.deleteUserAddress(studentVO.getUserId());
+
+		// studentDAO.deleteUserAddress(studentVO.getUserId());
 		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
 				studentVO.getState(), studentVO.getPinCode(), studentVO.getUserId());
 		Set<Address> addressSet = new HashSet<>();
@@ -117,7 +117,7 @@ public class StudentService {
 
 	@Transactional
 	public void updateStudentExpiry(int userId, String expiryDate) {
-		studentRepository.updateStudentExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate,"MM/dd/yyyy"), userId);
+		studentRepository.updateStudentExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate, "MM/dd/yyyy"), userId);
 	}
 
 }

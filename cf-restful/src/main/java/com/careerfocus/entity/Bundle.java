@@ -2,109 +2,102 @@ package com.careerfocus.entity;
 
 import java.util.*;
 import javax.persistence.*;
+
 /**
  * Created by sarath on 10/06/17.
  */
 @Entity
-@Table(name="bundle")
+@Table(name = "bundle")
 public class Bundle {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="bundle_id", columnDefinition="INT")
-    private int bundleId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "bundle_id", columnDefinition = "INT")
+	private int bundleId;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
-    @JoinColumn(name="bundle_category_id", columnDefinition="INT", nullable=false)
-    private BundleCategory bundleCategory;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "bundle_category_id", columnDefinition = "INT", nullable = false)
+	private BundleCategory bundleCategory;
 
-    @Basic
-    private String description;
+	@Basic
+	private String description;
 
-    @Basic
-    @Column(name="image_url", length=2000)
-    private String imageUrl;
+	@Basic
+	@Column(name = "image_url", length = 2000)
+	private String imageUrl;
 
-    @Basic
-    @Column(name="is_available")
-    private boolean isAvailable;
+	@Basic
+	@Column(name = "is_available")
+	private int isAvailable;
 
-    @Basic
-    @Column(columnDefinition="FLOAT")
-    private float mrp;
+	@Basic
+	@Column(columnDefinition = "FLOAT")
+	private float mrp;
 
-    @Basic
-    private String name;
-    
-    @Basic
-    @Column(name = "created_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date createdDate = new Date();
-    
-    @Basic
-    @Column(name="validity_days", columnDefinition="INT")
-    private int validityDays = 60;
+	@Basic
+	private String name;
 
-    @ManyToMany(targetEntity=QuestionPaper.class, cascade=CascadeType.MERGE)
-    @JoinTable(name="bundle_question_paper", joinColumns=@JoinColumn(name="bundle_id", columnDefinition="INT", nullable=false), inverseJoinColumns=@JoinColumn(name="question_paper_id", columnDefinition="INT"))
-    private Set<QuestionPaper> questionPapers = new HashSet<QuestionPaper>();
+	@Basic
+	@Column(name = "created_date", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date createdDate = new Date();
 
-    @Basic
-    @Column(name="selling_price", columnDefinition="FLOAT")
-    private float sellingPrice;
+	@Basic
+	@Column(name = "validity_days", columnDefinition = "INT")
+	private Integer validityDays = 60;
 
-    @Basic
-    @Column(name="discount_percent", columnDefinition="FLOAT")
-    private float discountPercent;
-    
-    @Basic
-    @Column(name="coaching_type", columnDefinition="INT")
-    private float coachingType;
+	@ManyToMany(targetEntity = QuestionPaper.class, cascade = CascadeType.MERGE)
+	@JoinTable(name = "bundle_question_paper", joinColumns = @JoinColumn(name = "bundle_id", columnDefinition = "INT", nullable = false), inverseJoinColumns = @JoinColumn(name = "question_paper_id", columnDefinition = "INT"))
+	private Set<QuestionPaper> questionPapers = new HashSet<QuestionPaper>();
 
-    public Bundle() {
-    }
+	@Basic
+	@Column(name = "selling_price", columnDefinition = "FLOAT")
+	private float sellingPrice;
 
-    public Bundle(int bundleId) {
-        this.bundleId = bundleId;
-    }
+	@Basic
+	@Column(name = "discount_percent", columnDefinition = "FLOAT")
+	private float discountPercent;
 
-    public BundleCategory getBundleCategory() {
-        return bundleCategory;
-    }
+	@Basic
+	@Column(name = "coaching_type", columnDefinition = "INT")
+	private float coachingType;
 
-    public void setBundleCategory(BundleCategory bundleCategory) {
-        this.bundleCategory = bundleCategory;
-    }
-
-    public int getBundleId() {
-        return bundleId;
-    }
-
-    public void setBundleId(int bundleId) {
-        this.bundleId = bundleId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public boolean isAvailable() {
-		return isAvailable;
+	public Bundle() {
 	}
 
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
+	public Bundle(int bundleId) {
+		this.bundleId = bundleId;
+	}
+
+	public BundleCategory getBundleCategory() {
+		return bundleCategory;
+	}
+
+	public void setBundleCategory(BundleCategory bundleCategory) {
+		this.bundleCategory = bundleCategory;
+	}
+
+	public int getBundleId() {
+		return bundleId;
+	}
+
+	public void setBundleId(int bundleId) {
+		this.bundleId = bundleId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public Date getCreatedDate() {
@@ -115,11 +108,11 @@ public class Bundle {
 		this.createdDate = createdDate;
 	}
 
-	public int getValidityDays() {
+	public Integer getValidityDays() {
 		return validityDays;
 	}
 
-	public void setValidityDays(int validityDays) {
+	public void setValidityDays(Integer validityDays) {
 		this.validityDays = validityDays;
 	}
 
@@ -131,41 +124,45 @@ public class Bundle {
 		this.coachingType = coachingType;
 	}
 
-	public void setIsAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    }
+	public int getIsAvailable() {
+		return isAvailable;
+	}
 
-    public float getMrp() {
-        return mrp;
-    }
+	public void setIsAvailable(int isAvailable) {
+		this.isAvailable = isAvailable;
+	}
 
-    public void setMrp(float mrp) {
-        this.mrp = mrp;
-    }
+	public float getMrp() {
+		return mrp;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setMrp(float mrp) {
+		this.mrp = mrp;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Set<QuestionPaper> getQuestionPapers() {
-        return questionPapers;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setQuestionPapers(Set<QuestionPaper> questionPapers) {
-        this.questionPapers = questionPapers;
-    }
+	public Set<QuestionPaper> getQuestionPapers() {
+		return questionPapers;
+	}
 
-    public float getSellingPrice() {
-        return sellingPrice;
-    }
+	public void setQuestionPapers(Set<QuestionPaper> questionPapers) {
+		this.questionPapers = questionPapers;
+	}
 
-    public void setSellingPrice(float sellingPrice) {
-        this.sellingPrice = sellingPrice;
-    }
+	public float getSellingPrice() {
+		return sellingPrice;
+	}
+
+	public void setSellingPrice(float sellingPrice) {
+		this.sellingPrice = sellingPrice;
+	}
 
 	public float getDiscountPercent() {
 		return discountPercent;

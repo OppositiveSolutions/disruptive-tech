@@ -57,7 +57,7 @@ public class ExamService {
 		return questionDAO.getQuestion(examId, qNo);
 	}
 
-	public boolean saveExam(SaveQuestionVO[] questions, int examId) {
+	public boolean saveExam(SaveQuestionVO[] questions, int examId, int userId) {
 		boolean status = false;
 		questionDAO.clearExamQuestion(examId);
 		for (SaveQuestionVO q : questions) {
@@ -65,7 +65,7 @@ public class ExamService {
 		}
 		if (status) {
 			status = false;
-			if (examDAO.updateExam(examId))
+			if (examDAO.updateExam(examId, userId))
 				if (examDAO.updateCategoryMark(examId))
 					if (examDAO.updateExamResult(examId))
 						status = true;

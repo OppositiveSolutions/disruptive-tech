@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by sarath on 04/06/17.
@@ -26,8 +28,9 @@ public class BundleController {
 	BundleService service;
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public Response saveBundle(@RequestBody Bundle bundle) throws Exception {
-		return Response.ok(service.saveBundle(bundle)).build();
+	public Response saveBundle(@RequestBody Bundle bundle,
+			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
+		return Response.ok(service.saveBundle(bundle, image)).build();
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
@@ -79,7 +82,12 @@ public class BundleController {
 		return Response.ok(service.removeQpFromBundle(bundleId, qpId)).build();
 	}
 
-	@RequestMapping(value = "/delete/{bundleId}", method = RequestMethod.DELETE)
+//	@RequestMapping(value = "/delete/{bundleId}", method = RequestMethod.DELETE)
+//	public Response deleteBundle(@PathVariable("bundleId") Integer bundleId) throws Exception {
+//		return Response.ok(service.deleteBundle(bundleId)).build();
+//	}
+	
+	@RequestMapping(value = "/delete/{bundleId}", method = RequestMethod.PUT)
 	public Response deleteBundle(@PathVariable("bundleId") Integer bundleId) throws Exception {
 		return Response.ok(service.deleteBundle(bundleId)).build();
 	}
