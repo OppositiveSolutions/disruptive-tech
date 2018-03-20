@@ -1,5 +1,7 @@
 package com.careerfocus.controller;
 
+import java.sql.Blob;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,9 +49,9 @@ public class MaterialController {
 	}
 
 	@RequestMapping(value = "/{fileId}", method = RequestMethod.GET)
-	public byte[] getMaterial(HttpServletRequest request, HttpServletResponse response,
+	public boolean getMaterial(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable(required = true) Integer fileId) throws Exception {
-		return service.getMaterial(fileId);
+		return service.getMaterial(fileId, request, response);
 	}
 
 	@RequestMapping(value = "/{fileId}", method = RequestMethod.DELETE)
