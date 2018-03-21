@@ -15,6 +15,7 @@ import com.careerfocus.util.DateUtils;
 import com.careerfocus.util.StudentUtils;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,8 @@ import java.util.Set;
 
 @Service
 public class StudentService {
+
+    private static final Logger log = Logger.getLogger(StudentService.class);
 
 	@Autowired
 	StudentRepository studentRepository;
@@ -63,15 +66,15 @@ public class StudentService {
 		return Response.ok(studentVO).build();
 	}
 
-	public Response editStudent(AddStudentVO studentVO) {
+	public Response editStudent(AddStudentVO studentVO, int userId) {
 
-		User user = userRepository.findOne(studentVO.getUserId());
+		User user = userRepository.findOne(userId);
 		Student student = studentRepository.findOne(studentVO.getUserId());
 		if (user == null || student == null) {
 			throw new RuntimeException();
 		}
 
-		user.setUsername(studentVO.getEmailId());
+//		user.setUsername(studentVO.getEmailId());
 		user.setFirstName(studentVO.getFirstName());
 		user.setLastName(studentVO.getLastName());
 		user.setGender(studentVO.getGender());
@@ -80,22 +83,29 @@ public class StudentService {
 		// studentDAO.deleteUserAddress(studentVO.getUserId());
 		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
 				studentVO.getState(), studentVO.getPinCode(), studentVO.getUserId());
+		address.setUser(user);
+
+		user.getAddress().clear();
+
 		Set<Address> addressSet = new HashSet<>();
 		addressSet.add(address);
-		user.setAddress(addressSet);
+		user.getAddress().addAll(addressSet);
 
 		if (studentVO.getMobileNo() != null && !studentVO.getMobileNo().isEmpty()) {
 			UserPhone phone = new UserPhone(studentVO.getMobileNo(), 1, true);
 			phone.setUser(user);
+
 			Set<UserPhone> phones = new HashSet<>();
 			phones.add(phone);
-			user.setUserPhones(phones);
+
+			user.getUserPhones().clear();
+			user.getUserPhones().addAll(phones);
 		}
 		user = userRepository.save(user);
 
 		student.setQualification(studentVO.getQualification());
-		student.setCenter(new Center(studentVO.getCenterId()));
-		student.setCenterId(studentVO.getCenterId());
+//		student.setCenter(new Center(studentVO.getCenterId()));
+//		student.setCenterId(studentVO.getCenterId());
 		studentRepository.save(student);
 
 		studentVO.setUserId(user.getUserId());

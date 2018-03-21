@@ -115,6 +115,9 @@ public class QuestionPaperService {
 
         QuestionPaperUtils.copyCategoryListByCategoryId(cListToUpdate, categoryList);
 
+        cListToUpdate.forEach(questionPaperCategory ->
+                log.info("duration: " + questionPaperCategory.getDuration()));
+
         categoryList = categoryRepository.save(cListToUpdate);
         categoryRepository.delete(cListToDelete);
 

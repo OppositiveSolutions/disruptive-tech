@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/student")
@@ -23,8 +24,10 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-    public Response editStudent(@RequestBody AddStudentVO student) throws Exception {
-        return Response.ok(studentService.editStudent(student)).build();
+    public Response editStudent(@RequestBody AddStudentVO student, HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        int userId = Integer.parseInt(session.getAttribute("userId").toString());
+        return Response.ok(studentService.editStudent(student, userId)).build();
     }
 
 	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)

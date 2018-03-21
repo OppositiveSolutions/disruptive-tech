@@ -66,7 +66,7 @@ public class User {
 
     @JsonBackReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId", scope = Student.class)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private Student student;
 
 //	@OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade=CascadeType.MERGE)
