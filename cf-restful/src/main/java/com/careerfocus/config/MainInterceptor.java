@@ -65,12 +65,13 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 	private boolean requestUriRequiresSession(String uri) {
 		// api's which can be accessed without session goes here.
 		if ((uri.equals(Constants.RESTFUL_PATH_PREFIX + "/login"))
-				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/achievers"))
+				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/achievers"))
 				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/student"))
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/advertisement"))
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial"))
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/bundle"))
-			|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/material")))
+				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/testimonial"))
+				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/material")))
 			return false;
 		return true;
 	}

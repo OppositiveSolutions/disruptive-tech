@@ -78,7 +78,8 @@ public class ResultDAO {
 				+ " from exam e inner join test t on t.test_id = e.test_id"
 				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
-		return template.queryForObject(query, Double.class, userId);
+		Double value = template.queryForObject(query, Double.class, userId);
+		return value != null ? value : 0.0;
 	}
 
 	public double getUserAverageTimePerQuestion(int userId) {
@@ -86,7 +87,8 @@ public class ResultDAO {
 				+ " from exam e inner join test t on t.test_id = e.test_id"
 				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
-		return template.queryForObject(query, Double.class, userId);
+		Double value = template.queryForObject(query, Double.class, userId);
+		return value != null ? value : 0.0;
 	}
 
 	public double getUserTestCount(int userId) {
