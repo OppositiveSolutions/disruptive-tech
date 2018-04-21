@@ -43,6 +43,19 @@ public class TestDAO {
 		}
 		return status;
 	}
+	
+	public boolean createTestDefault(int bundleQPId) {
+		boolean status = true;
+		try {
+			String query = "insert into test (bundle_question_paper_id,user_id,expiry_date,is_enabled,is_written)"
+					+ " select ?, user_id, now(), 1, 0 from user";
+			template.update(query, bundleQPId);
+		} catch (Exception e) {
+			status = false;
+			e.printStackTrace();
+		}
+		return status;
+	}
 
 	public List<Map<String, Object>> getCategoriesOfATest(int testId) {
 		String query = "select c.category_id,c.name,qpc.no_of_questions,qpc.correct_answer_mark,"

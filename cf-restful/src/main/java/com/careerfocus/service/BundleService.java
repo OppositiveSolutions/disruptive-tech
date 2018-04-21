@@ -10,10 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.BundleDAO;
-import com.careerfocus.entity.AnnouncementImage;
 import com.careerfocus.entity.Bundle;
 import com.careerfocus.entity.BundleImage;
-import com.careerfocus.repository.AnnouncementImageRepository;
 import com.careerfocus.repository.BundleImageRepository;
 import com.careerfocus.repository.BundleRepository;
 import com.careerfocus.util.response.Response;

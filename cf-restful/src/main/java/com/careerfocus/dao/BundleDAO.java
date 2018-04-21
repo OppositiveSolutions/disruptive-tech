@@ -1,13 +1,15 @@
 package com.careerfocus.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import com.careerfocus.entity.Bundle;
 
 @Repository
 public class BundleDAO {
@@ -56,7 +58,14 @@ public class BundleDAO {
 
 	public int addQptoBundle(int bundleId, int qpId) {
 		String query = "insert into bundle_question_paper (bundle_id,question_paper_id) values(?,?)";
-		return template.update(query, bundleId, qpId);
+		KeyHolder holder = new GeneratedKeyHolder();
+		template.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, bundleId);
+			ps.setInt(2, qpId);
+			return ps;
+		}, holder);
+		return holder.getKey().intValue();
 	}
 
 	public int removeQpFromBundle(Integer bundleId, Integer qpId) {

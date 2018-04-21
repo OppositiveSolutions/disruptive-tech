@@ -1,6 +1,8 @@
 package com.careerfocus.service;
 
+import com.careerfocus.dao.BundleDAO;
 import com.careerfocus.dao.QuestionPaperDAO;
+import com.careerfocus.dao.TestDAO;
 import com.careerfocus.entity.*;
 import com.careerfocus.entity.id.QuestionPaperQuestionId;
 import com.careerfocus.model.request.OptionVO;
@@ -23,268 +25,278 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionPaperService {
 
-    private static final Logger log = Logger.getLogger(QuestionPaperService.class);
+	private static final int DEFAUL_QP_BUNDLE = 9;
 
-    @Autowired
-    QuestionPaperRepository qPaperRepository;
+	private static final Logger log = Logger.getLogger(QuestionPaperService.class);
 
-    @Autowired
-    QuestionPaperCategoryRepository categoryRepository;
+	@Autowired
+	QuestionPaperRepository qPaperRepository;
 
-    @Autowired
-    QuestionPaperSubCategoryRepository subCategoryRepository;
+	@Autowired
+	QuestionPaperCategoryRepository categoryRepository;
 
-    @Autowired
-    QuestionPaperDAO qPaperDAO;
+	@Autowired
+	QuestionPaperSubCategoryRepository subCategoryRepository;
 
-    @Autowired
-    QuestionsRepository questionsRepository;
+	@Autowired
+	QuestionPaperDAO qPaperDAO;
 
-    @Autowired
-    QuestionOptionsRepository questionsOptionsRepository;
+	@Autowired
+	BundleDAO bundleDAO;
 
-    @Autowired
-    QuestionPaperQuestionRepository questionPaperQuestionRepository;
+	@Autowired
+	TestDAO testDAO;
 
-    public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
-        qPaper.setLastModified(new Date());
-        return qPaperRepository.save(qPaper);
-    }
+	@Autowired
+	QuestionsRepository questionsRepository;
 
-    public QuestionPaper editQuestionPaper(QuestionPaper qPaper) {
+	@Autowired
+	QuestionOptionsRepository questionsOptionsRepository;
 
-        QuestionPaper paper = qPaperRepository.findOne(qPaper.getQuestionPaperId());
-        if (paper == null) {
-            throw new RuntimeException();
-        }
+	@Autowired
+	QuestionPaperQuestionRepository questionPaperQuestionRepository;
 
-        paper.setCourseName(qPaper.getCourseName());
-        paper.setDuration(qPaper.getDuration());
-        paper.setExamCode(qPaper.getExamCode());
-        paper.setIsDemo(qPaper.isIsDemo());
-        paper.setName(qPaper.getName());
-        paper.setNoOfOptions(qPaper.getNoOfOptions());
-        paper.setNoOfQuestions(qPaper.getNoOfQuestions());
-        paper.setLastModified(new Date());
+	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
+		qPaper.setLastModified(new Date());
+		qPaper = qPaperRepository.save(qPaper);
+		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, qPaper.getQuestionPaperId());
+		testDAO.createTestDefault(bundleQPId);
+		return qPaper;
+	}
 
-        return qPaperRepository.save(paper);
-    }
+	public QuestionPaper editQuestionPaper(QuestionPaper qPaper) {
 
-    public Collection<QuestionPaper> getAllQuestionPapersWithFullDetails() {
-        return qPaperRepository.findAll();
-    }
-    
-    public List<Map<String, Object>> getAllQuestionPapers() {
-        return qPaperDAO.getAllQuestionPapers();
-    }
+		QuestionPaper paper = qPaperRepository.findOne(qPaper.getQuestionPaperId());
+		if (paper == null) {
+			throw new RuntimeException();
+		}
 
-    public Page<QuestionPaperVO> getAllQuestionPapers(int pageSize, int pageNo) {
-        Pageable page = new PageRequest(pageNo - 1, pageSize);
-        return qPaperRepository.findAllQuestionsPapers(page);
-    }
+		paper.setCourseName(qPaper.getCourseName());
+		paper.setDuration(qPaper.getDuration());
+		paper.setExamCode(qPaper.getExamCode());
+		paper.setIsDemo(qPaper.isIsDemo());
+		paper.setName(qPaper.getName());
+		paper.setNoOfOptions(qPaper.getNoOfOptions());
+		paper.setNoOfQuestions(qPaper.getNoOfQuestions());
+		paper.setLastModified(new Date());
 
-    public Page<QuestionPaperVO> searchQuestionPaper(String key, int pageSize, int pageNo) {
-        Pageable page = new PageRequest(pageNo - 1, pageSize);
-        return qPaperRepository.searchQuestionsPaper("%" + key + "%", page);
-    }
+		return qPaperRepository.save(paper);
+	}
 
-    public QuestionPaper getQuestionPaper(int questionPaperId) {
-        return qPaperRepository.findOne(questionPaperId);
-    }
+	public Collection<QuestionPaper> getAllQuestionPapersWithFullDetails() {
+		return qPaperRepository.findAll();
+	}
 
-    @Transactional
-    public List<QuestionPaperCategory> saveQuestionPaperCategories(List<QuestionPaperCategory> categoryList) {
-        categoryList = categoryRepository.save(categoryList);
-        updateLastModified(categoryList);
-        return categoryRepository.save(categoryList);
-    }
+	public List<Map<String, Object>> getAllQuestionPapers() {
+		return qPaperDAO.getAllQuestionPapers();
+	}
 
-    @Transactional
-    public List<QuestionPaperCategory> editQuestionPaperCategories(List<QuestionPaperCategory> categoryList, int questionPaperId) {
+	public Page<QuestionPaperVO> getAllQuestionPapers(int pageSize, int pageNo) {
+		Pageable page = new PageRequest(pageNo - 1, pageSize);
+		return qPaperRepository.findAllQuestionsPapers(page);
+	}
 
-        List<QuestionPaperCategory> oldCList = categoryRepository.findByQuestionPaperId(questionPaperId);
+	public Page<QuestionPaperVO> searchQuestionPaper(String key, int pageSize, int pageNo) {
+		Pageable page = new PageRequest(pageNo - 1, pageSize);
+		return qPaperRepository.searchQuestionsPaper("%" + key + "%", page);
+	}
 
-        List<QuestionPaperCategory> cListToUpdate = categoryRepository.
-                findByQuestionPaperCategoryIdIn(QuestionPaperUtils.getCategoryIds(categoryList));
+	public QuestionPaper getQuestionPaper(int questionPaperId) {
+		return qPaperRepository.findOne(questionPaperId);
+	}
 
-        List<QuestionPaperCategory> cListToDelete = new ArrayList<>(oldCList);
+	@Transactional
+	public List<QuestionPaperCategory> saveQuestionPaperCategories(List<QuestionPaperCategory> categoryList) {
+		categoryList = categoryRepository.save(categoryList);
+		updateLastModified(categoryList);
+		return categoryRepository.save(categoryList);
+	}
 
-        cListToDelete = cListToDelete.stream().filter(c1 -> cListToUpdate.stream().noneMatch(c2 ->
-                c1.getQuestionPaperCategoryId() == c2.getQuestionPaperCategoryId()))
-                .collect(Collectors.toList());
+	@Transactional
+	public List<QuestionPaperCategory> editQuestionPaperCategories(List<QuestionPaperCategory> categoryList,
+			int questionPaperId) {
 
-        QuestionPaperUtils.copyCategoryListByCategoryId(cListToUpdate, categoryList);
+		List<QuestionPaperCategory> oldCList = categoryRepository.findByQuestionPaperId(questionPaperId);
 
-        cListToUpdate.forEach(questionPaperCategory ->
-                log.info("duration: " + questionPaperCategory.getDuration()));
+		List<QuestionPaperCategory> cListToUpdate = categoryRepository
+				.findByQuestionPaperCategoryIdIn(QuestionPaperUtils.getCategoryIds(categoryList));
 
-        categoryList = categoryRepository.save(cListToUpdate);
-        categoryRepository.delete(cListToDelete);
+		List<QuestionPaperCategory> cListToDelete = new ArrayList<>(oldCList);
 
-        updateLastModified(categoryList);
-        return categoryRepository.save(categoryList);
-    }
+		cListToDelete = cListToDelete.stream()
+				.filter(c1 -> cListToUpdate.stream()
+						.noneMatch(c2 -> c1.getQuestionPaperCategoryId() == c2.getQuestionPaperCategoryId()))
+				.collect(Collectors.toList());
 
-    public List<QuestionPaperCategory> getQuestionPaperCategories(int questionPaperId) {
-        return categoryRepository.findByQuestionPaperId(questionPaperId);
-    }
+		QuestionPaperUtils.copyCategoryListByCategoryId(cListToUpdate, categoryList);
 
-    public List<QPSubCategoryVO> getQuestionPaperSubCategories(int questionPaperSubCategoryId) {
-        return subCategoryRepository.findByQuestionPaperCategoryId(questionPaperSubCategoryId);
-    }
+		cListToUpdate.forEach(questionPaperCategory -> log.info("duration: " + questionPaperCategory.getDuration()));
 
-    @Transactional
-    public List<QuestionPaperSubCategory> saveQuestionPaperSubCategory(
-            List<QuestionPaperSubCategory> qPaperSubCategoryList) {
-        qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
-        updateLastModifiedBySubCategorys(qPaperSubCategoryList);
-        return subCategoryRepository.save(qPaperSubCategoryList);
-    }
+		categoryList = categoryRepository.save(cListToUpdate);
+		categoryRepository.delete(cListToDelete);
 
-    @Transactional
-    public List<QuestionPaperSubCategory> editQuestionPaperSubCategory(
-            List<QuestionPaperSubCategory> qPaperSubCategoryList) {
-        qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
-        updateLastModifiedBySubCategorys(qPaperSubCategoryList);
-        return subCategoryRepository.save(qPaperSubCategoryList);
-    }
+		updateLastModified(categoryList);
+		return categoryRepository.save(categoryList);
+	}
 
-    @Transactional
-    public List<QuestionVO> saveQuestion(List<QuestionVO> qList) {
+	public List<QuestionPaperCategory> getQuestionPaperCategories(int questionPaperId) {
+		return categoryRepository.findByQuestionPaperId(questionPaperId);
+	}
 
-        Set<Integer> subCatIds = new HashSet<>();
-        qList.forEach(qstn -> {
+	public List<QPSubCategoryVO> getQuestionPaperSubCategories(int questionPaperSubCategoryId) {
+		return subCategoryRepository.findByQuestionPaperCategoryId(questionPaperSubCategoryId);
+	}
 
-            Question question = new Question(qstn.getQuestion(), qstn.getCorrectOptionNo());
-            if (qstn.getQuestionId() != 0)
-                question.setQuestionId(qstn.getQuestionId());
-            Question savedQuestion = questionsRepository.save(question);
+	@Transactional
+	public List<QuestionPaperSubCategory> saveQuestionPaperSubCategory(
+			List<QuestionPaperSubCategory> qPaperSubCategoryList) {
+		qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
+		updateLastModifiedBySubCategorys(qPaperSubCategoryList);
+		return subCategoryRepository.save(qPaperSubCategoryList);
+	}
 
-            List<QuestionOption> oList = new ArrayList<>();
-            qstn.getOptions().forEach(option ->
-                    oList.add(new QuestionOption(savedQuestion.getQuestionId(),
-                            option.getOptionNo(), option.getOption())));
-            questionsOptionsRepository.save(oList);
+	@Transactional
+	public List<QuestionPaperSubCategory> editQuestionPaperSubCategory(
+			List<QuestionPaperSubCategory> qPaperSubCategoryList) {
+		qPaperSubCategoryList = subCategoryRepository.save(qPaperSubCategoryList);
+		updateLastModifiedBySubCategorys(qPaperSubCategoryList);
+		return subCategoryRepository.save(qPaperSubCategoryList);
+	}
 
-            questionPaperQuestionRepository.save(new QuestionPaperQuestion(qstn.getQuestionPaperSubCategoryId(),
-                    qstn.getQuestionNo(), savedQuestion));
+	@Transactional
+	public List<QuestionVO> saveQuestion(List<QuestionVO> qList) {
 
-            qstn.setQuestionId(savedQuestion.getQuestionId());
-            subCatIds.add(qstn.getQuestionPaperSubCategoryId());
-        });
-        qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<>(subCatIds));
-        return qList;
-    }
+		Set<Integer> subCatIds = new HashSet<>();
+		qList.forEach(qstn -> {
 
-    @Transactional
-    public List<QuestionVO> editQuestion(List<QuestionVO> qList) {
+			Question question = new Question(qstn.getQuestion(), qstn.getCorrectOptionNo());
+			if (qstn.getQuestionId() != 0)
+				question.setQuestionId(qstn.getQuestionId());
+			Question savedQuestion = questionsRepository.save(question);
 
-        List<QuestionPaperQuestion> qpQuestionList = new ArrayList<>();
-        qList.forEach(questionVO -> {
+			List<QuestionOption> oList = new ArrayList<>();
+			qstn.getOptions().forEach(option -> oList
+					.add(new QuestionOption(savedQuestion.getQuestionId(), option.getOptionNo(), option.getOption())));
+			questionsOptionsRepository.save(oList);
 
-            QuestionPaperQuestion qpQuestion = questionPaperQuestionRepository.findOne(
-                    new QuestionPaperQuestionId(questionVO.getQuestionPaperSubCategoryId(), questionVO.getQuestionNo()));
+			questionPaperQuestionRepository.save(new QuestionPaperQuestion(qstn.getQuestionPaperSubCategoryId(),
+					qstn.getQuestionNo(), savedQuestion));
 
-            Question question = qpQuestion.getQuestion();
-            question.setQuestionId(questionVO.getQuestionId());
-            question.setQuestion(questionVO.getQuestion());
-            question.setCorrectOptionNo(question.getCorrectOptionNo());
+			qstn.setQuestionId(savedQuestion.getQuestionId());
+			subCatIds.add(qstn.getQuestionPaperSubCategoryId());
+		});
+		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<>(subCatIds));
+		return qList;
+	}
 
-            Set<QuestionOption> options = question.getOptions();
-            Iterator<QuestionOption> it = options.iterator();
-            for (int i = 0; i < questionVO.getOptions().size(); i++) {
-                if (it.hasNext()) {
-                    QuestionOption option = it.next();
-                    OptionVO optionVO = questionVO.getOptions().get(i);
+	@Transactional
+	public List<QuestionVO> editQuestion(List<QuestionVO> qList) {
 
-                    option.setOption(optionVO.getOption());
-                    option.setOptionNo(optionVO.getOptionNo());
-                    option.setQuestionId(questionVO.getQuestionId());
-                }
-            }
-            qpQuestionList.add(qpQuestion);
+		List<QuestionPaperQuestion> qpQuestionList = new ArrayList<>();
+		qList.forEach(questionVO -> {
 
-        });
-        questionPaperQuestionRepository.save(qpQuestionList);
-        return qList;
-    }
+			QuestionPaperQuestion qpQuestion = questionPaperQuestionRepository.findOne(new QuestionPaperQuestionId(
+					questionVO.getQuestionPaperSubCategoryId(), questionVO.getQuestionNo()));
 
+			Question question = qpQuestion.getQuestion();
+			question.setQuestionId(questionVO.getQuestionId());
+			question.setQuestion(questionVO.getQuestion());
+			question.setCorrectOptionNo(question.getCorrectOptionNo());
 
-    @Transactional
-    public void updateIsDemo(int questionPaperId, boolean isDemo) {
-        qPaperRepository.updateIsDemo(isDemo, questionPaperId);
-    }
+			Set<QuestionOption> options = question.getOptions();
+			Iterator<QuestionOption> it = options.iterator();
+			for (int i = 0; i < questionVO.getOptions().size(); i++) {
+				if (it.hasNext()) {
+					QuestionOption option = it.next();
+					OptionVO optionVO = questionVO.getOptions().get(i);
 
-    private void updateLastModified(List<QuestionPaperCategory> categoryList) {
-        Set<Integer> qIds = new HashSet<>();
-        categoryList.forEach(category -> {
-            int questionPaperId = category.getQuestionPaperId();
-            qIds.add(questionPaperId);
-        });
-        qPaperDAO.updateLastModified(new ArrayList<>(qIds));
-    }
+					option.setOption(optionVO.getOption());
+					option.setOptionNo(optionVO.getOptionNo());
+					option.setQuestionId(questionVO.getQuestionId());
+				}
+			}
+			qpQuestionList.add(qpQuestion);
 
-    private void updateLastModifiedBySubCategorys(List<QuestionPaperSubCategory> subCategoryList) {
-        Set<Integer> qIds = new HashSet<>();
-        subCategoryList.forEach(category -> {
-            int id = category.getQuestionPaperSubCategoryId();
-            qIds.add(id);
-        });
-        qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<>(qIds));
-    }
+		});
+		questionPaperQuestionRepository.save(qpQuestionList);
+		return qList;
+	}
 
-    //	@Async
-    public boolean isQuestionPaperComplete(int questionPaperId) {
-        QuestionPaper qPaper = qPaperRepository.findOne(questionPaperId);
-        Set<QuestionPaperCategory> categories = qPaper.getQuestionPaperCategorys();
+	@Transactional
+	public void updateIsDemo(int questionPaperId, boolean isDemo) {
+		qPaperRepository.updateIsDemo(isDemo, questionPaperId);
+	}
 
-        int categoryQuestionsCount = 0;
-        int questionsCount = 0;
-        for (QuestionPaperCategory category : categories) {
-            categoryQuestionsCount += category.getNoOfQuestions();
+	private void updateLastModified(List<QuestionPaperCategory> categoryList) {
+		Set<Integer> qIds = new HashSet<>();
+		categoryList.forEach(category -> {
+			int questionPaperId = category.getQuestionPaperId();
+			qIds.add(questionPaperId);
+		});
+		qPaperDAO.updateLastModified(new ArrayList<>(qIds));
+	}
 
-            Set<QuestionPaperSubCategory> subCategories = category.getQuestionPaperSubCategorys();
-            if (category.getNoOfSubCategory() != subCategories.size()) {
-                log.info("CHECKPOINT1");
-                return false;
-            }
+	private void updateLastModifiedBySubCategorys(List<QuestionPaperSubCategory> subCategoryList) {
+		Set<Integer> qIds = new HashSet<>();
+		subCategoryList.forEach(category -> {
+			int id = category.getQuestionPaperSubCategoryId();
+			qIds.add(id);
+		});
+		qPaperDAO.updateLastModidiedByQuestionPaperSubCategoryIds(new ArrayList<>(qIds));
+	}
 
-            int subCategoryQuestionsCount = 0;
-            for (QuestionPaperSubCategory subCategory : subCategories) {
-                subCategoryQuestionsCount += subCategory.getNoOfQuestions();
+	// @Async
+	public boolean isQuestionPaperComplete(int questionPaperId) {
+		QuestionPaper qPaper = qPaperRepository.findOne(questionPaperId);
+		Set<QuestionPaperCategory> categories = qPaper.getQuestionPaperCategorys();
 
-                Set<QuestionPaperQuestion> questions = subCategory.getQuestions();
-                if (subCategory.getNoOfQuestions() != questions.size()) {
-                    log.info("CHECKPOINT2");
-                    return false;
-                }
+		int categoryQuestionsCount = 0;
+		int questionsCount = 0;
+		for (QuestionPaperCategory category : categories) {
+			categoryQuestionsCount += category.getNoOfQuestions();
 
-                for (QuestionPaperQuestion qpQuestion : questions) {
-                    questionsCount++;
-                    Question question = qpQuestion.getQuestion();
+			Set<QuestionPaperSubCategory> subCategories = category.getQuestionPaperSubCategorys();
+			if (category.getNoOfSubCategory() != subCategories.size()) {
+				log.info("CHECKPOINT1");
+				return false;
+			}
 
-                    Set<QuestionOption> options = question.getOptions();
-                    if (options.size() != qPaper.getNoOfOptions()) {
-                        log.info("CHECKPOINT3");
-                        return false;
-                    }
-                }
-            }
-            if (category.getNoOfQuestions() != subCategoryQuestionsCount) {
-                log.info("CHECKPOINT4");
-                return false;
-            }
-        }
+			int subCategoryQuestionsCount = 0;
+			for (QuestionPaperSubCategory subCategory : subCategories) {
+				subCategoryQuestionsCount += subCategory.getNoOfQuestions();
 
-        if (qPaper.getNoOfQuestions() != categoryQuestionsCount || questionsCount != qPaper.getNoOfQuestions()) {
-            log.info("CHECKPOINT5");
-            return false;
-        }
+				Set<QuestionPaperQuestion> questions = subCategory.getQuestions();
+				if (subCategory.getNoOfQuestions() != questions.size()) {
+					log.info("CHECKPOINT2");
+					return false;
+				}
 
-        return true;
-    }
+				for (QuestionPaperQuestion qpQuestion : questions) {
+					questionsCount++;
+					Question question = qpQuestion.getQuestion();
 
-    public List<QuestionPaperQuestion> getQuestions(int subCategoryId) {
-        return questionPaperQuestionRepository.findByQuestionPaperSubCategoryId(subCategoryId);
-    }
+					Set<QuestionOption> options = question.getOptions();
+					if (options.size() != qPaper.getNoOfOptions()) {
+						log.info("CHECKPOINT3");
+						return false;
+					}
+				}
+			}
+			if (category.getNoOfQuestions() != subCategoryQuestionsCount) {
+				log.info("CHECKPOINT4");
+				return false;
+			}
+		}
+
+		if (qPaper.getNoOfQuestions() != categoryQuestionsCount || questionsCount != qPaper.getNoOfQuestions()) {
+			log.info("CHECKPOINT5");
+			return false;
+		}
+
+		return true;
+	}
+
+	public List<QuestionPaperQuestion> getQuestions(int subCategoryId) {
+		return questionPaperQuestionRepository.findByQuestionPaperSubCategoryId(subCategoryId);
+	}
 }
