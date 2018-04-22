@@ -1,7 +1,10 @@
 package com.careerfocus.service;
 
 import com.careerfocus.constants.ErrorCodes;
+import com.careerfocus.dao.CommonDAO;
+import com.careerfocus.dao.MailDAO;
 import com.careerfocus.dao.StudentDAO;
+import com.careerfocus.dao.TestDAO;
 import com.careerfocus.entity.Address;
 import com.careerfocus.entity.Center;
 import com.careerfocus.entity.Student;
@@ -15,6 +18,8 @@ import com.careerfocus.util.DateUtils;
 import com.careerfocus.util.StudentUtils;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
+
+import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +28,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -32,7 +39,7 @@ import java.util.Set;
 @Service
 public class StudentService {
 
-    private static final Logger log = Logger.getLogger(StudentService.class);
+	// private static final Logger log = Logger.getLogger(StudentService.class);
 
 	@Autowired
 	StudentRepository studentRepository;
@@ -42,6 +49,15 @@ public class StudentService {
 
 	@Autowired
 	StudentDAO studentDAO;
+
+	@Autowired
+	TestDAO testDAO;
+
+	@Autowired
+	MailDAO mailDAO;
+
+	@Autowired
+	CommonDAO commonDAO;
 
 	@Transactional
 	public Response addStudent(AddStudentVO studentVO) {
@@ -55,12 +71,24 @@ public class StudentService {
 		}
 
 		User user = StudentUtils.createUserEntity(studentVO);
+		System.out.println(studentVO);
+		System.out.println(studentVO.getFirstName());
+		System.out.println(user);
+		System.out.println(user.getFirstName());
 		user = userRepository.save(user);
 
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, studentVO.getCenterId() + "",
 				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType());
 		studentRepository.save(student);
 
+		if (studentVO.getType() != 2)// 2 - online reg
+			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId());
+		try {
+			mailDAO.welcomeMailUser(studentVO.getEmailId(), commonDAO.getPasswordForAUser(user.getUserId()),
+					"Welcome to Career Focus. A World of Oppourtunities.");
+		} catch (MalformedURLException | EmailException e) {
+			e.printStackTrace();
+		}
 		studentVO.setUserId(user.getUserId());
 
 		return Response.ok(studentVO).build();
@@ -74,7 +102,7 @@ public class StudentService {
 			throw new RuntimeException();
 		}
 
-//		user.setUsername(studentVO.getEmailId());
+		// user.setUsername(studentVO.getEmailId());
 		user.setFirstName(studentVO.getFirstName());
 		user.setLastName(studentVO.getLastName());
 		user.setGender(studentVO.getGender());
@@ -104,8 +132,8 @@ public class StudentService {
 		user = userRepository.save(user);
 
 		student.setQualification(studentVO.getQualification());
-//		student.setCenter(new Center(studentVO.getCenterId()));
-//		student.setCenterId(studentVO.getCenterId());
+		// student.setCenter(new Center(studentVO.getCenterId()));
+		// student.setCenterId(studentVO.getCenterId());
 		studentRepository.save(student);
 
 		studentVO.setUserId(user.getUserId());

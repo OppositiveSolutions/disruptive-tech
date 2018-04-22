@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionPaperService {
 
-	private static final int DEFAUL_QP_BUNDLE = 9;
+	public static final int DEFAUL_QP_BUNDLE = 10;
 
 	private static final Logger log = Logger.getLogger(QuestionPaperService.class);
 

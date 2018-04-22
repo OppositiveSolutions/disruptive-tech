@@ -39,7 +39,7 @@ public class AddStudentVO implements Serializable {
 
     private int centerId;
     
-    private int type;
+    private int type;//1 -added by cf, 2 - online reg
 
     public int getUserId() {
         return userId;

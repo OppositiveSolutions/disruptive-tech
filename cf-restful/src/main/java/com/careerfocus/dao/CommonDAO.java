@@ -69,6 +69,11 @@ public class CommonDAO {
 			return false;
 	}
 
+	public String getPasswordForAUser(int userId) {
+		String query = "SELECT password FROM user WHERE user_id = ?";
+		return template.queryForObject(query, String.class, userId);
+	}
+
 	// public DateTime getCurrentIST() {
 	// String TIME_SERVER = "time-a.nist.gov";
 	// NTPUDPClient timeClient = new NTPUDPClient();
