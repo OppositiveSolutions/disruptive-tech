@@ -120,6 +120,8 @@ public class StudentDAO {
 
 	public int getStudentType(int userId) {
 		String query = "select type from student where user_id = ?";
-		return template.queryForObject(query, Integer.class);
+		int type = 1;
+		type = template.queryForObject(query, Integer.class);
+		return type;
 	}
 }

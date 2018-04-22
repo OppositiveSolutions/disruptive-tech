@@ -25,8 +25,8 @@ public class ExamDAO {
 	@Autowired
 	private CommonDAO commonDAO;
 
-//	@Autowired
-//	private QuestionDAO questionDAO;
+	// @Autowired
+	// private QuestionDAO questionDAO;
 
 	@Autowired
 	private StudentDAO studentDAO;
@@ -280,15 +280,16 @@ public class ExamDAO {
 			} else
 				status = true;
 		}
-		if (status)
-			if (studentDAO.getStudentType(userId) == 2) {
-				query = "UPDATE test t inner join exam e on t.test_id = e.test_id"
-						+ " SET is_written = 1 where e.exam_id = ?";
-				isUpdated = template.update(query, id);
-			} else if (studentDAO.getStudentType(userId) == 1) {
-				query = "INSERT INTO student_question_paper(user_id,question_paper_id) VALUES (?,?)";
-				isUpdated = template.update(query, userId, id);
-			}
+		if (status) {
+			// if (studentDAO.getStudentType(userId) == 2) {
+			query = "UPDATE test t inner join exam e on t.test_id = e.test_id"
+					+ " SET is_written = 1 where e.exam_id = ?";
+			isUpdated = template.update(query, id);
+			// } else if (studentDAO.getStudentType(userId) == 1) {
+			// query = "INSERT INTO student_question_paper(user_id,question_paper_id) VALUES
+			// (?,?)";
+			// isUpdated = template.update(query, userId, id);
+		}
 		return status;
 	}
 
