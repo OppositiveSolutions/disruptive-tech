@@ -4,6 +4,7 @@ import com.careerfocus.dao.ProfileDAO;
 import com.careerfocus.entity.Student;
 import com.careerfocus.repository.StudentRepository;
 import com.careerfocus.repository.UserRepository;
+import com.careerfocus.util.PasswordGenerator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,15 @@ public class ProfileService {
 	public Student getStudentDetails(int userId) {
 
 		return studentRepository.findOne(userId);
+	}
+
+	public boolean changePassword(int userId, String password) {
+		return profileDAO.changePassword(userId, password);
+	}
+
+	public boolean resetPassword(String emailId) {
+		String password = PasswordGenerator.generateSixDigitPassword();
+		return profileDAO.resetPassword(emailId, password);
 	}
 
 }

@@ -34,6 +34,8 @@ public class AddStudentVO implements Serializable {
     private int pinCode;
 
     private String emailId;
+    
+    private String password;
 
     private String mobileNo;
 
@@ -137,7 +139,15 @@ public class AddStudentVO implements Serializable {
         this.emailId = emailId;
     }
 
-    public String getMobileNo() {
+    public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getMobileNo() {
         return mobileNo;
     }
 

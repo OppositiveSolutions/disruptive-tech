@@ -12,47 +12,48 @@ import javax.persistence.*;
 @Table(name = "user_profile_pic")
 public class UserProfilePic {
 
-    @Id
-    @Column(name = "user_id", columnDefinition = "INT")
-    private int userId;
+	@Id
+	@Column(name = "user_id", columnDefinition = "INT")
+	private int userId;
 
-    @Basic
-    @Column(columnDefinition = "BLOB")
-    private byte[] picture;
+	@Basic
+	@Column(columnDefinition = "BLOB")
+	private byte[] picture;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id", columnDefinition = "INT")
-    private User user;
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@JoinColumn(name = "user_id", columnDefinition = "INT")
+	private User user;
 
-    public UserProfilePic() {
-    }
+	public UserProfilePic() {
+	}
 
-    public UserProfilePic(int userId) {
-        this.userId = userId;
-    }
+	public UserProfilePic(int userId, byte[] image) {
+		this.userId = userId;
+		this.picture = image;
+	}
 
-    public byte[] getPicture() {
-        return picture;
-    }
+	public byte[] getPicture() {
+		return picture;
+	}
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
-    }
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public int getUserId() {
-        return userId;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 }

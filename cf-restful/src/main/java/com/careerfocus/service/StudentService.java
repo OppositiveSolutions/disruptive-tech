@@ -10,9 +10,11 @@ import com.careerfocus.entity.Center;
 import com.careerfocus.entity.Student;
 import com.careerfocus.entity.User;
 import com.careerfocus.entity.UserPhone;
+import com.careerfocus.entity.UserProfilePic;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.model.response.StudentVO;
 import com.careerfocus.repository.StudentRepository;
+import com.careerfocus.repository.UserProfilePicRepository;
 import com.careerfocus.repository.UserRepository;
 import com.careerfocus.util.DateUtils;
 import com.careerfocus.util.StudentUtils;
@@ -26,9 +28,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.HashSet;
@@ -59,8 +63,11 @@ public class StudentService {
 	@Autowired
 	CommonDAO commonDAO;
 
+	@Autowired
+	UserProfilePicRepository uppRepository;
+
 	@Transactional
-	public Response addStudent(AddStudentVO studentVO) {
+	public Response addStudent(AddStudentVO studentVO, MultipartFile image) throws IOException {
 		List<Error> errors = StudentUtils.validate(studentVO);
 		if (userRepository.findByUsername(studentVO.getEmailId()) != null)
 			errors.add(new Error(ErrorCodes.EMAIL_EXISTS, ErrorCodes.EMAIL_EXISTS_MSG));
@@ -80,12 +87,13 @@ public class StudentService {
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, studentVO.getCenterId() + "",
 				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType());
 		studentRepository.save(student);
-
+		UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
+		uppRepository.save(pic);
 		if (studentVO.getType() != 2)// 2 - online reg
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId());
 		try {
 			mailDAO.welcomeMailUser(studentVO.getEmailId(), commonDAO.getPasswordForAUser(user.getUserId()),
-					"Welcome to Career Focus. A World of Oppourtunities.");
+					"Welcome to Career Focus. We enhance your confidence.");
 		} catch (MalformedURLException | EmailException e) {
 			e.printStackTrace();
 		}
@@ -156,6 +164,24 @@ public class StudentService {
 	@Transactional
 	public void updateStudentExpiry(int userId, String expiryDate) {
 		studentRepository.updateStudentExpiry(DateUtils.convertYYYYMMDDToJavaDate(expiryDate, "MM/dd/yyyy"), userId);
+	}
+
+	public byte[] getUserImage(int userId) {
+		return uppRepository.findOne(userId).getPicture();
+	}
+
+	public boolean removeUserImage(int userId) {
+		try {
+			uppRepository.delete(userId);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public Response editUserImage(int userId, MultipartFile image) throws IOException {
+		UserProfilePic pic = new UserProfilePic(userId, image.getBytes());
+		return Response.ok(uppRepository.save(pic)).build();
 	}
 
 }

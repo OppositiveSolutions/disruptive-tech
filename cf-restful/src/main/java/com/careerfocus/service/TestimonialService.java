@@ -51,4 +51,15 @@ public class TestimonialService {
 		return testimonialRepo.getAllTestimonials(userId);
 	}
 
+	public boolean deleteTestimonial(Integer testimonialId) {
+		try {
+			testimonialRepo.delete(testimonialId);
+			tiRepository.delete(testimonialId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
 }

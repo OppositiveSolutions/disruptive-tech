@@ -1,5 +1,6 @@
 package com.careerfocus.dao;
 
+import com.careerfocus.constants.Constants;
 import com.careerfocus.entity.States;
 
 import org.apache.commons.mail.EmailException;
@@ -12,30 +13,17 @@ import java.sql.ResultSet;
 import java.util.List;
 
 @Repository
-public class ProfileDAO {
+public class ContactDAO {
 
 	private JdbcTemplate template;
 
 	@Autowired
-	public ProfileDAO(JdbcTemplate template) {
+	public ContactDAO(JdbcTemplate template) {
 		this.template = template;
 	}
 
 	@Autowired
 	MailDAO mailDAO;
-
-	public List<States> getStates() {
-
-		String query = "SELECT * FROM states";
-
-		return template.query(query,
-				(ResultSet result, int arg1) -> new States(result.getInt("state_id"), result.getString("name")));
-	}
-
-	public String getDetailsForMyProfile(int userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public boolean changePassword(int userId, String password) {
 		String query = "UPDATE user SET password = ? WHERE user_id  = ?";
@@ -48,6 +36,18 @@ public class ProfileDAO {
 		if (status)
 			try {
 				mailDAO.welcomeMailUser(username, password, "Password Reset for Career Focus Account.");
+			} catch (MalformedURLException | EmailException e) {
+				e.printStackTrace();
+			}
+		return status;
+	}
+
+	public boolean saveInquiry(String emailId, String phone, String content) {
+		String query = "INSERT INTO inquiry(email_id,phone,content) VALUES (?,?,?)";
+		boolean status = template.update(query, emailId, phone, content) > 0 ? true : false;
+		if (status)
+			try {
+				mailDAO.sendContentMail(emailId, phone, content);
 			} catch (MalformedURLException | EmailException e) {
 				e.printStackTrace();
 			}
