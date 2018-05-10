@@ -12,7 +12,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @EnableRedisHttpSession
 public class EmbeddedRedisConfig {
 
-    private static String HOST = "144.217.167.179";
+    private static String HOST = "localhost";
     private static int PORT = 6379;
 
     @Bean
