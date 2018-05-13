@@ -9,6 +9,7 @@ import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.util.response.Error;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class StudentUtils {
 		}
 		User user = new User(studentVO.getEmailId(), password, Constants.ROLE_STUDENT, studentVO.getFirstName(),
 				studentVO.getLastName(), studentVO.getGender(),
-				DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
+				DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()), new Date());
 
 		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
 				studentVO.getState(), studentVO.getPinCode(), user.getUserId());

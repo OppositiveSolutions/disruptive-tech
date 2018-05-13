@@ -9,6 +9,7 @@ import com.careerfocus.model.request.AddStaffVO;
 import com.careerfocus.util.response.Error;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class StaffUtils {
     public static User createUserEntity(AddStaffVO staffVO) {
         User user = new User(staffVO.getEmailId(), PasswordGenerator.generateSixDigitPassword(),
                 Constants.ROLE_STAFF, staffVO.getFirstName(), staffVO.getLastName(), staffVO.getGender(),
-                DateUtils.convertMMDDYYYYToJavaDate(staffVO.getDob()));
+				DateUtils.convertMMDDYYYYToJavaDate(staffVO.getDob()), new Date());
 
         Address address = new Address(staffVO.getAddress(), staffVO.getLandMark(), staffVO.getCity(),
                 staffVO.getState(), staffVO.getPinCode(), user.getUserId());

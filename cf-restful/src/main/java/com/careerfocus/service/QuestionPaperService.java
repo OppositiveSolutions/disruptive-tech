@@ -57,7 +57,9 @@ public class QuestionPaperService {
 	QuestionPaperQuestionRepository questionPaperQuestionRepository;
 
 	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
-		qPaper.setLastModified(new Date());
+		Date date = new Date();
+		qPaper.setLastModified(date);
+		qPaper.setCreatedDate(date);
 		qPaper = qPaperRepository.save(qPaper);
 		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, qPaper.getQuestionPaperId());
 		testDAO.createTestDefault(bundleQPId);
