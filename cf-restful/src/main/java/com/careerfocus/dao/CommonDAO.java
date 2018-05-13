@@ -74,6 +74,11 @@ public class CommonDAO {
 		return template.queryForObject(query, String.class, userId);
 	}
 
+	public int getUserIdFromEmailId(String emailId) {
+		String query = "SELECT user_id FROM user WHERE username = ?";
+		return template.queryForObject(query, Integer.class, emailId);
+	}
+
 	// public DateTime getCurrentIST() {
 	// String TIME_SERVER = "time-a.nist.gov";
 	// NTPUDPClient timeClient = new NTPUDPClient();

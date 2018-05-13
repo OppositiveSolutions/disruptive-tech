@@ -33,8 +33,8 @@ public class ProfileService {
 	}
 
 	public boolean resetPassword(String emailId) {
-		String password = PasswordGenerator.generateSixDigitPassword();
-		return profileDAO.resetPassword(emailId, password);
+//		String password = PasswordGenerator.generateSixDigitPassword();
+		return profileDAO.resetPassword(emailId);
 	}
 
 }
