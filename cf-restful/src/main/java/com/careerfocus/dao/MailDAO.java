@@ -69,13 +69,14 @@ public class MailDAO {
 		htmlBody.append("</p>");
 
 		htmlBody.append("</div></html>");
-
+		System.out.println("HTML\n" + htmlBody);
 		email.setHtmlMsg(htmlBody.toString());
 		if (patientEmailId == null || patientEmailId == "") {
 			return;
 		}
 		email.addTo(patientEmailId.toLowerCase());
 		email.addBcc("alexgp007@gmail.com");
+		System.out.println("EMAIL\n" + email);
 		try {
 			email.send();
 		} catch (Exception e) {

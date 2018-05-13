@@ -71,7 +71,9 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/video-tutorial"))
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/bundle"))
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/testimonial"))
-				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/material")))
+				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/material"))
+				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/common/states"))
+				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/center")))
 			return false;
 		return true;
 	}
@@ -101,9 +103,9 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/result")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
 				|| (pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
-						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile")
-						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
-								&& requestMethod.equalsIgnoreCase("GET"));
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
+				&& requestMethod.equalsIgnoreCase("GET"));
 	}
 
 	private boolean checkAuthorizationForSuperAdmin(String uri, String requestMethod) {
