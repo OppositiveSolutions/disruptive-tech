@@ -87,8 +87,10 @@ public class StudentService {
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, studentVO.getCenterId() + "",
 				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType());
 		studentRepository.save(student);
-		UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
-		uppRepository.save(pic);
+		if (image != null && image.getBytes() != null) {
+			UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
+			uppRepository.save(pic);
+		}
 		if (studentVO.getType() != 2)// 2 - online reg
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId());
 		try {

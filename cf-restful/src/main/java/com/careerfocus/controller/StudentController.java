@@ -24,7 +24,7 @@ public class StudentController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public Response addStudent(HttpServletRequest request, HttpServletResponse response,
 			@RequestPart(required = true) String studentJson,
-			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
 		AddStudentVO student = new ObjectMapper().readValue(studentJson, AddStudentVO.class);
 		System.out.println("Student = " + student.getFirstName());
 		System.out.println("Student = " + student.getEmailId());
