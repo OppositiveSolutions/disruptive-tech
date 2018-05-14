@@ -84,15 +84,18 @@ public class MailDAO {
 		}
 	}
 
-	public void sendContentMail(String contactEmailId, String phone, String content)
+	public void sendInquiryMail(String contact, String name, String content)
 			throws EmailException, MalformedURLException {
+		if ((contact == null || contact == "") && (content == null || content == "")) {
+			return;
+		}
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(HOSTNAME);
 		email.setSmtpPort(SMTP_PORT);
 		email.setAuthenticator(new DefaultAuthenticator(USERNAME, PASSWORD));
 		email.setSSLOnConnect(true);
-		email.setFrom(FROM_ADDRESS, "CareerFocus Support");
-		email.setSubject("Welcome to Career Focus");
+		email.setFrom(FROM_ADDRESS, "CareerFocus Inquiry");
+		email.setSubject("Inquiry received from website.");
 		// embed the image and get the content id
 		URL url = new URL(EMAIL_LOGO);
 		String cid = "";
@@ -115,13 +118,13 @@ public class MailDAO {
 		htmlBody.append("<p style=\"margin-top: 10px; margin-bottom: 10px;\"> Inquiry from Website</p>");
 
 		htmlBody.append(
-				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You may begin using this service by logging on to <a href=\"https://www.careerfocus.in\">https://www.careerfocus.in</a> with the following credentials:</p>");
+				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">The following inquiry was submitted at the contact page :</p>");
 		htmlBody.append(
-				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">Contact Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		htmlBody.append(contactEmailId);
+				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">Name : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlBody.append(name);
 		htmlBody.append("<br>");
-		htmlBody.append("Phone no: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		htmlBody.append(phone);
+		htmlBody.append("Contact : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		htmlBody.append(contact);
 		htmlBody.append("</p><p>");
 		htmlBody.append("<b>Content:</b><br>");
 		htmlBody.append(content);
@@ -132,13 +135,10 @@ public class MailDAO {
 		htmlBody.append("CareerFocus Team");
 		htmlBody.append("<br>");
 		htmlBody.append("</p>");
-
 		htmlBody.append("</div></html>");
 
 		email.setHtmlMsg(htmlBody.toString());
-		if (contactEmailId == null || contactEmailId == "") {
-			return;
-		}
+
 		email.addTo(Constants.CF_EMAIL_ID);
 		email.addBcc("alexgp007@gmail.com");
 		try {

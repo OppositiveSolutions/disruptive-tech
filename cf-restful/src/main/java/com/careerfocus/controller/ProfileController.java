@@ -45,10 +45,11 @@ public class ProfileController {
 		if (!uq_.equals("0")) {
 			Map<String, Object> userMap = profileDAO.getUserIdAndPasswordFromUniqueString(uq_);
 			if (userMap.get("user_id") != null) {
-				userId = userMap.get("user_id").toString();
-			} else {
-				return Response.ok(false).build();
+				uId = Integer.parseInt(userMap.get("user_id").toString());
+				if (profileService.changePassword(uId, password))
+					return Response.ok(profileDAO.deleteUniqueString(uId)).build();
 			}
+			return Response.ok(false).build();
 		}
 		if (userId != null)
 			uId = Integer.parseInt(userId);

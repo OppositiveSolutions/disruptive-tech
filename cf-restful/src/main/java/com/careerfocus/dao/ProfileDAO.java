@@ -97,6 +97,11 @@ public class ProfileDAO {
 		return template.update(query, userId, uq_) > 0 ? true : false;
 	}
 
+	public boolean deleteUniqueString(int userId) {
+		String query = "DELETE FROM user_unique_string WHERE user_id = ?";
+		return template.update(query, userId) > 0 ? true : false;
+	}
+
 	public static String randomString(int length) {
 		char[] characterSet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
 		Random random = new SecureRandom();

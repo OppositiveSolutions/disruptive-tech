@@ -42,12 +42,12 @@ public class ContactDAO {
 		return status;
 	}
 
-	public boolean saveInquiry(String emailId, String phone, String content) {
-		String query = "INSERT INTO inquiry(email_id,phone,content) VALUES (?,?,?)";
-		boolean status = template.update(query, emailId, phone, content) > 0 ? true : false;
+	public boolean saveInquiry(String contact, String name, String content) {
+		String query = "INSERT INTO inquiry(contact,name,content) VALUES (?,?,?)";
+		boolean status = template.update(query, contact, name, content) > 0 ? true : false;
 		if (status)
 			try {
-				mailDAO.sendContentMail(emailId, phone, content);
+				mailDAO.sendInquiryMail(contact, name, content);
 			} catch (MalformedURLException | EmailException e) {
 				e.printStackTrace();
 			}
