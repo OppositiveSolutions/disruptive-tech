@@ -19,7 +19,7 @@ public interface QuestionPaperRepository extends JpaRepository<QuestionPaper, In
     @Query("UPDATE QuestionPaper q SET q.isDemo = ?1 WHERE q.questionPaperId = ?2")
     void updateIsDemo(boolean isDemo, int questionPaperId);
 
-    @Query("SELECT new com.careerfocus.model.response.QuestionPaperVO(q) FROM QuestionPaper q")
+    @Query("SELECT new com.careerfocus.model.response.QuestionPaperVO(q) FROM QuestionPaper q ORDER BY q.firstName")
     Page<QuestionPaperVO> findAllQuestionsPapers(Pageable page);
 
     @Query("SELECT new com.careerfocus.model.response.QuestionPaperVO(q) FROM QuestionPaper q "

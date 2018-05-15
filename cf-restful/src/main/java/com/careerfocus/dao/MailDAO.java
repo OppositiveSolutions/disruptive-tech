@@ -180,7 +180,7 @@ public class MailDAO {
 
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can reset your password by clicking the link <a href=\"https://www.careerfocus.in/password/change?uq_="
-						+ uq_ + "\">reset password</a> with the following credentials:</p>");
+						+ uq_ + "\">reset password</a>.</p>");
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> For any questions that you may have, write to us at <a href=\"mailto:career.focus@ymail.com\">career.focus@ymail.com</a></p>");
 		htmlBody.append("<p style=\"margin-top: 25px; margin-bottom: 10px;\">");
