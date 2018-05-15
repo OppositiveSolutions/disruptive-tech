@@ -2,7 +2,6 @@ package com.careerfocus.dao;
 
 import com.careerfocus.model.response.StudentVO;
 import com.careerfocus.util.DateUtils;
-import com.google.common.collect.ImmutableMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,7 +24,7 @@ public class StudentDAO {
 	public List<Map<String, Object>> getStudents(int pageSize, int pageNo) {
 
 		String query = "SELECT u.user_id as userId, first_name as firstName, last_name as lastName,"
-				+ " created_date as createdDate, expiry_date as expiryDate, username, status, dob,"
+				+ " created_date as createdDate, expiry_date as expiryDate, username, u.status, dob,"
 				+ " gender,street_address as streetAdress, land_mark as landMark, city,"
 				+ " state_id as stateId, pin_code as pinCode, phone_no as phoneNo FROM student s"
 				+ " INNER JOIN user u ON s.user_id = u.user_id"
@@ -63,7 +62,7 @@ public class StudentDAO {
 	public List<Map<String, Object>> getStaffs(int pageSize, int pageNo) {
 
 		String query = "SELECT u.user_id as userId, first_name as firstName, last_name as lastName,"
-				+ " created_date as createdDate, username, status, dob, gender, street_address as streetAdress,"
+				+ " created_date as createdDate, username, u.status, dob, gender, street_address as streetAdress,"
 				+ " land_mark as landMark, city, state_id as stateId, pin_code as pinCode, phone_no as phoneNo"
 				+ " FROM staff s INNER JOIN user u ON s.user_id = u.user_id"
 				+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
@@ -83,7 +82,8 @@ public class StudentDAO {
 				map.put("userId", rs.getInt("userId"));
 				map.put("firstName", rs.getString("firstName"));
 				map.put("lastName", rs.getString("lastName"));
-				map.put("createdDate", DateUtils.toFormat(rs.getDate("createdDate"), "MM/dd/yyyy"));
+				map.put("createdDate", rs.getDate("createdDate") != null
+						? DateUtils.toFormat(rs.getDate("createdDate"), "MM/dd/yyyy") : null);
 				map.put("username", rs.getString("username"));
 				map.put("streetAdress", rs.getString("streetAdress"));
 				map.put("landMark", rs.getString("landMark"));

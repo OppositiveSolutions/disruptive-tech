@@ -1,8 +1,11 @@
 package com.careerfocus.controller;
 
+import com.careerfocus.entity.Announcements;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StudentService;
 import com.careerfocus.util.response.Response;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +23,13 @@ public class StudentController {
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public Response addStudent(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody AddStudentVO student, @RequestPart(value = "file", required = true) final MultipartFile image)
-			throws Exception {
+			@RequestPart(required = true) String studentJson,
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
+		AddStudentVO student = new ObjectMapper().readValue(studentJson, AddStudentVO.class);
+		System.out.println("Student = " + student.getFirstName());
+		System.out.println("Student = " + student.getEmailId());
+		System.out.println("Student = " + student.getCity());
+		System.out.println("Student = " + image.getBytes());
 		return studentService.addStudent(student, image);
 	}
 

@@ -75,7 +75,7 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, int role, String firstName, String lastName, String gender, Date dob) {
+    public User(String username, String password, int role, String firstName, String lastName, String gender, Date dob, Date createdDate) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -83,6 +83,7 @@ public class User {
         this.lastName = lastName;
         this.gender = gender;
         this.dob = dob;
+        this.createdDate = createdDate;
     }
 
     public User(int userId) {

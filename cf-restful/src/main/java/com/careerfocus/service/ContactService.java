@@ -13,8 +13,8 @@ public class ContactService {
 	@Autowired
 	ContactDAO contactDAO;
 
-	public boolean saveInquiry(String emailId, String phone, String content) {
-		return contactDAO.saveInquiry(emailId, phone, content);
+	public boolean saveInquiry(String contact, String name, String content) {
+		return contactDAO.saveInquiry(contact, name, content);
 	}
 
 }
