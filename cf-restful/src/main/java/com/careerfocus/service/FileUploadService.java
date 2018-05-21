@@ -47,8 +47,14 @@ public class FileUploadService {
 		for (int i = 0; i < coachingTypes.size(); i++) {
 			material = new HashMap<String, Object>();
 			material.put("name", coachingTypes.get(i).get("name"));
-			material.put("materials", fuRepository.findAllByIsCurrentOrderByIdAsc(
-					Integer.parseInt(coachingTypes.get(i).get("coachingTypeId").toString())));
+			List<UploadFile> finalFile = new ArrayList<UploadFile>(); 
+			List<UploadFile> file = fuRepository.findAllByIsCurrentOrderByIdAsc(
+					Integer.parseInt(coachingTypes.get(i).get("coachingTypeId").toString()));
+			for (UploadFile uFile: file) {
+				uFile.setData(null);
+				finalFile.add(uFile);
+			}
+			material.put("materials", finalFile);
 			materials.add(material);
 		}
 		return materials;

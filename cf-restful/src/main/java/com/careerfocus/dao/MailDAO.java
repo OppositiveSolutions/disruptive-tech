@@ -18,7 +18,7 @@ public class MailDAO {
 	private static final String USERNAME = "alexgp.think@gmail.com";
 	private static final String PASSWORD = "alex-10Bfb632";
 	private static final String FROM_ADDRESS = "noreply@careerfocus.in";
-	private static final String EMAIL_LOGO = "http://localhost:8080/CF_UI/img/mail_logo.png";
+	private static final String EMAIL_LOGO = "https://www.careerfocus.in/CF_UI/img/mail_logo.png";
 
 	public void welcomeMailUser(String patientEmailId, String password, String welcomeMessage)
 			throws EmailException, MalformedURLException {
@@ -179,8 +179,8 @@ public class MailDAO {
 		htmlBody.append("<p style=\"margin-top: 10px; margin-bottom: 10px;\">" + welcomeMessage + "</p>");
 
 		htmlBody.append(
-				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can reset your password by clicking the link <a href=\"https://www.careerfocus.in/password/change?uq_="
-						+ uq_ + "\">reset password</a> with the following credentials:</p>");
+				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can reset your password by clicking the link <a href=\"https://www.careerfocus.in/profile/password/change?uq_="
+						+ uq_ + "\">reset password</a>.</p>");
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> For any questions that you may have, write to us at <a href=\"mailto:career.focus@ymail.com\">career.focus@ymail.com</a></p>");
 		htmlBody.append("<p style=\"margin-top: 25px; margin-bottom: 10px;\">");

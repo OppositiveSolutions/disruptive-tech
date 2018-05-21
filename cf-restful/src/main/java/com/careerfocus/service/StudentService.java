@@ -1,5 +1,6 @@
 package com.careerfocus.service;
 
+import com.careerfocus.constants.Constants;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.CommonDAO;
 import com.careerfocus.dao.MailDAO;
@@ -68,6 +69,7 @@ public class StudentService {
 
 	@Transactional
 	public Response addStudent(AddStudentVO studentVO, MultipartFile image) throws IOException {
+		studentVO.setCenterId(Constants.DEFAULT_CENTER_ID);
 		List<Error> errors = StudentUtils.validate(studentVO);
 		if (userRepository.findByUsername(studentVO.getEmailId()) != null)
 			errors.add(new Error(ErrorCodes.EMAIL_EXISTS, ErrorCodes.EMAIL_EXISTS_MSG));

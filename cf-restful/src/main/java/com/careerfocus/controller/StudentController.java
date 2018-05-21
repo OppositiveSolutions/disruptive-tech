@@ -1,6 +1,5 @@
 package com.careerfocus.controller;
 
-import com.careerfocus.entity.Announcements;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StudentService;
 import com.careerfocus.util.response.Response;
