@@ -18,5 +18,7 @@ public class Constants {
 	public static final int ROLE_STAFF = 4;
 
 	public static final String CF_EMAIL_ID = "career.focus@ymail.com";
+	
+	public static final int DEFAULT_CENTER_ID = 1;
 
 }
