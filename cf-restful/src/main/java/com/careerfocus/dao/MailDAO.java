@@ -18,7 +18,7 @@ public class MailDAO {
 	private static final String USERNAME = "alexgp.think@gmail.com";
 	private static final String PASSWORD = "alex-10Bfb632";
 	private static final String FROM_ADDRESS = "noreply@careerfocus.in";
-	private static final String EMAIL_LOGO = "http://localhost:8080/CF_UI/img/mail_logo.png";
+	private static final String EMAIL_LOGO = "https://www.careerfocus.in/CF_UI/img/mail_logo.png";
 
 	public void welcomeMailUser(String patientEmailId, String password, String welcomeMessage)
 			throws EmailException, MalformedURLException {
