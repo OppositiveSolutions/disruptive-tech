@@ -1,15 +1,20 @@
 package com.careerfocus.dao;
 
+import com.careerfocus.entity.User;
 import com.careerfocus.model.response.StudentVO;
 import com.careerfocus.util.DateUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +30,7 @@ public class StudentDAO {
 
 		String query = "SELECT u.user_id as userId, first_name as firstName, last_name as lastName,"
 				+ " created_date as createdDate, expiry_date as expiryDate, username, u.status, dob,"
-				+ " gender,street_address as streetAdress, land_mark as landMark, city,"
+				+ " gender,street_address as streetAdress, place, city,"
 				+ " state_id as stateId, pin_code as pinCode, phone_no as phoneNo FROM student s"
 				+ " INNER JOIN user u ON s.user_id = u.user_id"
 				+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
@@ -49,7 +54,7 @@ public class StudentDAO {
 				map.put("expiryDate", DateUtils.toFormat(rs.getDate("expiryDate"), "MM/dd/yyyy"));
 				map.put("username", rs.getString("username"));
 				map.put("streetAdress", rs.getString("streetAdress"));
-				map.put("landMark", rs.getString("landMark"));
+				map.put("place", rs.getString("place"));
 				map.put("city", rs.getString("city"));
 				map.put("stateId", rs.getInt("stateId"));
 				map.put("pinCode", rs.getInt("pinCode"));
@@ -63,7 +68,7 @@ public class StudentDAO {
 
 		String query = "SELECT u.user_id as userId, first_name as firstName, last_name as lastName,"
 				+ " created_date as createdDate, username, u.status, dob, gender, street_address as streetAdress,"
-				+ " land_mark as landMark, city, state_id as stateId, pin_code as pinCode, phone_no as phoneNo"
+				+ " place, city, state_id as stateId, pin_code as pinCode, phone_no as phoneNo"
 				+ " FROM staff s INNER JOIN user u ON s.user_id = u.user_id"
 				+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
 				+ " LEFT JOIN user_address ua on s.user_id = ua.user_id "
@@ -86,7 +91,7 @@ public class StudentDAO {
 						? DateUtils.toFormat(rs.getDate("createdDate"), "MM/dd/yyyy") : null);
 				map.put("username", rs.getString("username"));
 				map.put("streetAdress", rs.getString("streetAdress"));
-				map.put("landMark", rs.getString("landMark"));
+				map.put("place", rs.getString("place"));
 				map.put("city", rs.getString("city"));
 				map.put("stateId", rs.getInt("stateId"));
 				map.put("pinCode", rs.getInt("pinCode"));
@@ -123,5 +128,25 @@ public class StudentDAO {
 		int type = 1;
 		type = template.queryForObject(query, Integer.class);
 		return type;
+	}
+
+	public User saveUser(User user) {
+		String query = "insert into user (username, password, created_date, role, first_name,"
+				+ " last_name, dob, gender, status) values (?,?,now(),?,?,?,?,?,?)";
+		KeyHolder holder = new GeneratedKeyHolder();
+		template.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1, user.getUsername());
+			ps.setString(2, user.getPassword());
+			ps.setInt(3, user.getRole());
+			ps.setString(4, user.getFirstName());
+			ps.setString(5, user.getLastName());
+			ps.setDate(6, new java.sql.Date(user.getDob().getTime()));
+			ps.setString(7, user.getGender());
+			ps.setString(8, "1");
+			return ps;
+		}, holder);
+		user.setUserId(holder.getKey().intValue());
+		return user;
 	}
 }

@@ -33,7 +33,7 @@ public class User {
     private String password;
 
     @Basic
-    @Column(name = "created_date", nullable = false, insertable = false, updatable = false)
+    @Column(name = "created_date", nullable = false)//, insertable = false, updatable = false
     private Date createdDate;
 
     @Basic

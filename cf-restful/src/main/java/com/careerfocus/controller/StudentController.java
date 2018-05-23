@@ -26,9 +26,7 @@ public class StudentController {
 			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
 		AddStudentVO student = new ObjectMapper().readValue(studentJson, AddStudentVO.class);
 		System.out.println("Student = " + student.getFirstName());
-		System.out.println("Student = " + student.getEmailId());
-		System.out.println("Student = " + student.getCity());
-		System.out.println("Student = " + image.getBytes());
+		System.out.println("EmailId = " + student.getEmailId());
 		return studentService.addStudent(student, image);
 	}
 

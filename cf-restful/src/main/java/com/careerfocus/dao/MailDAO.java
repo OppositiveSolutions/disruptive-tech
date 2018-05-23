@@ -2,6 +2,8 @@ package com.careerfocus.dao;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
@@ -20,7 +22,7 @@ public class MailDAO {
 	private static final String FROM_ADDRESS = "noreply@careerfocus.in";
 	private static final String EMAIL_LOGO = "https://www.careerfocus.in/CF_UI/img/mail_logo.png";
 
-	public void welcomeMailUser(String patientEmailId, String password, String welcomeMessage)
+	public void welcomeMailUser(String studentEmailId, String password, String welcomeMessage)
 			throws EmailException, MalformedURLException {
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(HOSTNAME);
@@ -54,11 +56,13 @@ public class MailDAO {
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You may begin using this service by logging on to <a href=\"https://www.careerfocus.in\">https://www.careerfocus.in</a> with the following credentials:</p>");
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		htmlBody.append(patientEmailId);
+		htmlBody.append(studentEmailId);
 		htmlBody.append("<br>");
 		htmlBody.append("Password: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		htmlBody.append(password);
 		htmlBody.append("</p>");
+		htmlBody.append(
+				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> You can change your password after logging into your account.</p>");
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> For any questions that you may have, write to us at <a href=\"mailto:career.focus@ymail.com\">career.focus@ymail.com</a></p>");
 		htmlBody.append("<p style=\"margin-top: 25px; margin-bottom: 10px;\">");
@@ -71,14 +75,14 @@ public class MailDAO {
 		htmlBody.append("</div></html>");
 		System.out.println("HTML\n" + htmlBody);
 		email.setHtmlMsg(htmlBody.toString());
-		if (patientEmailId == null || patientEmailId == "") {
+		if (studentEmailId == null || studentEmailId == "") {
 			return;
 		}
-		email.addTo(patientEmailId.toLowerCase());
+		email.addTo(studentEmailId.toLowerCase());
 		email.addBcc("alexgp007@gmail.com");
-		System.out.println("EMAIL\n" + email);
 		try {
 			email.send();
+			System.out.println("Email sent with login credentials.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -148,8 +152,11 @@ public class MailDAO {
 		}
 	}
 
-	public void sendPasswordResetLinkMail(String patientEmailId, String uq_, String welcomeMessage)
+	public Map<String, Object> sendPasswordResetLinkMail(String patientEmailId, String uq_, String welcomeMessage)
 			throws EmailException, MalformedURLException {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("status", false);
+		returnMap.put("message", "Failed to send password reset mail");
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(HOSTNAME);
 		email.setSmtpPort(SMTP_PORT);
@@ -194,15 +201,19 @@ public class MailDAO {
 		System.out.println("HTML\n" + htmlBody);
 		email.setHtmlMsg(htmlBody.toString());
 		if (patientEmailId == null || patientEmailId == "") {
-			return;
+			return returnMap;
 		}
 		email.addTo(patientEmailId.toLowerCase());
 		email.addBcc("alexgp007@gmail.com");
 		System.out.println("EMAIL\n" + email);
 		try {
 			email.send();
+			returnMap.put("status", true);
+			returnMap.put("message", "We have sent an email to your registered email ID please follow the link");
+			return returnMap;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return returnMap;
 		}
 	}
 

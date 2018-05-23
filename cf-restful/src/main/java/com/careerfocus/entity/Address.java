@@ -34,8 +34,8 @@ public class Address {
     private String streetAddress;
 
     @Basic
-    @Column(name = "land_mark")
-    private String landMark;
+    @Column(name = "place")
+    private String place;
 
     @Basic
     private String city;
@@ -59,9 +59,9 @@ public class Address {
     public Address() {
     }
 
-    public Address(String streetAddress, String landMark, String city, States state, int pinCode, int user) {
+    public Address(String streetAddress, String place, String city, States state, int pinCode, int user) {
         this.streetAddress = streetAddress;
-        this.landMark = landMark;
+        this.place = place;
         this.city = city;
         this.state = state;
         this.pinCode = pinCode;
@@ -97,11 +97,11 @@ public class Address {
     }
 
     public String getLandMark() {
-        return landMark;
+        return place;
     }
 
     public void setLandMark(String landMark) {
-        this.landMark = landMark;
+        this.place = landMark;
     }
 
     public int getPinCode() {

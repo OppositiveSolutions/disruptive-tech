@@ -25,7 +25,7 @@ public class AddStudentVO implements Serializable {
 
     private String address;
 
-    private String landMark;
+    private String place;
 
     private String city;
 
@@ -99,12 +99,12 @@ public class AddStudentVO implements Serializable {
         this.address = address;
     }
 
-    public String getLandMark() {
-        return landMark;
+    public String getPlace() {
+        return place;
     }
 
-    public void setLandMark(String landMark) {
-        this.landMark = landMark;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getCity() {
