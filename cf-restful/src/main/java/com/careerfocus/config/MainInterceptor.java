@@ -76,8 +76,8 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| (uri.startsWith(Constants.RESTFUL_PATH_PREFIX + "/profile/password"))
 				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/common/states"))
 				|| (uri.equals(Constants.RESTFUL_PATH_PREFIX + "/center"))
-				|| (uri.contains(Constants.RESTFUL_PATH_PREFIX + "profile/password/reset"))
-				|| (uri.contains(Constants.RESTFUL_PATH_PREFIX + "profile/password/change")))
+				|| (uri.contains(Constants.RESTFUL_PATH_PREFIX + "/profile/password/reset"))
+				|| (uri.contains(Constants.RESTFUL_PATH_PREFIX + "/profile/password/change")))
 			return false;
 		return true;
 	}

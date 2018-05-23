@@ -2,6 +2,8 @@ package com.careerfocus.dao;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
@@ -148,8 +150,11 @@ public class MailDAO {
 		}
 	}
 
-	public void sendPasswordResetLinkMail(String patientEmailId, String uq_, String welcomeMessage)
+	public Map<String, Object> sendPasswordResetLinkMail(String patientEmailId, String uq_, String welcomeMessage)
 			throws EmailException, MalformedURLException {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("status", false);
+		returnMap.put("message", "Failed to send password reset mail");
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(HOSTNAME);
 		email.setSmtpPort(SMTP_PORT);
@@ -194,15 +199,19 @@ public class MailDAO {
 		System.out.println("HTML\n" + htmlBody);
 		email.setHtmlMsg(htmlBody.toString());
 		if (patientEmailId == null || patientEmailId == "") {
-			return;
+			return returnMap;
 		}
 		email.addTo(patientEmailId.toLowerCase());
 		email.addBcc("alexgp007@gmail.com");
 		System.out.println("EMAIL\n" + email);
 		try {
 			email.send();
+			returnMap.put("status", true);
+			returnMap.put("message", "We have sent an email to your registered email ID please follow the link");
+			return returnMap;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return returnMap;
 		}
 	}
 

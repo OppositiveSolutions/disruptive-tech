@@ -1,5 +1,6 @@
 package com.careerfocus.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,29 +38,34 @@ public class ProfileController {
 	}
 
 	@RequestMapping(value = "/password/change", method = RequestMethod.GET)
-	public Response changePassword(HttpServletRequest request, HttpServletResponse response,
+	public Map<String, Object> changePassword(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "userId", required = false) String userId,
 			@RequestParam(value = "password", required = false) String password,
 			@RequestParam(value = "uq_", defaultValue = "0", required = false) String uq_) throws Exception {
 		int uId = 0;
+		Map<String, Object> returnMap = new HashMap<>();
 		if (!uq_.equals("0")) {
 			Map<String, Object> userMap = profileDAO.getUserIdAndPasswordFromUniqueString(uq_);
 			if (userMap.get("user_id") != null) {
 				uId = Integer.parseInt(userMap.get("user_id").toString());
-				if (profileService.changePassword(uId, password))
-					return Response.ok(profileDAO.deleteUniqueString(uId)).build();
+				returnMap = profileService.changePassword(uId, password);
+				if ((boolean) returnMap.get("status"))
+					if (profileDAO.deleteUniqueString(uId))
+						return returnMap;
 			}
-			return Response.ok(false).build();
+			returnMap.put("status", false);
+			returnMap.put("message", "The  password reset request expired. Please start over again.");
+			return returnMap;
 		}
 		if (userId != null)
 			uId = Integer.parseInt(userId);
-		return Response.ok(profileService.changePassword(uId, password)).build();
+		return profileService.changePassword(uId, password);
 	}
 
 	@RequestMapping(value = "/password/reset", method = RequestMethod.GET)
-	public Response resetPassword(HttpServletRequest request, HttpServletResponse response,
+	public Map<String, Object> resetPassword(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("emailId") String emailId) throws Exception {
-		return Response.ok(profileService.resetPassword(emailId)).build();
+		return profileService.resetPassword(emailId);
 	}
 
 }

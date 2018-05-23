@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.net.MalformedURLException;
 import java.security.SecureRandom;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -43,9 +44,24 @@ public class ProfileDAO {
 		return null;
 	}
 
-	public boolean changePassword(int userId, String password) {
+	public Map<String, Object> changePassword(int userId, String password) {
+		Map<String, Object> returnMap = new HashMap<String, Object>();
 		String query = "UPDATE user SET password = ? WHERE user_id  = ?";
-		return template.update(query, password, userId) > 0 ? true : false;
+		try {
+			if (template.update(query, password, userId) > 0) {
+				returnMap.put("status", true);
+				returnMap.put("message", "Your password changed successfully. Log in using your new password.");
+			} else {
+				returnMap.put("status", false);
+				returnMap.put("message", "Password reset failed.Try again after some time.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnMap.put("status", false);
+			returnMap.put("message", "Password reset failed.Try again after some time.");
+			return returnMap;
+		}
+		return returnMap;
 	}
 
 	public boolean resetPassword(String username, String password) {
@@ -67,21 +83,23 @@ public class ProfileDAO {
 		return template.queryForMap(query, uq_);
 	}
 
-	public boolean resetPassword(String emailId) {
+	public Map<String, Object> resetPassword(String emailId) {
 		String uq_ = null;
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		returnMap.put("status", false);
+		returnMap.put("message", "Failed to send password reset mail");
 		int userId = commonDAO.getUserIdFromEmailId(emailId);
 		uq_ = createUniqueString(userId);
 		if (emailId != null && uq_ != null) {
 			try {
-				mailDAO.sendPasswordResetLinkMail(emailId, uq_, "Reset Password for Career Focus Account.");
+				return mailDAO.sendPasswordResetLinkMail(emailId, uq_, "Reset Password for Career Focus Account.");
 			} catch (MalformedURLException | EmailException e) {
 				e.printStackTrace();
-				return false;
 			}
-			return true;
 		} else {
-			return false;
+			return returnMap;
 		}
+		return returnMap;
 	}
 
 	private String createUniqueString(int userId) {
