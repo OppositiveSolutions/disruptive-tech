@@ -62,6 +62,8 @@ public class MailDAO {
 		htmlBody.append(password);
 		htmlBody.append("</p>");
 		htmlBody.append(
+				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> You can change your password after logging into your account.</p>");
+		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> For any questions that you may have, write to us at <a href=\"mailto:career.focus@ymail.com\">career.focus@ymail.com</a></p>");
 		htmlBody.append("<p style=\"margin-top: 25px; margin-bottom: 10px;\">");
 		htmlBody.append("Thank you");
