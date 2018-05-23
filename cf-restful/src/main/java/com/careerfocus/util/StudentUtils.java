@@ -53,10 +53,10 @@ public class StudentUtils {
 			password = PasswordGenerator.generateSixDigitPassword();
 		}
 		User user = new User(studentVO.getEmailId(), password, Constants.ROLE_STUDENT, studentVO.getFirstName(),
-				studentVO.getLastName(), studentVO.getGender(),
-				DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()), new Date());
+				studentVO.getLastName(), studentVO.getGender(), DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()),
+				new Date());
 
-		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
+		Address address = new Address(studentVO.getAddress(), studentVO.getPlace(), studentVO.getCity(),
 				studentVO.getState(), studentVO.getPinCode(), user.getUserId());
 		Set<Address> addressSet = new HashSet<>();
 		addressSet.add(address);

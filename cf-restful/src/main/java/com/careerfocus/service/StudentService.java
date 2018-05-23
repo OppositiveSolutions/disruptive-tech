@@ -70,22 +70,21 @@ public class StudentService {
 	@Transactional
 	public Response addStudent(AddStudentVO studentVO, MultipartFile image) throws IOException {
 		studentVO.setCenterId(Constants.DEFAULT_CENTER_ID);
-		List<Error> errors = StudentUtils.validate(studentVO);
+		// List<Error> errors = StudentUtils.validate(studentVO);
 		if (userRepository.findByUsername(studentVO.getEmailId()) != null)
-			errors.add(new Error(ErrorCodes.EMAIL_EXISTS, ErrorCodes.EMAIL_EXISTS_MSG));
-
-		if (errors != null && !errors.isEmpty()) {
-			return Response.status(ErrorCodes.VALIDATION_FAILED)
-					.error(new Error(ErrorCodes.VALIDATION_FAILED, ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
-		}
+			return null;
+		// errors.add(new Error(ErrorCodes.EMAIL_EXISTS,
+		// ErrorCodes.EMAIL_EXISTS_MSG));
+		// if (errors != null && !errors.isEmpty()) {
+		// return Response.status(ErrorCodes.VALIDATION_FAILED)
+		// .error(new Error(ErrorCodes.VALIDATION_FAILED,
+		// ErrorCodes.VALIDATION_FAILED_MSG), errors).build();
+		// }
 
 		User user = StudentUtils.createUserEntity(studentVO);
-		System.out.println(studentVO);
-		System.out.println(studentVO.getFirstName());
-		System.out.println(user);
 		System.out.println(user.getFirstName());
-		user = userRepository.save(user);
-
+		// user = userRepository.save(user);
+		user = studentDAO.saveUser(user);
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, studentVO.getCenterId() + "",
 				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType());
 		studentRepository.save(student);
@@ -102,7 +101,6 @@ public class StudentService {
 			e.printStackTrace();
 		}
 		studentVO.setUserId(user.getUserId());
-
 		return Response.ok(studentVO).build();
 	}
 
@@ -121,7 +119,7 @@ public class StudentService {
 		user.setDob(DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
 
 		// studentDAO.deleteUserAddress(studentVO.getUserId());
-		Address address = new Address(studentVO.getAddress(), studentVO.getLandMark(), studentVO.getCity(),
+		Address address = new Address(studentVO.getAddress(), studentVO.getPlace(), studentVO.getCity(),
 				studentVO.getState(), studentVO.getPinCode(), studentVO.getUserId());
 		address.setUser(user);
 
