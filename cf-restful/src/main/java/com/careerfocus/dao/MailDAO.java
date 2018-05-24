@@ -186,7 +186,7 @@ public class MailDAO {
 		htmlBody.append("<p style=\"margin-top: 10px; margin-bottom: 10px;\">" + welcomeMessage + "</p>");
 
 		htmlBody.append(
-				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can reset your password by clicking the link <a href=\"https://www.careerfocus.in/profile/password/change?uq_="
+				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can reset your password by clicking the link <a href=\"https://www.careerfocus.in/CF_UI/changepassword.html?uq_="
 						+ uq_ + "\">reset password</a>.</p>");
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> For any questions that you may have, write to us at <a href=\"mailto:career.focus@ymail.com\">career.focus@ymail.com</a></p>");

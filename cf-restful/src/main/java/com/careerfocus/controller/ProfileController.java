@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,12 +38,17 @@ public class ProfileController {
 		return Response.ok(profileService.getStudentDetails(userId)).build();
 	}
 
-	@RequestMapping(value = "/password/change", method = RequestMethod.GET)
+	@RequestMapping(value = "/password/change", method = RequestMethod.POST)
 	public Map<String, Object> changePassword(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "userId", required = false) String userId,
-			@RequestParam(value = "password", required = false) String password,
+			@RequestBody Map<String, Object> passwordMap,
 			@RequestParam(value = "uq_", defaultValue = "0", required = false) String uq_) throws Exception {
 		int uId = 0;
+		System.out.println(passwordMap);
+		String password = "0";
+		if (passwordMap != null) {
+			password = passwordMap.get("password").toString();
+		}
 		Map<String, Object> returnMap = new HashMap<>();
 		if (!uq_.equals("0")) {
 			Map<String, Object> userMap = profileDAO.getUserIdAndPasswordFromUniqueString(uq_);
