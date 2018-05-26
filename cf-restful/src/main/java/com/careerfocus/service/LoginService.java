@@ -44,7 +44,7 @@ public class LoginService {
 		logger.info("uesrname: " + username);
 		logger.info("password: " + password);
 
-		User user = userRepository.findByUsernameAndPassword(username, password);
+		User user = userRepository.findByUsernameAndPasswordAndStatus(username, password, "1");
 		if (user == null || user.getUserId() == Constants.FALSE) {
 			throw new AuthenticationCredentialsNotFoundException("");
 		}

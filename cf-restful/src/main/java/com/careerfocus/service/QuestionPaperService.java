@@ -62,7 +62,7 @@ public class QuestionPaperService {
 		qPaper.setCreatedDate(date);
 		qPaper = qPaperRepository.save(qPaper);
 		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, qPaper.getQuestionPaperId());
-		testDAO.createTestDefault(bundleQPId);
+		testDAO.createTestDefault(bundleQPId, qPaper.isIsDemo());
 		return qPaper;
 	}
 
@@ -77,6 +77,7 @@ public class QuestionPaperService {
 		paper.setDuration(qPaper.getDuration());
 		paper.setExamCode(qPaper.getExamCode());
 		paper.setIsDemo(qPaper.isIsDemo());
+		paper.setCoachingType(qPaper.getCoachingType());
 		paper.setName(qPaper.getName());
 		paper.setNoOfOptions(qPaper.getNoOfOptions());
 		paper.setNoOfQuestions(qPaper.getNoOfQuestions());
@@ -85,12 +86,22 @@ public class QuestionPaperService {
 		return qPaperRepository.save(paper);
 	}
 
-	public Collection<QuestionPaper> getAllQuestionPapersWithFullDetails() {
-		return qPaperRepository.findAll();
+	public Collection<QuestionPaper> getAllQuestionPapersWithFullDetails(String coachingType) {
+		List<QuestionPaper> qps = qPaperRepository.findAll();
+		List<QuestionPaper> returnList = null;
+		int ct = coachingType != null ? Integer.parseInt(coachingType) : 0;
+		if (ct > 0) {
+			returnList = new ArrayList<QuestionPaper>();
+			for (QuestionPaper qp : qps)
+				if (qp.getCoachingType() == ct)
+					returnList.add(qp);
+		} else
+			returnList = qps;
+		return returnList;
 	}
 
-	public List<Map<String, Object>> getAllQuestionPapers() {
-		return qPaperDAO.getAllQuestionPapers();
+	public List<Map<String, Object>> getAllQuestionPapers(int coachingType) {
+		return qPaperDAO.getAllQuestionPapers(coachingType);
 	}
 
 	public Page<QuestionPaperVO> getAllQuestionPapers(int pageSize, int pageNo) {
@@ -105,6 +116,15 @@ public class QuestionPaperService {
 
 	public QuestionPaper getQuestionPaper(int questionPaperId) {
 		return qPaperRepository.findOne(questionPaperId);
+	}
+
+	public boolean removeQP(int questionPaperId) {
+		try {
+			qPaperRepository.delete(questionPaperId);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Transactional

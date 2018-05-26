@@ -17,8 +17,8 @@ public class MailDAO {
 
 	private static final String HOSTNAME = "smtp.gmail.com";
 	private static final int SMTP_PORT = 587;// or 587 465
-	private static final String USERNAME = "alexgp.think@gmail.com";
-	private static final String PASSWORD = "alex-10Bfb632";
+	private static final String USERNAME = "alexgp261190@gmail.com";
+	private static final String PASSWORD = "anju1994";
 	private static final String FROM_ADDRESS = "noreply@careerfocus.in";
 	private static final String EMAIL_LOGO = "https://www.careerfocus.in/CF_UI/img/mail_logo.png";
 

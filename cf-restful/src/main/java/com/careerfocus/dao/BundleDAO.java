@@ -23,7 +23,7 @@ public class BundleDAO {
 
 	public List<Map<String, Object>> getBundles() {
 		String query = "SELECT bundle_id as bundleId, name, description, mrp, selling_price as sellingPrice,"
-				+ " is_available as isAvailavble, discount_percent as discountPercent,"
+				+ " is_available as isAvailavble, discount_percent as discountPercent, coaching_type as coachingType,"
 				+ " created_date as createdDate, validity_days as validityDays FROM bundle";
 		return template.queryForList(query);
 	}

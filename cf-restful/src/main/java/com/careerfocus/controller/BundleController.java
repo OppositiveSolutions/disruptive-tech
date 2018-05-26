@@ -48,7 +48,7 @@ public class BundleController {
 		return Response.ok(service.getQPBundleList(coachingType)).build();
 	}
 
-	@RequestMapping(value = "/coachingTypes", method = RequestMethod.GET)
+	@RequestMapping(value = "/coachingtypes", method = RequestMethod.GET)
 	public Response getCoachingTypeList() throws Exception {
 		return Response.ok(service.getCoachingTypeList()).build();
 	}

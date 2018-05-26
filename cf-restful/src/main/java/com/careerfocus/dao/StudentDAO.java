@@ -1,6 +1,8 @@
 package com.careerfocus.dao;
 
+import com.careerfocus.entity.Address;
 import com.careerfocus.entity.User;
+import com.careerfocus.entity.UserPhone;
 import com.careerfocus.model.response.StudentVO;
 import com.careerfocus.util.DateUtils;
 
@@ -26,6 +28,9 @@ public class StudentDAO {
 	@Autowired
 	private JdbcTemplate template;
 
+	// private final int USER_ACTIVE = 1;
+	// private final int USER_DEACTIVATED = 0;
+
 	public List<Map<String, Object>> getStudents(int pageSize, int pageNo) {
 
 		String query = "SELECT u.user_id as userId, first_name as firstName, last_name as lastName,"
@@ -48,6 +53,7 @@ public class StudentDAO {
 				// TODO Auto-generated method stub
 				Map<String, Object> map = new HashMap<>();
 				map.put("userId", rs.getInt("userId"));
+				map.put("status", rs.getString("status"));
 				map.put("firstName", rs.getString("firstName"));
 				map.put("lastName", rs.getString("lastName"));
 				map.put("createdDate", DateUtils.toFormat(rs.getDate("createdDate"), "MM/dd/yyyy"));
@@ -123,6 +129,11 @@ public class StudentDAO {
 		return template.update(query) > 0 ? true : false;
 	}
 
+	public boolean activateStudent(int userId) {
+		String query = "update user set status = 1 - status where user_id = ?";
+		return template.update(query, userId) > 0 ? true : false;
+	}
+
 	public int getStudentType(int userId) {
 		String query = "select type from student where user_id = ?";
 		int type = 1;
@@ -148,5 +159,38 @@ public class StudentDAO {
 		}, holder);
 		user.setUserId(holder.getKey().intValue());
 		return user;
+	}
+
+	public Address saveAddress(Address address) {
+		String query = "insert into address (user_id, street_address, place, city, state_id, pin_code"
+				+ " ) values (?,?,?,?,?,?)";
+		KeyHolder holder = new GeneratedKeyHolder();
+		template.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, address.getUser().getUserId());
+			ps.setString(2, address.getStreetAddress());
+			ps.setString(3, address.getPlace());
+			ps.setString(4, address.getCity());
+			ps.setInt(5, address.getStates().getStateId());
+			ps.setInt(6, address.getPinCode());
+			return ps;
+		}, holder);
+		address.setAddressId(holder.getKey().intValue());
+		return address;
+	}
+
+	public UserPhone savePhone(UserPhone phone) {
+		String query = "insert into user_phone (user_id, type, phone_no, is_primary) values (?,?,?,?)";
+		KeyHolder holder = new GeneratedKeyHolder();
+		template.update(connection -> {
+			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			ps.setInt(1, phone.getUser().getUserId());
+			ps.setInt(2, phone.getType());
+			ps.setString(3, phone.getPhoneNo());
+			ps.setBoolean(4, phone.isPrimary());
+			return ps;
+		}, holder);
+		phone.setUserPhoneId(holder.getKey().intValue());
+		return phone;
 	}
 }

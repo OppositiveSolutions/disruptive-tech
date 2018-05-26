@@ -51,6 +51,10 @@ public class User {
     @Basic
     @Column(length = 11)
     private String gender;
+    
+    @Basic
+    @Column(length = 3)
+    private int status;
 
     @Basic
     @Temporal(TemporalType.DATE)
@@ -75,7 +79,7 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, int role, String firstName, String lastName, String gender, Date dob, Date createdDate) {
+    public User(String username, String password, int role, String firstName, String lastName, String gender, Date dob, int status, Date createdDate) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -83,6 +87,7 @@ public class User {
         this.lastName = lastName;
         this.gender = gender;
         this.dob = dob;
+        this.status = status;
         this.createdDate = createdDate;
     }
 
@@ -130,7 +135,15 @@ public class User {
         this.gender = gender;
     }
 
-    public String getLastName() {
+    public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getLastName() {
         return lastName;
     }
 

@@ -45,11 +45,15 @@ public class TestDAO {
 		return status;
 	}
 
-	public boolean createTestDefault(int bundleQPId) {
+	public boolean createTestDefault(int bundleQPId, boolean isDemo) {
 		boolean status = true;
 		try {
 			String query = "insert into test (bundle_question_paper_id,user_id,expiry_date,is_enabled,is_written)"
-					+ " select ?, user_id, now(), 1, 0 from user";
+					+ " select ?, user_id, now(), 1, 0 from user u";
+			if (!isDemo)
+				query += " inner join student s on s.user_id = u.user_id where s.type = 1 and u.role = 1";
+			else
+				query += " where u.role = 1";
 			template.update(query, bundleQPId);
 		} catch (Exception e) {
 			status = false;
@@ -58,12 +62,14 @@ public class TestDAO {
 		return status;
 	}
 
-	public boolean createTestDefaultForANewUser(int bundleId, int userId) {
+	public boolean createTestDefaultForANewUser(int bundleId, int userId, int isDemo) {
 		boolean status = true;
 		try {
 			String query = "INSERT INTO test (bundle_question_paper_id,user_id,expiry_date,is_enabled,is_written,is_demo)"
 					+ " SELECT bundle_question_paper_id, ?, now(), '1', '0', is_demo"
 					+ " FROM bundle_question_paper bqp where bundle_id = ?";
+			if (isDemo == 1)
+				query += " and is_demo = 1";
 			template.update(query, userId, bundleId);
 		} catch (Exception e) {
 			status = false;
