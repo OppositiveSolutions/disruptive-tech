@@ -11,14 +11,19 @@ import com.careerfocus.model.response.QPSubCategoryVO;
 import com.careerfocus.model.response.QuestionPaperVO;
 import com.careerfocus.repository.*;
 import com.careerfocus.util.QuestionPaperUtils;
+import com.careerfocus.util.response.Response;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,6 +57,9 @@ public class QuestionPaperService {
 
 	@Autowired
 	QuestionOptionsRepository questionsOptionsRepository;
+
+	@Autowired
+	QuestionImageRepository questionImageRepository;
 
 	@Autowired
 	QuestionPaperQuestionRepository questionPaperQuestionRepository;
@@ -320,5 +328,23 @@ public class QuestionPaperService {
 
 	public List<QuestionPaperQuestion> getQuestions(int subCategoryId) {
 		return questionPaperQuestionRepository.findByQuestionPaperSubCategoryId(subCategoryId);
+	}
+
+	public byte[] getQuestionImage(int userId) {
+		return questionImageRepository.findOne(userId).getImage();
+	}
+
+	public boolean removeQuestionImage(int userId) {
+		try {
+			questionImageRepository.delete(userId);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public Response createQuestionImage(int userId, MultipartFile image) throws IOException {
+		QuestionImage qImage = new QuestionImage(userId, image.getBytes());
+		return Response.ok(questionImageRepository.save(qImage)).build();
 	}
 }

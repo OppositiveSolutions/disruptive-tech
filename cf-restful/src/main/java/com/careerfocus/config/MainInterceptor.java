@@ -90,6 +90,8 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 			return checkAuthorizationForSuperAdmin(uri, requestMethod);
 		case Constants.ROLE_BRANCH_ADMIN:
 			return checkAuthorisationForBranchAdmin(uri, requestMethod);
+		case Constants.ROLE_STAFF:
+			return checkAuthorizationForStaff(uri, requestMethod);
 		}
 		return false;
 	}
@@ -130,6 +132,26 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/achievers")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/advertisement")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/video-tutorial")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile/password")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/material");
+	}
+
+	private boolean checkAuthorizationForStaff(String uri, String requestMethod) {
+		log.debug("entered MainIntercepter.checkAuthorizationForStaff");
+		PathMatcher pathMatcher = new AntPathMatcher();
+		return pathMatcher.match(Constants.RESTFUL_PATH_PREFIX + "/login", uri)
+				|| pathMatcher.matchStart(Constants.RESTFUL_PATH_PREFIX + "/logout", uri)
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/category")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/student")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/bundle")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/test")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/exam")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/achievers")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/video-tutorial")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/testimonial")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile/password")

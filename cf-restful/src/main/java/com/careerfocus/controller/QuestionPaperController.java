@@ -8,6 +8,7 @@ import com.careerfocus.service.QuestionPaperService;
 import com.careerfocus.util.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -50,7 +51,9 @@ public class QuestionPaperController {
 	}
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public Response getAllQuestionPapersFullDetails(@RequestParam(value = "coachingType", required = false, defaultValue = "0") String coachingType) throws Exception {
+	public Response getAllQuestionPapersFullDetails(
+			@RequestParam(value = "coachingType", required = false, defaultValue = "0") String coachingType)
+			throws Exception {
 		return Response.ok(qPaperService.getAllQuestionPapersWithFullDetails(coachingType)).build();
 	}
 
@@ -126,6 +129,25 @@ public class QuestionPaperController {
 	public Response getQuestionPaperCompletionStatus(@PathVariable("questionPaperId") Integer questionPaperId)
 			throws Exception {
 		return Response.ok(qPaperService.isQuestionPaperComplete(questionPaperId)).build();
+	}
+
+	@RequestMapping(value = "/{questionId}/image", method = RequestMethod.POST)
+	public Response saveAchieverImage(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("questionId") int questionId,
+			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
+		return qPaperService.createQuestionImage(Integer.valueOf(questionId), image);
+	}
+
+	@RequestMapping(value = "/{questionId}/image", method = RequestMethod.GET)
+	public byte[] getAchieverImage(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("questionId") int questionId) throws Exception {
+		return qPaperService.getQuestionImage(questionId);
+	}
+
+	@RequestMapping(value = "/{questionId}/image", method = RequestMethod.DELETE)
+	public Response removeAchievers(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("questionId") int questionId) throws Exception {
+		return Response.ok(qPaperService.removeQuestionImage(questionId)).build();
 	}
 
 }
