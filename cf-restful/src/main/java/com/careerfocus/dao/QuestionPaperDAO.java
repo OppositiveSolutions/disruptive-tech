@@ -65,4 +65,9 @@ public class QuestionPaperDAO {
 		}
 	}
 
+	public boolean changeQPStatus(int questionPaperId, int status) {
+		String query = "UPDATE question_paper set status = ? WHERE question_paper_id = ?";
+		return jdbcTemplate.update(query, status, questionPaperId) > 0 ? true : false;
+	}
+
 }

@@ -31,6 +31,10 @@ import java.util.stream.Collectors;
 public class QuestionPaperService {
 
 	public static final int DEFAUL_QP_BUNDLE = 10;
+	public static final int BUNDLE_STATUS_CREATED = 0;
+	public static final int BUNDLE_STATUS_ENABLED = 1;
+	public static final int BUNDLE_STATUS_DISABLED = 2;
+	public static final int BUNDLE_STATUS_DELETED = 3;
 
 	private static final Logger log = Logger.getLogger(QuestionPaperService.class);
 
@@ -69,8 +73,9 @@ public class QuestionPaperService {
 		qPaper.setLastModified(date);
 		qPaper.setCreatedDate(date);
 		qPaper = qPaperRepository.save(qPaper);
-		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, qPaper.getQuestionPaperId());
-		testDAO.createTestDefault(bundleQPId, qPaper.isIsDemo());
+		// int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE,
+		// qPaper.getQuestionPaperId());
+		// testDAO.createTestDefault(bundleQPId, qPaper.isIsDemo());
 		return qPaper;
 	}
 
@@ -90,8 +95,25 @@ public class QuestionPaperService {
 		paper.setNoOfOptions(qPaper.getNoOfOptions());
 		paper.setNoOfQuestions(qPaper.getNoOfQuestions());
 		paper.setLastModified(new Date());
+		paper.setCreatedDate(new Date());
 
 		return qPaperRepository.save(paper);
+	}
+
+	public Map<String, Object> enableQuestionPaper(int questionPaperId, int isDemo) {
+		boolean status = true;
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, questionPaperId);
+		if (bundleQPId > 0)
+			status = testDAO.createTestDefault(bundleQPId, isDemo == 1 ? true : false);
+		if (status && changeQPStatus(questionPaperId, BUNDLE_STATUS_ENABLED)) {
+			returnMap.put("status", true);
+			returnMap.put("message", "Successfully enabled Question Paper.");
+		} else {
+			returnMap.put("status", false);
+			returnMap.put("message", "Failed to enable Question Paper.");
+		}
+		return returnMap;
 	}
 
 	public Collection<QuestionPaper> getAllQuestionPapersWithFullDetails(String coachingType) {
@@ -101,10 +123,14 @@ public class QuestionPaperService {
 		if (ct > 0) {
 			returnList = new ArrayList<QuestionPaper>();
 			for (QuestionPaper qp : qps)
-				if (qp.getCoachingType() == ct)
+				if (qp.getStatus() != BUNDLE_STATUS_DELETED && qp.getCoachingType() == ct)
 					returnList.add(qp);
-		} else
-			returnList = qps;
+		} else {
+			returnList = new ArrayList<QuestionPaper>();
+			for (QuestionPaper qp : qps)
+				if (qp.getStatus() != BUNDLE_STATUS_DELETED)
+					returnList.add(qp);
+		}
 		return returnList;
 	}
 
@@ -126,13 +152,12 @@ public class QuestionPaperService {
 		return qPaperRepository.findOne(questionPaperId);
 	}
 
-	public boolean removeQP(int questionPaperId) {
-		try {
-			qPaperRepository.delete(questionPaperId);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean deleteQP(int questionPaperId) {
+		return qPaperDAO.changeQPStatus(questionPaperId, BUNDLE_STATUS_DELETED);
+	}
+
+	public boolean changeQPStatus(int questionPaperId, int status) {
+		return qPaperDAO.changeQPStatus(questionPaperId, status);
 	}
 
 	@Transactional

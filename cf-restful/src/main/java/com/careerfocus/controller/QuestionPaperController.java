@@ -33,9 +33,15 @@ public class QuestionPaperController {
 	}
 
 	@RequestMapping(value = "/{questionPaperId}", method = RequestMethod.DELETE)
-	public Response removeQP(HttpServletRequest request, HttpServletResponse response,
+	public Response deleteQP(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("questionPaperId") int questionPaperId) throws Exception {
-		return Response.ok(qPaperService.removeQP(questionPaperId)).build();
+		return Response.ok(qPaperService.deleteQP(questionPaperId)).build();
+	}
+
+	@RequestMapping(value = "/{questionPaperId}/status/{status}", method = RequestMethod.GET)
+	public Response changeQPStatus(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("questionPaperId") int questionPaperId, @PathVariable("status") int status) throws Exception {
+		return Response.ok(qPaperService.changeQPStatus(questionPaperId, status)).build();
 	}
 
 	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)

@@ -27,7 +27,7 @@ public class TestDAO {
 				+ "t.is_demo as isDemo, qp.name,qp.exam_code FROM test t inner join bundle_question_paper bqp"
 				+ " on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 				+ " inner join question_paper qp on qp.question_paper_id = bqp.question_paper_id"
-				+ " where user_id = ? and is_written = 0";
+				+ " where user_id = ? and is_written = 0 and qp.status = 1";
 		return template.queryForList(query, userId);
 	}
 
@@ -49,7 +49,7 @@ public class TestDAO {
 		boolean status = true;
 		try {
 			String query = "insert into test (bundle_question_paper_id,user_id,expiry_date,is_enabled,is_written)"
-					+ " select ?, user_id, now(), 1, 0 from user u";
+					+ " select ?, u.user_id, now(), 1, 0 from user u";
 			if (!isDemo)
 				query += " inner join student s on s.user_id = u.user_id where s.type = 1 and u.role = 1";
 			else
@@ -67,7 +67,8 @@ public class TestDAO {
 		try {
 			String query = "INSERT INTO test (bundle_question_paper_id,user_id,expiry_date,is_enabled,is_written,is_demo)"
 					+ " SELECT bundle_question_paper_id, ?, now(), '1', '0', is_demo"
-					+ " FROM bundle_question_paper bqp where bundle_id = ?";
+					+ " FROM bundle_question_paper bqp inner join question_paper qp on bqp.question_paper_id = qp.question_paper_id"
+					+ " where bundle_id = ? and qp.status = 1";
 			if (isDemo == 1)
 				query += " and is_demo = 1";
 			template.update(query, userId, bundleId);

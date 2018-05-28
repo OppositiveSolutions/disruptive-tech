@@ -39,7 +39,7 @@ public class BundleDAO {
 	}
 
 	public List<Map<String, Object>> getCoachingTypeList() {
-		String query = "select * from bundle_category";
+		String query = "select coaching_type_id as coachingTypeId, name from coaching_type";
 		return template.queryForList(query);
 	}
 
