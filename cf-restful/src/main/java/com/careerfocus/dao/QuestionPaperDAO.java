@@ -70,4 +70,9 @@ public class QuestionPaperDAO {
 		return jdbcTemplate.update(query, status, questionPaperId) > 0 ? true : false;
 	}
 
+	public int getIsDemoQP(int questionPaperId) {
+		String query = "SELECT is_demo FROM question_paper WHERE question_paper_id = ?";
+		return jdbcTemplate.queryForObject(query, Integer.class, questionPaperId);
+	}
+
 }
