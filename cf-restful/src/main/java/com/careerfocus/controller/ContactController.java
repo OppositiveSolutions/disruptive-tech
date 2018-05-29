@@ -23,8 +23,7 @@ public class ContactController {
 
 	@RequestMapping(value = "/inquiry", method = RequestMethod.POST)
 	public Response saveInquiry(HttpServletRequest request, @RequestParam("contact") String contact,
-			@RequestParam("name") String name,
-			@RequestParam("content") String content) throws Exception {
+			@RequestParam("name") String name, @RequestParam("content") String content) throws Exception {
 		return Response.ok(contactService.saveInquiry(contact, name, content)).build();
 	}
 

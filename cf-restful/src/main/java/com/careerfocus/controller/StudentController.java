@@ -36,7 +36,19 @@ public class StudentController {
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		return Response.ok(studentService.editStudent(student, userId)).build();
 	}
+	
+	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+	public Response removeStudent(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("userId") int userId) throws Exception {
+		return Response.ok(studentService.removeStudent(userId)).build();
+	}
 
+	@RequestMapping(value = "/{userId}/activate", method = RequestMethod.GET)
+	public Response activateStudent(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("userId") int userId) throws Exception {
+		return Response.ok(studentService.activateStudent(userId)).build();
+	}
+	
 	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
 	public Response getStudent(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {

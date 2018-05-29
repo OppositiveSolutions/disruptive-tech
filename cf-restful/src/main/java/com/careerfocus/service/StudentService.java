@@ -85,6 +85,18 @@ public class StudentService {
 		System.out.println(user.getFirstName());
 		// user = userRepository.save(user);
 		user = studentDAO.saveUser(user);
+
+		Address address = new Address(studentVO.getAddress(), studentVO.getPlace(), studentVO.getCity(),
+				studentVO.getState(), studentVO.getPinCode(), studentVO.getUserId());
+		address.setUser(user);
+		studentDAO.saveAddress(address);
+
+		if (studentVO.getMobileNo() != null && !studentVO.getMobileNo().isEmpty()) {
+			UserPhone phone = new UserPhone(studentVO.getMobileNo(), 1, true);
+			phone.setUser(user);
+			studentDAO.savePhone(phone);
+		}
+
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, studentVO.getCenterId() + "",
 				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType());
 		studentRepository.save(student);
@@ -92,8 +104,10 @@ public class StudentService {
 			UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
 			uppRepository.save(pic);
 		}
-		if (studentVO.getType() != 2)// 2 - online reg
-			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId());
+		if (studentVO.getType() == 1)// 2 - online reg
+			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId(), 0);
+		else
+			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId(), 1);
 		try {
 			mailDAO.welcomeMailUser(studentVO.getEmailId(), commonDAO.getPasswordForAUser(user.getUserId()),
 					"Welcome to Career Focus. We enhance your confidence.");
@@ -157,6 +171,15 @@ public class StudentService {
 		return studentDAO.getStudents(pageSize, pageNo);
 	}
 
+	public boolean removeStudent(int userId) {
+		try {
+			studentRepository.delete(userId);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	public Page<StudentVO> findStudentsByName(String key, int pageSize, int pageNo) {
 
 		Pageable request = new PageRequest(pageNo - 1, pageSize);
@@ -184,6 +207,10 @@ public class StudentService {
 	public Response editUserImage(int userId, MultipartFile image) throws IOException {
 		UserProfilePic pic = new UserProfilePic(userId, image.getBytes());
 		return Response.ok(uppRepository.save(pic)).build();
+	}
+
+	public boolean activateStudent(int userId) {
+		return studentDAO.activateStudent(userId);
 	}
 
 }

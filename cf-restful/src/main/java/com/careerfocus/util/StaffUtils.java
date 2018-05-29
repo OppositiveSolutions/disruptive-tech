@@ -45,7 +45,7 @@ public class StaffUtils {
     public static User createUserEntity(AddStaffVO staffVO) {
         User user = new User(staffVO.getEmailId(), PasswordGenerator.generateSixDigitPassword(),
                 Constants.ROLE_STAFF, staffVO.getFirstName(), staffVO.getLastName(), staffVO.getGender(),
-				DateUtils.convertMMDDYYYYToJavaDate(staffVO.getDob()), new Date());
+				DateUtils.convertMMDDYYYYToJavaDate(staffVO.getDob()), 1, new Date());
 
         Address address = new Address(staffVO.getAddress(), staffVO.getLandMark(), staffVO.getCity(),
                 staffVO.getState(), staffVO.getPinCode(), user.getUserId());

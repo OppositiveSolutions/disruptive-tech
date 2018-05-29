@@ -11,14 +11,19 @@ import com.careerfocus.model.response.QPSubCategoryVO;
 import com.careerfocus.model.response.QuestionPaperVO;
 import com.careerfocus.repository.*;
 import com.careerfocus.util.QuestionPaperUtils;
+import com.careerfocus.util.response.Response;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +31,10 @@ import java.util.stream.Collectors;
 public class QuestionPaperService {
 
 	public static final int DEFAUL_QP_BUNDLE = 10;
+	public static final int BUNDLE_STATUS_CREATED = 0;
+	public static final int BUNDLE_STATUS_ENABLED = 1;
+	public static final int BUNDLE_STATUS_DISABLED = 2;
+	public static final int BUNDLE_STATUS_DELETED = 3;
 
 	private static final Logger log = Logger.getLogger(QuestionPaperService.class);
 
@@ -54,6 +63,9 @@ public class QuestionPaperService {
 	QuestionOptionsRepository questionsOptionsRepository;
 
 	@Autowired
+	QuestionImageRepository questionImageRepository;
+
+	@Autowired
 	QuestionPaperQuestionRepository questionPaperQuestionRepository;
 
 	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
@@ -61,8 +73,9 @@ public class QuestionPaperService {
 		qPaper.setLastModified(date);
 		qPaper.setCreatedDate(date);
 		qPaper = qPaperRepository.save(qPaper);
-		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, qPaper.getQuestionPaperId());
-		testDAO.createTestDefault(bundleQPId);
+		// int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE,
+		// qPaper.getQuestionPaperId());
+		// testDAO.createTestDefault(bundleQPId, qPaper.isIsDemo());
 		return qPaper;
 	}
 
@@ -77,20 +90,52 @@ public class QuestionPaperService {
 		paper.setDuration(qPaper.getDuration());
 		paper.setExamCode(qPaper.getExamCode());
 		paper.setIsDemo(qPaper.isIsDemo());
+		paper.setCoachingType(qPaper.getCoachingType());
 		paper.setName(qPaper.getName());
 		paper.setNoOfOptions(qPaper.getNoOfOptions());
 		paper.setNoOfQuestions(qPaper.getNoOfQuestions());
 		paper.setLastModified(new Date());
+		paper.setCreatedDate(new Date());
 
 		return qPaperRepository.save(paper);
 	}
 
-	public Collection<QuestionPaper> getAllQuestionPapersWithFullDetails() {
-		return qPaperRepository.findAll();
+	public Map<String, Object> enableQuestionPaper(int questionPaperId, int isDemo) {
+		boolean status = true;
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, questionPaperId);
+		if (bundleQPId > 0)
+			status = testDAO.createTestDefault(bundleQPId, isDemo == 1 ? true : false);
+		if (status && changeQPStatus(questionPaperId, BUNDLE_STATUS_ENABLED)) {
+			returnMap.put("status", true);
+			returnMap.put("message", "Successfully enabled Question Paper.");
+		} else {
+			returnMap.put("status", false);
+			returnMap.put("message", "Failed to enable Question Paper.");
+		}
+		return returnMap;
 	}
 
-	public List<Map<String, Object>> getAllQuestionPapers() {
-		return qPaperDAO.getAllQuestionPapers();
+	public Collection<QuestionPaper> getAllQuestionPapersWithFullDetails(String coachingType) {
+		List<QuestionPaper> qps = qPaperRepository.findAll();
+		List<QuestionPaper> returnList = null;
+		int ct = coachingType != null ? Integer.parseInt(coachingType) : 0;
+		if (ct > 0) {
+			returnList = new ArrayList<QuestionPaper>();
+			for (QuestionPaper qp : qps)
+				if (qp.getStatus() != BUNDLE_STATUS_DELETED && qp.getCoachingType() == ct)
+					returnList.add(qp);
+		} else {
+			returnList = new ArrayList<QuestionPaper>();
+			for (QuestionPaper qp : qps)
+				if (qp.getStatus() != BUNDLE_STATUS_DELETED)
+					returnList.add(qp);
+		}
+		return returnList;
+	}
+
+	public List<Map<String, Object>> getAllQuestionPapers(int coachingType) {
+		return qPaperDAO.getAllQuestionPapers(coachingType);
 	}
 
 	public Page<QuestionPaperVO> getAllQuestionPapers(int pageSize, int pageNo) {
@@ -105,6 +150,14 @@ public class QuestionPaperService {
 
 	public QuestionPaper getQuestionPaper(int questionPaperId) {
 		return qPaperRepository.findOne(questionPaperId);
+	}
+
+	public boolean deleteQP(int questionPaperId) {
+		return qPaperDAO.changeQPStatus(questionPaperId, BUNDLE_STATUS_DELETED);
+	}
+
+	public boolean changeQPStatus(int questionPaperId, int status) {
+		return qPaperDAO.changeQPStatus(questionPaperId, status);
 	}
 
 	@Transactional
@@ -300,5 +353,23 @@ public class QuestionPaperService {
 
 	public List<QuestionPaperQuestion> getQuestions(int subCategoryId) {
 		return questionPaperQuestionRepository.findByQuestionPaperSubCategoryId(subCategoryId);
+	}
+
+	public byte[] getQuestionImage(int userId) {
+		return questionImageRepository.findOne(userId).getImage();
+	}
+
+	public boolean removeQuestionImage(int userId) {
+		try {
+			questionImageRepository.delete(userId);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public Response createQuestionImage(int userId, MultipartFile image) throws IOException {
+		QuestionImage qImage = new QuestionImage(userId, image.getBytes());
+		return Response.ok(questionImageRepository.save(qImage)).build();
 	}
 }

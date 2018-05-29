@@ -52,7 +52,7 @@ public class QuestionPaper {
     private int noOfOptions;
 
     @Basic
-    @Column(name = "created_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+    @Column(name = "created_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP", updatable = false)// insertable = false,
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateUtils.PRIMARY_DATE_TIME_FORMAT, timezone = DateUtils.PRIMARY_TIMEZONE)
     private Date createdDate;
@@ -66,6 +66,14 @@ public class QuestionPaper {
     @Basic
     @Column(name = "is_demo")
     private boolean isDemo;
+    
+    @Basic
+    @Column(name = "coaching_type", columnDefinition = "INT")
+    private int coachingType;
+    
+    @Basic
+    @Column(name = "status", columnDefinition = "INT")
+    private int status;
 
     @OneToMany
     @JoinColumn(name = "question_paper_id")
@@ -119,7 +127,23 @@ public class QuestionPaper {
         this.isDemo = isDemo;
     }
 
-    public String getName() {
+    public int getCoachingType() {
+		return coachingType;
+	}
+
+	public void setCoachingType(int coachingType) {
+		this.coachingType = coachingType;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getName() {
         return name;
     }
 

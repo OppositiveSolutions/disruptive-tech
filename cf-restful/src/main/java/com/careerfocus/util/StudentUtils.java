@@ -54,7 +54,7 @@ public class StudentUtils {
 		}
 		User user = new User(studentVO.getEmailId(), password, Constants.ROLE_STUDENT, studentVO.getFirstName(),
 				studentVO.getLastName(), studentVO.getGender(), DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()),
-				new Date());
+				1, new Date());
 
 		Address address = new Address(studentVO.getAddress(), studentVO.getPlace(), studentVO.getCity(),
 				studentVO.getState(), studentVO.getPinCode(), user.getUserId());

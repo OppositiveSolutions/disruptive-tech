@@ -20,5 +20,7 @@ public class Constants {
 	public static final String CF_EMAIL_ID = "career.focus@ymail.com";
 	
 	public static final int DEFAULT_CENTER_ID = 1;
+	
+	public static final int IS_LIVE = 0;
 
 }

@@ -55,9 +55,19 @@ public class QuestionPaperDAO {
 		jdbcTemplate.update(query.toString(), ids.toArray());
 	}
 
-	public List<Map<String, Object>> getAllQuestionPapers() {
+	public List<Map<String, Object>> getAllQuestionPapers(int coachingType) {
 		String query = "SELECT question_paper_id as qpId, name, exam_code as examCode FROM question_paper";
-		return jdbcTemplate.queryForList(query);
+		if (coachingType > 0) {
+			query += " where coaching_type = ?";
+			return jdbcTemplate.queryForList(query, coachingType);
+		} else {
+			return jdbcTemplate.queryForList(query);
+		}
+	}
+
+	public boolean changeQPStatus(int questionPaperId, int status) {
+		String query = "UPDATE question_paper set status = ? WHERE question_paper_id = ?";
+		return jdbcTemplate.update(query, status, questionPaperId) > 0 ? true : false;
 	}
 
 }
