@@ -358,6 +358,10 @@ public class QuestionPaperService {
 	public byte[] getQuestionImage(int userId) {
 		return questionImageRepository.findOne(userId).getImage();
 	}
+	
+	public String getQuestionImageDescription(int userId) {
+		return questionImageRepository.findOne(userId).getDescription();
+	}
 
 	public boolean removeQuestionImage(int userId) {
 		try {
@@ -368,8 +372,8 @@ public class QuestionPaperService {
 		}
 	}
 
-	public Response createQuestionImage(int userId, MultipartFile image) throws IOException {
-		QuestionImage qImage = new QuestionImage(userId, image.getBytes());
+	public Response createQuestionImage(int userId, MultipartFile image, String description) throws IOException {
+		QuestionImage qImage = new QuestionImage(userId, image.getBytes(), description);
 		return Response.ok(questionImageRepository.save(qImage)).build();
 	}
 }

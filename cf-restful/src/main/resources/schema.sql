@@ -329,22 +329,20 @@ CREATE TABLE IF NOT EXISTS `bundle_category` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bundle` (
   `bundle_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bundle_category_id` int(11) NOT NULL,
   `name` text,
   `description` text,
   `mrp` float NOT NULL DEFAULT '0',
   `selling_price` float NOT NULL DEFAULT '0',
   `coaching_type` int(4) DEFAULT NULL,
-  `image_url` varchar(2000) DEFAULT NULL,
   `is_available` int(2) DEFAULT NULL COMMENT '0 - not available,\n1-avilable,\n2-deleted.',
   `discount_percent` varchar(10) DEFAULT '0',
   `created_date` varchar(45) DEFAULT NULL,
   `validity_days` int(11) DEFAULT NULL,
+  `img_file_name` varchar(400) DEFAULT NULL,
   PRIMARY KEY (`bundle_id`),
   UNIQUE KEY `bundle_bundle_uindex` (`bundle_id`),
-  KEY `fk_bundle_1_idx` (`bundle_category_id`),
-  CONSTRAINT `FKhdbkf0bwks63lsnwc6lmr1eca` FOREIGN KEY (`bundle_category_id`) REFERENCES `bundle_category` (`bundle_category_id`),
-  CONSTRAINT `fk_bundle_1` FOREIGN KEY (`bundle_category_id`) REFERENCES `coaching_type` (`coaching_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `index3` (`coaching_type`),
+  CONSTRAINT `fk_bundle_1` FOREIGN KEY (`coaching_type`) REFERENCES `coaching_type` (`coaching_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- -----------------------------------------------------
