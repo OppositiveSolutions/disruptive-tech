@@ -350,10 +350,7 @@ CREATE TABLE IF NOT EXISTS `bundle` (
 -- -----------------------------------------------------
 -- Table `career_focus`.`bundle_image`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bundle_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bundle_image` (
+CREATE TABLE IF NOT EXISTS `bundle_image` (
   `bundle_id` int(11) NOT NULL,
   `image` longblob NOT NULL,
   PRIMARY KEY (`bundle_id`),
@@ -487,7 +484,11 @@ CREATE TABLE IF NOT EXISTS `exam` (
   `language` int(2) DEFAULT NULL,
   `total_mark` double DEFAULT NULL,
   `total_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`exam_id`)
+  `last_category_id` int(3) DEFAULT NULL,
+  PRIMARY KEY (`exam_id`),
+  KEY `fk_exam_1_idx` (`last_category_id`),
+  KEY `index3` (`test_id`),
+  CONSTRAINT `fk_exam_1` FOREIGN KEY (`last_category_id`) REFERENCES `category` (`category_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- -----------------------------------------------------
@@ -516,7 +517,7 @@ CREATE TABLE IF NOT EXISTS `exam_category_mark` (
   `negative_mark` float DEFAULT NULL,
   `total_mark` float DEFAULT NULL,
   PRIMARY KEY (`exam_category_mark_id`)
-)
+);
 
 -- -----------------------------------------------------
 -- Table `career_focus`.`exam_question`
@@ -553,10 +554,7 @@ CREATE TABLE IF NOT EXISTS `test` (
 -- -----------------------------------------------------
 -- Table `career_focus`.`user_question_paper_answer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `user_question_paper_answer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_question_paper_answer` (
+CREATE TABLE IF NOT EXISTS `user_question_paper_answer` (
   `user_question_paper_answer_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `question_question_id` int(11) NOT NULL,

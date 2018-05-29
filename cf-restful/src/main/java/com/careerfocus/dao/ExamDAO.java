@@ -105,13 +105,16 @@ public class ExamDAO {
 	public boolean saveTime(int examId, int categoryId) {
 		boolean status = false;
 		long totalTime = 0;
-		Date timeLastUpdated = getCategoryLastUpdateTime(examId, categoryId);
+		int lastCategoryId = getLastVisitedCategoryId(examId, categoryId);
+		Date timeLastUpdated = getCategoryLastUpdateTime(examId, lastCategoryId);
 		long timeInSecs = commonDAO.getTimeDifferenceInSec(timeLastUpdated);
-		totalTime = getCurrentTimeTakenPerCategory(examId, categoryId) + timeInSecs;
+		totalTime = getCurrentTimeTakenPerCategory(examId, lastCategoryId) + timeInSecs;
 		String query = "UPDATE exam_category_time set total_time = ? where exam_id= ? and category_id = ?";
-		status = template.update(query, totalTime, examId, categoryId) > 0 ? true : false;
-		if (status)
+		status = template.update(query, totalTime, examId, lastCategoryId) > 0 ? true : false;
+		if (status) {
 			status = categoryDAO.updateCategoryLastUpdateTime(examId, categoryId);
+			status = categoryDAO.updateCategoryLastUpdateTime(examId, lastCategoryId);
+		}
 		return status;
 	}
 
@@ -120,6 +123,15 @@ public class ExamDAO {
 		String query = "SELECT total_time from exam_category_time where exam_id = ? and category_id = ?";
 		timeInSecs = template.queryForObject(query, Long.class, examId, categoryId);
 		return timeInSecs;
+	}
+
+	public int getLastVisitedCategoryId(int examId, int categoryId) {
+		int lastCategoryId = 0;
+		String query = "SELECT last_category_id from exam where exam_id = ?";
+		lastCategoryId = template.queryForObject(query, Integer.class, examId);
+		query = "UPDATE exam set last_category_id = ? where exam_id= ?";
+		template.update(query, categoryId, examId);
+		return lastCategoryId;
 	}
 
 	public List<Map<String, Object>> getNoOfQsPerCategory(int examId) {
@@ -286,7 +298,8 @@ public class ExamDAO {
 					+ " SET is_written = 1 where e.exam_id = ?";
 			isUpdated = template.update(query, id);
 			// } else if (studentDAO.getStudentType(userId) == 1) {
-			// query = "INSERT INTO student_question_paper(user_id,question_paper_id) VALUES
+			// query = "INSERT INTO
+			// student_question_paper(user_id,question_paper_id) VALUES
 			// (?,?)";
 			// isUpdated = template.update(query, userId, id);
 		}
