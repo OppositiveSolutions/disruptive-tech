@@ -51,8 +51,8 @@ public class BundleService {
 		return bundleDAO.getCoachingTypeList();
 	}
 
-	public static int NOT_AVAILABLE = 0;
-	public static int AVAILABLE = 1;
+	public static int NOT_AVAILABLE = 0;//disabled
+	public static int AVAILABLE = 1;//enabled
 	public static int DELETED = 2;
 
 	public Response editBundle(Bundle bundle, MultipartFile image) throws IOException {
@@ -109,6 +109,15 @@ public class BundleService {
 			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.INVALID_BUNDLE_MSG).build();
 		}
 		existingBundle.setIsAvailable(DELETED);
+		return Response.ok(bundleRepository.save(existingBundle)).build();
+	}
+
+	public Response changeBundleStatus(Integer bundleId, int status) {
+		Bundle existingBundle = bundleRepository.findOne(bundleId);
+		if (existingBundle == null) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.INVALID_BUNDLE_MSG).build();
+		}
+		existingBundle.setIsAvailable(status);
 		return Response.ok(bundleRepository.save(existingBundle)).build();
 	}
 

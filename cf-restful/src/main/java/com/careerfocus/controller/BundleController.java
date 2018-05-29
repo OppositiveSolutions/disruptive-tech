@@ -48,6 +48,12 @@ public class BundleController {
 	public Response getBundles() throws Exception {
 		return Response.ok(service.getBundles()).build();
 	}
+	
+	@RequestMapping(value = "/delete/{bundleId}", method = RequestMethod.DELETE)
+	public Response removeStudent(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("bundleId") int bundleId) throws Exception {
+		return Response.ok(service.deleteBundle(bundleId)).build();
+	}
 
 	@RequestMapping(value = "/list/{coachingType}", method = RequestMethod.GET)
 	public Response getQPBundleList(@PathVariable("coachingType") Integer coachingType) throws Exception {
@@ -86,6 +92,12 @@ public class BundleController {
 	public Response removeQpFromBundle(@PathVariable("bundleId") Integer bundleId, @PathVariable("qpId") Integer qpId)
 			throws Exception {
 		return Response.ok(service.removeQpFromBundle(bundleId, qpId)).build();
+	}
+	
+	@RequestMapping(value = "/{bundleId}/changestatus/{status}", method = RequestMethod.GET)
+	public Response changeBundleStatus(@PathVariable("bundleId") Integer bundleId, @PathVariable("status") Integer status)
+			throws Exception {
+		return Response.ok(service.changeBundleStatus(bundleId, status)).build();
 	}
 
 	// @RequestMapping(value = "/delete/{bundleId}", method =

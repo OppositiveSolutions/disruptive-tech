@@ -11,6 +11,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import com.careerfocus.service.BundleService;
+
 @Repository
 public class BundleDAO {
 
@@ -24,7 +26,8 @@ public class BundleDAO {
 	public List<Map<String, Object>> getBundles() {
 		String query = "SELECT bundle_id as bundleId, name, description, mrp, selling_price as sellingPrice,"
 				+ " is_available as isAvailavble, discount_percent as discountPercent, coaching_type as coachingType,"
-				+ " created_date as createdDate, validity_days as validityDays, img_file_name as imgFileName FROM bundle";
+				+ " created_date as createdDate, validity_days as validityDays, img_file_name as imgFileName"
+				+ " FROM bundle where is_available != " + BundleService.DELETED;
 		return template.queryForList(query);
 	}
 
