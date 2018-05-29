@@ -24,7 +24,7 @@ public class TestDAO {
 
 	public List<Map<String, Object>> getAllTests(int userId) {
 		String query = "SELECT t.test_id as testId, t.bundle_question_paper_id as bundleQPId, t.expiry_date as expiryDate,"
-				+ "t.is_demo as isDemo, qp.name,qp.exam_code FROM test t inner join bundle_question_paper bqp"
+				+ " IFNULL(t.is_demo, 0) as isDemo, qp.name,qp.exam_code FROM test t inner join bundle_question_paper bqp"
 				+ " on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 				+ " inner join question_paper qp on qp.question_paper_id = bqp.question_paper_id"
 				+ " where user_id = ? and is_written = 0 and qp.status = 1";
