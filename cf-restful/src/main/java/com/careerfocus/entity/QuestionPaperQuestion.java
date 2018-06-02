@@ -1,6 +1,10 @@
 package com.careerfocus.entity;
 
 import com.careerfocus.entity.id.QuestionPaperQuestionId;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
@@ -9,67 +13,73 @@ import javax.persistence.*;
 @IdClass(QuestionPaperQuestionId.class)
 public class QuestionPaperQuestion {
 
-    @Id
-    @Column(name = "question_paper_sub_category_id", columnDefinition = "INT", nullable = false)
-    private int questionPaperSubCategoryId;
+	@Id
+	@Column(name = "question_paper_sub_category_id", columnDefinition = "INT", nullable = false)
+	private int questionPaperSubCategoryId;
 
-    @Id
-    @Column(name = "question_no", nullable = false, columnDefinition = "INT")
-    private int questionNo;
+	@Id
+	@Column(name = "question_no", nullable = false, columnDefinition = "INT")
+	private int questionNo;
 
-//	@Column(name = "question_id", nullable = false, columnDefinition = "INT")
-//	private int questionId;
+	// @Column(name = "question_id", nullable = false, columnDefinition = "INT")
+	// private int questionId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false)
-    private Question question;
-    
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false, insertable = false, updatable = false)
-    private QuestionImage questionImage;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false)
+	private Question question;
 
-    public QuestionPaperQuestion() {
+	// @ManyToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "question_id", columnDefinition = "INT", nullable =
+	// true, insertable = false, updatable = false)
 
-    }
+	// @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+	// orphanRemoval = true)
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false, insertable = false, updatable = false)
+	private QuestionImage questionImage;
 
-    public QuestionPaperQuestion(int questionPaperSubCategoryId, int questionNo, Question question) {
-        this.questionPaperSubCategoryId = questionPaperSubCategoryId;
-        this.questionNo = questionNo;
-        this.question = question;
-//		this.questionId = questionId;
-    }
+	public QuestionPaperQuestion() {
 
-    public int getQuestionPaperSubCategoryId() {
-        return questionPaperSubCategoryId;
-    }
+	}
 
-    public void setQuestionPaperSubCategoryId(int questionPaperSubCategoryId) {
-        this.questionPaperSubCategoryId = questionPaperSubCategoryId;
-    }
+	public QuestionPaperQuestion(int questionPaperSubCategoryId, int questionNo, Question question) {
+		this.questionPaperSubCategoryId = questionPaperSubCategoryId;
+		this.questionNo = questionNo;
+		this.question = question;
+		// this.questionId = questionId;
+	}
 
-    public int getQuestionNo() {
-        return questionNo;
-    }
+	public int getQuestionPaperSubCategoryId() {
+		return questionPaperSubCategoryId;
+	}
 
-    public void setQuestionNo(int questionNo) {
-        this.questionNo = questionNo;
-    }
+	public void setQuestionPaperSubCategoryId(int questionPaperSubCategoryId) {
+		this.questionPaperSubCategoryId = questionPaperSubCategoryId;
+	}
 
-//	public int getQuestionId() {
-//		return questionId;
-//	}
-//
-//	public void setQuestionId(int questionId) {
-//		this.questionId = questionId;
-//	}
+	public int getQuestionNo() {
+		return questionNo;
+	}
 
-    public Question getQuestion() {
-        return question;
-    }
+	public void setQuestionNo(int questionNo) {
+		this.questionNo = questionNo;
+	}
 
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
+	// public int getQuestionId() {
+	// return questionId;
+	// }
+	//
+	// public void setQuestionId(int questionId) {
+	// this.questionId = questionId;
+	// }
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
 
 	public QuestionImage getQuestionImage() {
 		return questionImage;

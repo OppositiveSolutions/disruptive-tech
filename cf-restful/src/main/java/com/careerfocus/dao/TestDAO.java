@@ -66,11 +66,11 @@ public class TestDAO {
 		boolean status = true;
 		try {
 			String query = "INSERT INTO test (bundle_question_paper_id,user_id,expiry_date,is_enabled,is_written,is_demo)"
-					+ " SELECT bundle_question_paper_id, ?, now(), '1', '0', is_demo"
+					+ " SELECT bundle_question_paper_id, ?, now(), '1', '0', qp.is_demo"
 					+ " FROM bundle_question_paper bqp inner join question_paper qp on bqp.question_paper_id = qp.question_paper_id"
 					+ " where bundle_id = ? and qp.status = 1";
 			if (isDemo == 1)
-				query += " and is_demo = 1";
+				query += " and qp.is_demo = 1";
 			template.update(query, userId, bundleId);
 		} catch (Exception e) {
 			status = false;
