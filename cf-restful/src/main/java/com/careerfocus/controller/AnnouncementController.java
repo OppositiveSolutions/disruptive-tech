@@ -26,9 +26,8 @@ public class AnnouncementController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public Response saveAnnouncement(HttpServletRequest request, HttpServletResponse response,
 			@RequestPart(required = true) String announcement,
-			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
 		log.debug("announcement: " + announcement.toString());
-		log.debug("image: " + image.toString());
 		return service.saveAnnouncement(announcement, image);
 	}
 
