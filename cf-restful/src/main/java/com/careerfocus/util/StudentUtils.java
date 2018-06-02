@@ -44,6 +44,7 @@ public class StudentUtils {
 
 	public static User createUserEntity(AddStudentVO studentVO) {
 		String password = null;
+		int status = 0;
 		if (studentVO.getType() == 2) {
 			if (studentVO.getPassword() != null)
 				password = studentVO.getPassword();
@@ -51,10 +52,11 @@ public class StudentUtils {
 				password = PasswordGenerator.generateSixDigitPassword();
 		} else {
 			password = PasswordGenerator.generateSixDigitPassword();
+			status = 1;
 		}
 		User user = new User(studentVO.getEmailId(), password, Constants.ROLE_STUDENT, studentVO.getFirstName(),
 				studentVO.getLastName(), studentVO.getGender(), DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()),
-				1, new Date());
+				status, new Date());
 
 		Address address = new Address(studentVO.getAddress(), studentVO.getPlace(), studentVO.getCity(),
 				studentVO.getState(), studentVO.getPinCode(), user.getUserId());

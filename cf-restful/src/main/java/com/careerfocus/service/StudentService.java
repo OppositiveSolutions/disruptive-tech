@@ -109,6 +109,7 @@ public class StudentService {
 		else
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId(), 1);
 		try {
+			System.out.println("Email = " + studentVO.getEmailId());
 			mailDAO.welcomeMailUser(studentVO.getEmailId(), commonDAO.getPasswordForAUser(user.getUserId()),
 					"Welcome to Career Focus. We enhance your confidence.");
 		} catch (MalformedURLException | EmailException e) {
