@@ -1,10 +1,13 @@
 package com.careerfocus.controller;
 
+import com.careerfocus.entity.Achievers;
 import com.careerfocus.entity.Bundle;
 import com.careerfocus.service.BundleService;
 import com.careerfocus.util.response.Response;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +31,28 @@ public class BundleController {
 	BundleService service;
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public Response saveBundle(@RequestBody Bundle bundle,
+	public Response saveBundle(@RequestPart(value = "bundle", required = true) String bundleJson,
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
+		Bundle bundle = new ObjectMapper().readValue(bundleJson, Bundle.class);
 		return Response.ok(service.saveBundle(bundle, image)).build();
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public Response editBundle(@RequestBody Bundle bundle) throws Exception {
-		return Response.ok(service.editBundle(bundle)).build();
+	public Response editBundle(@RequestPart(value = "bundle", required = true) String bundleJson,
+			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
+		Bundle bundle = new ObjectMapper().readValue(bundleJson, Bundle.class);
+		return Response.ok(service.editBundle(bundle, image)).build();
 	}
-	
+
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Response getBundles() throws Exception {
 		return Response.ok(service.getBundles()).build();
+	}
+	
+	@RequestMapping(value = "/delete/{bundleId}", method = RequestMethod.DELETE)
+	public Response removeStudent(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("bundleId") int bundleId) throws Exception {
+		return Response.ok(service.deleteBundle(bundleId)).build();
 	}
 
 	@RequestMapping(value = "/list/{coachingType}", method = RequestMethod.GET)
@@ -81,12 +93,20 @@ public class BundleController {
 			throws Exception {
 		return Response.ok(service.removeQpFromBundle(bundleId, qpId)).build();
 	}
-
-//	@RequestMapping(value = "/delete/{bundleId}", method = RequestMethod.DELETE)
-//	public Response deleteBundle(@PathVariable("bundleId") Integer bundleId) throws Exception {
-//		return Response.ok(service.deleteBundle(bundleId)).build();
-//	}
 	
+	@RequestMapping(value = "/{bundleId}/changestatus/{status}", method = RequestMethod.GET)
+	public Response changeBundleStatus(@PathVariable("bundleId") Integer bundleId, @PathVariable("status") Integer status)
+			throws Exception {
+		return Response.ok(service.changeBundleStatus(bundleId, status)).build();
+	}
+
+	// @RequestMapping(value = "/delete/{bundleId}", method =
+	// RequestMethod.DELETE)
+	// public Response deleteBundle(@PathVariable("bundleId") Integer bundleId)
+	// throws Exception {
+	// return Response.ok(service.deleteBundle(bundleId)).build();
+	// }
+
 	@RequestMapping(value = "/delete/{bundleId}", method = RequestMethod.PUT)
 	public Response deleteBundle(@PathVariable("bundleId") Integer bundleId) throws Exception {
 		return Response.ok(service.deleteBundle(bundleId)).build();
@@ -98,5 +118,11 @@ public class BundleController {
 		HttpSession session = request.getSession();
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		return Response.ok(service.purchaseBundle(userId, bundleId)).build();
+	}
+	
+	@RequestMapping(value = "/{bundleId}/image", method = RequestMethod.GET)
+	public byte[] getAchieverImage(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("bundleId") int bundleId) throws Exception {
+		return service.getUserImage(bundleId);
 	}
 }

@@ -15,7 +15,7 @@ public class QuestionImage {
 	@Id
 	@Column(name = "question_id", columnDefinition = "INT")
 	private int questionId;
-	
+
 	@Basic
 	@Column(name = "description")
 	private String description;
@@ -36,9 +36,10 @@ public class QuestionImage {
 		this.questionId = questionId;
 	}
 
-	public QuestionImage(int questionId, byte[] image) {
+	public QuestionImage(int questionId, byte[] image, String description) {
 		this.questionId = questionId;
 		this.image = image;
+		this.description = description;
 	}
 
 	public int getQuestionId() {

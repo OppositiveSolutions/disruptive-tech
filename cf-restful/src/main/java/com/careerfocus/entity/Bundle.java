@@ -3,6 +3,8 @@ package com.careerfocus.entity;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by sarath on 10/06/17.
  */
@@ -14,16 +16,8 @@ public class Bundle {
 	@Column(name = "bundle_id", columnDefinition = "INT")
 	private int bundleId;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	@JoinColumn(name = "bundle_category_id", columnDefinition = "INT", nullable = false)
-	private BundleCategory bundleCategory;
-
 	@Basic
 	private String description;
-
-	@Basic
-	@Column(name = "image_url", length = 2000)
-	private String imageUrl;
 
 	@Basic
 	@Column(name = "is_available")
@@ -61,19 +55,19 @@ public class Bundle {
 	@Column(name = "coaching_type", columnDefinition = "INT")
 	private float coachingType;
 
+	@Basic
+	@Column(name = "img_file_name")
+	private String imgFileName;
+
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "bundle", cascade = CascadeType.MERGE)
+	private BundleImage bundleImage;
+
 	public Bundle() {
 	}
 
 	public Bundle(int bundleId) {
 		this.bundleId = bundleId;
-	}
-
-	public BundleCategory getBundleCategory() {
-		return bundleCategory;
-	}
-
-	public void setBundleCategory(BundleCategory bundleCategory) {
-		this.bundleCategory = bundleCategory;
 	}
 
 	public int getBundleId() {
@@ -90,14 +84,6 @@ public class Bundle {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
 	}
 
 	public Date getCreatedDate() {
@@ -170,5 +156,21 @@ public class Bundle {
 
 	public void setDiscountPercent(float discountPercent) {
 		this.discountPercent = discountPercent;
+	}
+
+	public String getImgFileName() {
+		return imgFileName;
+	}
+
+	public void setImgFileName(String imgFileName) {
+		this.imgFileName = imgFileName;
+	}
+
+	public BundleImage getBundleImage() {
+		return bundleImage;
+	}
+
+	public void setBundleImage(BundleImage bundleImage) {
+		this.bundleImage = bundleImage;
 	}
 }

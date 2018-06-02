@@ -23,6 +23,10 @@ public class QuestionPaperQuestion {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false)
     private Question question;
+    
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false, insertable = false, updatable = false)
+    private QuestionImage questionImage;
 
     public QuestionPaperQuestion() {
 
@@ -66,5 +70,13 @@ public class QuestionPaperQuestion {
     public void setQuestion(Question question) {
         this.question = question;
     }
+
+	public QuestionImage getQuestionImage() {
+		return questionImage;
+	}
+
+	public void setQuestionImage(QuestionImage questionImage) {
+		this.questionImage = questionImage;
+	}
 
 }

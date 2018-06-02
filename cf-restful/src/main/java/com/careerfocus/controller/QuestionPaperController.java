@@ -138,16 +138,23 @@ public class QuestionPaperController {
 	}
 
 	@RequestMapping(value = "/{questionId}/image", method = RequestMethod.POST)
-	public Response saveAchieverImage(HttpServletRequest request, HttpServletResponse response,
+	public Response saveQuestionImage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("questionId") int questionId,
+			@RequestPart(value = "description", required = false) String description,
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
-		return qPaperService.createQuestionImage(Integer.valueOf(questionId), image);
+		return qPaperService.createQuestionImage(Integer.valueOf(questionId), image, description);
 	}
 
 	@RequestMapping(value = "/{questionId}/image", method = RequestMethod.GET)
-	public byte[] getAchieverImage(HttpServletRequest request, HttpServletResponse response,
+	public byte[] getQuestionImage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("questionId") int questionId) throws Exception {
 		return qPaperService.getQuestionImage(questionId);
+	}
+
+	@RequestMapping(value = "/{questionId}/imagedescription", method = RequestMethod.GET)
+	public String getQuestionImageDescription(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("questionId") int questionId) throws Exception {
+		return qPaperService.getQuestionImageDescription(questionId);
 	}
 
 	@RequestMapping(value = "/{questionId}/image", method = RequestMethod.DELETE)

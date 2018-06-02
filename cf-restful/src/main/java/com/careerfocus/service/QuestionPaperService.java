@@ -106,12 +106,12 @@ public class QuestionPaperService {
 		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, questionPaperId);
 		if (bundleQPId > 0)
 			status = testDAO.createTestDefault(bundleQPId, isDemo == 1 ? true : false);
-		if (status && changeQPStatus(questionPaperId, BUNDLE_STATUS_ENABLED)) {
+		if (status && qPaperDAO.changeQPStatus(questionPaperId, BUNDLE_STATUS_ENABLED)) {
 			returnMap.put("status", true);
-			returnMap.put("message", "Successfully enabled Question Paper.");
+			returnMap.put("message", "Successfully Enabled Question Paper.");
 		} else {
 			returnMap.put("status", false);
-			returnMap.put("message", "Failed to enable Question Paper.");
+			returnMap.put("message", "Failed to Enable Question Paper.");
 		}
 		return returnMap;
 	}
@@ -156,8 +156,20 @@ public class QuestionPaperService {
 		return qPaperDAO.changeQPStatus(questionPaperId, BUNDLE_STATUS_DELETED);
 	}
 
-	public boolean changeQPStatus(int questionPaperId, int status) {
-		return qPaperDAO.changeQPStatus(questionPaperId, status);
+	public Map<String, Object> changeQPStatus(int questionPaperId, int status) {
+		if (status == 1)
+			return enableQuestionPaper(questionPaperId, qPaperDAO.getIsDemoQP(questionPaperId));
+		else {
+			Map<String, Object> returnMap = new HashMap<String, Object>();
+			if (qPaperDAO.changeQPStatus(questionPaperId, status)) {
+				returnMap.put("status", true);
+				returnMap.put("message", "Successfully Disabled Question Paper.");
+			} else {
+				returnMap.put("status", false);
+				returnMap.put("message", "Failed to Disable Question Paper.");
+			}
+			return returnMap;
+		}
 	}
 
 	@Transactional
@@ -359,6 +371,10 @@ public class QuestionPaperService {
 		return questionImageRepository.findOne(userId).getImage();
 	}
 
+	public String getQuestionImageDescription(int userId) {
+		return questionImageRepository.findOne(userId).getDescription();
+	}
+
 	public boolean removeQuestionImage(int userId) {
 		try {
 			questionImageRepository.delete(userId);
@@ -368,8 +384,8 @@ public class QuestionPaperService {
 		}
 	}
 
-	public Response createQuestionImage(int userId, MultipartFile image) throws IOException {
-		QuestionImage qImage = new QuestionImage(userId, image.getBytes());
+	public Response createQuestionImage(int userId, MultipartFile image, String description) throws IOException {
+		QuestionImage qImage = new QuestionImage(userId, image.getBytes(), description);
 		return Response.ok(questionImageRepository.save(qImage)).build();
 	}
 }

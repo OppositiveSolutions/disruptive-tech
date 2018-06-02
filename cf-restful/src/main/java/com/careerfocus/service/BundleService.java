@@ -32,6 +32,7 @@ public class BundleService {
 	BundleImageRepository biRepository;
 
 	public Bundle saveBundle(Bundle bundle, MultipartFile image) throws IOException {
+		bundle.setImgFileName(image.getOriginalFilename());
 		bundle = bundleRepository.save(bundle);
 		BundleImage bImage = new BundleImage(bundle.getBundleId(), image.getBytes());
 		biRepository.save(bImage);
@@ -50,24 +51,28 @@ public class BundleService {
 		return bundleDAO.getCoachingTypeList();
 	}
 
-	public static int NOT_AVAILABLE = 0;
-	public static int AVAILABLE = 1;
+	public static int NOT_AVAILABLE = 0;//disabled
+	public static int AVAILABLE = 1;//enabled
 	public static int DELETED = 2;
 
-	public Response editBundle(Bundle bundle) {
+	public Response editBundle(Bundle bundle, MultipartFile image) throws IOException {
 		Bundle existingBundle = bundleRepository.findOne(bundle.getBundleId());
 		if (existingBundle == null) {
 			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.INVALID_BUNDLE_MSG).build();
 		}
+		if (image != null) {
+			BundleImage bImage = new BundleImage(bundle.getBundleId(), image.getBytes());
+			biRepository.save(bImage);
+		}
 		existingBundle.setIsAvailable(bundle.getIsAvailable());
-		existingBundle.setBundleCategory(bundle.getBundleCategory());
 		existingBundle.setBundleId(bundle.getBundleId());
 		existingBundle.setDescription(bundle.getDescription());
 		existingBundle.setDiscountPercent(bundle.getDiscountPercent());
-		existingBundle.setImageUrl(bundle.getImageUrl());
 		existingBundle.setMrp(bundle.getMrp());
 		existingBundle.setName(bundle.getName());
 		existingBundle.setSellingPrice(bundle.getSellingPrice());
+		existingBundle.setImgFileName(image.getOriginalFilename());
+		existingBundle.setCoachingType(bundle.getCoachingType());
 		return Response.ok(bundleRepository.save(existingBundle)).build();
 	}
 
@@ -107,8 +112,20 @@ public class BundleService {
 		return Response.ok(bundleRepository.save(existingBundle)).build();
 	}
 
+	public Response changeBundleStatus(Integer bundleId, int status) {
+		Bundle existingBundle = bundleRepository.findOne(bundleId);
+		if (existingBundle == null) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.INVALID_BUNDLE_MSG).build();
+		}
+		existingBundle.setIsAvailable(status);
+		return Response.ok(bundleRepository.save(existingBundle)).build();
+	}
+
 	public List<Map<String, Object>> getPurchasedQPBundleList(Integer userId) {
 		return bundleDAO.getPurchasedQPBundleList(userId);
 	}
 
+	public byte[] getUserImage(int bundleId) {
+		return biRepository.findOne(bundleId).getImage();
+	}
 }
