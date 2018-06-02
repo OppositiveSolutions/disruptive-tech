@@ -32,7 +32,8 @@ public class AnnouncementService {
 	@Transactional
 	public Response saveAnnouncement(String announcementJson, MultipartFile image) throws IOException {
 		Announcements announcement = new ObjectMapper().readValue(announcementJson, Announcements.class);
-		announcement.setImgFileName(image.getOriginalFilename());
+		if (image != null)
+			announcement.setImgFileName(image.getOriginalFilename());
 		List<Error> errors = validateAnnouncement(announcement);
 		if (errors != null && !errors.isEmpty()) {
 			return Response.status(ErrorCodes.VALIDATION_FAILED)
@@ -40,10 +41,10 @@ public class AnnouncementService {
 		}
 
 		announcement = announcementRepository.save(announcement);
-
-		AnnouncementImage aImage = new AnnouncementImage(announcement.getAnnouncementId(), image.getBytes());
-		aiRepository.save(aImage);
-
+		if (image != null) {
+			AnnouncementImage aImage = new AnnouncementImage(announcement.getAnnouncementId(), image.getBytes());
+			aiRepository.save(aImage);
+		}
 		if (announcement.isIsCurrent()) {
 			updateCurrentAnnouncementsOrder(announcement);
 		}
