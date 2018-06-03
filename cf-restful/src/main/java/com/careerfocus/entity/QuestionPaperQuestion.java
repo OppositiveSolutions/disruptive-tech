@@ -1,12 +1,16 @@
 package com.careerfocus.entity;
 
-import com.careerfocus.entity.id.QuestionPaperQuestionId;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import javax.persistence.*;
+import com.careerfocus.entity.id.QuestionPaperQuestionId;
 
 @Entity
 @Table(name = "question_paper_question")
@@ -27,16 +31,6 @@ public class QuestionPaperQuestion {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false)
 	private Question question;
-
-	// @ManyToOne(fetch = FetchType.LAZY)
-	// @JoinColumn(name = "question_id", columnDefinition = "INT", nullable =
-	// true, insertable = false, updatable = false)
-
-	// @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
-	// orphanRemoval = true)
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false, insertable = false, updatable = false)
-	private QuestionImage questionImage;
 
 	public QuestionPaperQuestion() {
 
@@ -79,14 +73,6 @@ public class QuestionPaperQuestion {
 
 	public void setQuestion(Question question) {
 		this.question = question;
-	}
-
-	public QuestionImage getQuestionImage() {
-		return questionImage;
-	}
-
-	public void setQuestionImage(QuestionImage questionImage) {
-		this.questionImage = questionImage;
 	}
 
 }
