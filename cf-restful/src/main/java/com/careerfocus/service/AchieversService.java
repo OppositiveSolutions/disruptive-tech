@@ -83,10 +83,10 @@ public class AchieversService {
 		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
 		List<Integer> years = new ArrayList<Integer>();
 		for (Achievers achiever : achievers) {
-			hasYear = true;
+			hasYear = false;
 			for (int year : years) {
-				if (achiever.getYear() != year) {
-					hasYear = false;
+				if (achiever.getYear() == year) {
+					hasYear = true;
 					break;
 				}
 			}
