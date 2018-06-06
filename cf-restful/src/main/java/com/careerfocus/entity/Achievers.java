@@ -34,6 +34,10 @@ public class Achievers {
     @Basic
     @Column(name = "achiever_order", columnDefinition = "INT")
     private int order;
+    
+    @Basic
+    @Column(name = "year", columnDefinition = "INT")
+    private int year;
 
     @Basic
     @Column(name = "img_file_name")
@@ -106,7 +110,15 @@ public class Achievers {
         this.order = order;
     }
 
-    public String getImgFileName() {
+    public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public String getImgFileName() {
         return imgFileName;
     }
 

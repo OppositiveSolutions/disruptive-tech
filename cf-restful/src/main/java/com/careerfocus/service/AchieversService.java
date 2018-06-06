@@ -2,7 +2,9 @@ package com.careerfocus.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -70,7 +72,40 @@ public class AchieversService {
 	}
 
 	public List<Achievers> getAllAchievers() {
-		return achieverRepository.findAllByOrderByIsCurrentDescOrderAsc();
+		return achieverRepository.findAllByOrderByYearDescOrderAsc();
+	}
+
+	public List<Map<String, Object>> getAllAchieversByYear() {
+		boolean hasYear = true;
+		Map<String, Object> yearMap = null;
+		List<Achievers> achieversInAYear = null;
+		List<Map<String, Object>> achieversYearWise = new ArrayList<Map<String, Object>>();
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
+		List<Integer> years = new ArrayList<Integer>();
+		for (Achievers achiever : achievers) {
+			hasYear = true;
+			for (int year : years) {
+				if (achiever.getYear() != year) {
+					hasYear = false;
+					break;
+				}
+			}
+			if (!hasYear || years.size() == 0)
+				years.add(achiever.getYear());
+		}
+		for (int year : years) {
+			achieversInAYear = new ArrayList<Achievers>();
+			yearMap = new HashMap<String, Object>();
+			yearMap.put("Year", year);
+			for (Achievers achiever : achievers) {
+				if (achiever.getYear() == year) {
+					achieversInAYear.add(achiever);
+				}
+				yearMap.put("achievers", achieversInAYear);
+			}
+			achieversYearWise.add(yearMap);
+		}
+		return achieversYearWise;
 	}
 
 	public List<Achievers> getCurrentAchievers() {
