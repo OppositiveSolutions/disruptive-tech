@@ -57,7 +57,8 @@ public class StudentDAO {
 				map.put("firstName", rs.getString("firstName"));
 				map.put("lastName", rs.getString("lastName"));
 				map.put("createdDate", DateUtils.toFormat(rs.getDate("createdDate"), "MM/dd/yyyy"));
-				map.put("expiryDate", DateUtils.toFormat(rs.getDate("expiryDate"), "MM/dd/yyyy"));
+				map.put("expiryDate", rs.getDate("expiryDate") != null
+						? DateUtils.toFormat(rs.getDate("expiryDate"), "MM/dd/yyyy") : null);
 				map.put("username", rs.getString("username"));
 				map.put("streetAdress", rs.getString("streetAdress"));
 				map.put("place", rs.getString("place"));

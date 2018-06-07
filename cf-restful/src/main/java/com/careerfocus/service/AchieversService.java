@@ -72,7 +72,11 @@ public class AchieversService {
 	}
 
 	public List<Achievers> getAllAchievers() {
-		return achieverRepository.findAllByOrderByYearDescOrderAsc();
+		List<Achievers> lastFourAchievers = new ArrayList<Achievers>();
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
+		for (int i = 0; i < 4; i++)
+			lastFourAchievers.add(achievers.get(i));
+		return lastFourAchievers;
 	}
 
 	public List<Map<String, Object>> getAllAchieversByYear() {
