@@ -74,8 +74,12 @@ public class AchieversService {
 	public List<Achievers> getAllAchievers() {
 		List<Achievers> lastFourAchievers = new ArrayList<Achievers>();
 		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
-		for (int i = 0; i < 4; i++)
-			lastFourAchievers.add(achievers.get(i));
+		for (int i = 0; i < 4; i++) {
+			Achievers achiever = achievers.get(i);
+			if (achiever.getachieverImage() == null)
+				achiever.setachieverImage(aiRepository.findOne(achiever.getAchieverId()));
+			lastFourAchievers.add(achiever);
+		}
 		return lastFourAchievers;
 	}
 
