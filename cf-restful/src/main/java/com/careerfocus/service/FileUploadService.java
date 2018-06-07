@@ -1,10 +1,6 @@
 package com.careerfocus.service;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +30,6 @@ public class FileUploadService {
 	@Autowired
 	CommonDAO commonDAO;
 
-	private static final int BUFFER_SIZE = 16384;
-
 	public void saveFile(UploadFile file) {
 		fuRepository.save(file);
 	}
@@ -59,36 +53,6 @@ public class FileUploadService {
 		}
 		return materials;
 	}
-
-	// public Blob getMaterial(Integer fileId) {
-	// Blob blob = null;
-	// try {
-	// // System.out.println(fuRepository.findOne(fileId).getData() +
-	// // "\n\n\n");
-	// // System.out.println(fuRepository.findOne(fileId).getData().toString());
-	// System.out.println(new String(fuRepository.findOne(fileId).getData()));
-	// blob = new
-	// javax.sql.rowset.serial.SerialBlob(fuRepository.findOne(fileId).getData());
-	// // Blob blob = result.getBlob("photo");
-	// InputStream inputStream = blob.getBinaryStream();
-	// OutputStream outputStream = new
-	// FileOutputStream(fuRepository.findOne(fileId).getFileName());
-	//
-	// int bytesRead = -1;
-	// byte[] buffer = new byte[BUFFER_SIZE];
-	// while ((bytesRead = inputStream.read(buffer)) != -1) {
-	// outputStream.write(buffer, 0, bytesRead);
-	// }
-	//
-	// inputStream.close();
-	// outputStream.close();
-	// System.out.println("File saved");
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// // return true;
-	// return blob;
-	// }
 
 	public boolean getMaterial(Integer fileId, HttpServletRequest request, HttpServletResponse response) {
 		try {
