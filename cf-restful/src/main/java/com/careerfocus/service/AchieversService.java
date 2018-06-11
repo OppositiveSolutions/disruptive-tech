@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -74,7 +75,26 @@ public class AchieversService {
 	public List<Achievers> getAllAchievers() {
 		List<Achievers> lastFourAchievers = new ArrayList<Achievers>();
 		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
-		for (int i = 0; i < 4; i++) {
+
+		Random rn = new Random();
+		List<Integer> randoms = new ArrayList<Integer>();
+		int answer = 0;
+		int size = 4;
+		if (achievers.size() > 4)
+			size = 4;
+		else
+			size = achievers.size();
+		do {
+			answer = rn.nextInt(achievers.size());
+			if (randoms.size() == 0)
+				randoms.add(answer);
+			for (int r : randoms)
+				if (r != answer) {
+					randoms.add(answer);
+					break;
+				}
+		} while (randoms.size() < size);
+		for (int i : randoms) {
 			Achievers achiever = achievers.get(i);
 			if (achiever.getachieverImage() == null)
 				achiever.setachieverImage(aiRepository.findOne(achiever.getAchieverId()));
