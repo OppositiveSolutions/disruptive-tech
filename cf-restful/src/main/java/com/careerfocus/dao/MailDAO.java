@@ -17,7 +17,7 @@ public class MailDAO {
 
 	private static final String HOSTNAME = "smtp.gmail.com";
 	private static final int SMTP_PORT = 587;// or 587 465
-	
+
 	private static final String USERNAME = "alexgp261190@gmail.com";
 	private static final String PASSWORD = "anju1994";
 	private static final String FROM_ADDRESS = "noreply@careerfocus.in";
@@ -165,6 +165,10 @@ public class MailDAO {
 		email.setSSLOnConnect(true);
 		email.setFrom(FROM_ADDRESS, "CareerFocus Support");
 		email.setSubject("Career Focus Password Reset Link");
+		String host = "http://careerfocus.in";
+		if (Constants.IS_LIVE != 1) {
+			host = "http://localhost:8080";
+		}
 		// embed the image and get the content id
 		URL url = new URL(EMAIL_LOGO);
 		String cid = "";
@@ -187,8 +191,9 @@ public class MailDAO {
 		htmlBody.append("<p style=\"margin-top: 10px; margin-bottom: 10px;\">" + welcomeMessage + "</p>");
 
 		htmlBody.append(
-				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can reset your password by clicking the link <a href=\"https://www.careerfocus.in/CF_UI/changepassword.html?uq_="
-						+ uq_ + "\">reset password</a>.</p>");
+				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can reset your password by clicking the "
+						+ "link <a href=\"" + host + "/CF_UI/changepassword.html?uq_=" + uq_
+						+ "\" target='_blank'>reset password</a>.</p>");
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> For any questions that you may have, write to us at <a href=\"mailto:career.focus@ymail.com\">career.focus@ymail.com</a></p>");
 		htmlBody.append("<p style=\"margin-top: 25px; margin-bottom: 10px;\">");

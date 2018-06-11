@@ -1,6 +1,8 @@
 package com.careerfocus.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
@@ -25,9 +27,10 @@ public class QuestionImage {
 	private byte[] image;
 
 	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	@JoinColumn(name = "question_id", columnDefinition = "INT")
-	private Question question;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "questionId", scope = Question.class)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id", columnDefinition = "INT", nullable = false, insertable = false, updatable = false)
+    private Question question;
 
 	public QuestionImage() {
 	}

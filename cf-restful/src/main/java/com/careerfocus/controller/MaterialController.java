@@ -1,7 +1,5 @@
 package com.careerfocus.controller;
 
-import java.sql.Blob;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,10 +30,6 @@ public class MaterialController {
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			// UploadFile uploadFile = new UploadFile();
-			// uploadFile.setFileName(fileUpload.getOriginalFilename());
-			// uploadFile.setData(fileUpload.getBytes());
-			// fileUploadDAO.save(uploadFile);
 			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType, 1);
 			service.saveFile(file);
 		}

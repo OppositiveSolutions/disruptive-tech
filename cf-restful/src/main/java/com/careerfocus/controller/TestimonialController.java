@@ -32,7 +32,7 @@ public class TestimonialController {
 		
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{testimonialId}", method = RequestMethod.DELETE)
 	public Response deleteTestimonial(@PathVariable("testimonialId") Integer testimonialId) throws Exception {
 		return Response.ok(service.deleteTestimonial(testimonialId)).build();
 	}

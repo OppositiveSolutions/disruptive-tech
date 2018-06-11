@@ -11,6 +11,8 @@ public interface AchieversRepository extends JpaRepository<Achievers, Integer> {
     public List<Achievers> findByIsCurrentOrderByOrderAsc(boolean isCurrent);
 
     public List<Achievers> findAllByOrderByIsCurrentDescOrderAsc();
+    
+    public List<Achievers> findAllByOrderByYearDescOrderAsc();
 
     public List<Achievers> findByIsCurrentAndOrderGreaterThan(boolean isCurrent, int order);
 
