@@ -67,6 +67,7 @@ public class BundleService {
 		if (image != null) {
 			BundleImage bImage = new BundleImage(bundle.getBundleId(), image.getBytes());
 			biRepository.save(bImage);
+			existingBundle.setBundleImage(bImage);
 		}
 		existingBundle.setIsAvailable(bundle.getIsAvailable());
 		existingBundle.setBundleId(bundle.getBundleId());

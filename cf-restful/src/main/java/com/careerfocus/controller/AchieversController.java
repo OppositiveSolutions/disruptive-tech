@@ -47,8 +47,9 @@ public class AchieversController {
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	public Response editAchiever(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Achievers achiever) throws Exception {
-		return Response.ok(service.editAchiever(achiever)).build();
+			@RequestPart(required = true) String achiever,
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
+		return Response.ok(service.editAchiever(achiever, image)).build();
 	}
 
 	@RequestMapping(value = "/all", method = RequestMethod.PUT)

@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.entity.AchieverImage;
 import com.careerfocus.entity.Achievers;
+import com.careerfocus.entity.Bundle;
+import com.careerfocus.entity.BundleImage;
 import com.careerfocus.repository.AchieversImageRepository;
 import com.careerfocus.repository.AchieversRepository;
 import com.careerfocus.util.response.Error;
@@ -53,6 +55,25 @@ public class AchieversService {
 			updateCurrentAchieversOrder(achiever);
 		}
 		return Response.ok(achiever).build();
+	}
+
+	public Response editAchiever(String achieverJson, MultipartFile image) throws IOException {
+		Achievers achiever = new ObjectMapper().readValue(achieverJson, Achievers.class);
+		Achievers existingAchiever = achieverRepository.findOne(achiever.getAchieverId());
+		if (existingAchiever == null) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.ACHIEVER_NAME_EMPTY_MSG).build();
+		}
+		if (image != null) {
+			AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), image.getBytes());
+			aiRepository.save(aImage);
+			existingAchiever.setachieverImage(aImage);
+			existingAchiever.setImgFileName(image.getOriginalFilename());
+		}
+		existingAchiever.setContact(achiever.getContact());
+		existingAchiever.setDescription(achiever.getDescription());
+		existingAchiever.setName(achiever.getName());
+		existingAchiever.setYear(achiever.getYear());
+		return Response.ok(achieverRepository.save(existingAchiever)).build();
 	}
 
 	public Achievers editAchiever(Achievers achiever) {

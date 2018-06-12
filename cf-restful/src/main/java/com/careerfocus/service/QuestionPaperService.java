@@ -1,5 +1,6 @@
 package com.careerfocus.service;
 
+import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.BundleDAO;
 import com.careerfocus.dao.QuestionPaperDAO;
 import com.careerfocus.dao.TestDAO;
@@ -12,6 +13,7 @@ import com.careerfocus.model.response.QuestionPaperVO;
 import com.careerfocus.repository.*;
 import com.careerfocus.util.QuestionPaperUtils;
 import com.careerfocus.util.response.Response;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -288,6 +290,25 @@ public class QuestionPaperService {
 		questionPaperQuestionRepository.save(qpQuestionList);
 		return qList;
 	}
+	
+//	public Response editAchiever(String achieverJson, MultipartFile image) throws IOException {
+//		Achievers achiever = new ObjectMapper().readValue(achieverJson, Achievers.class);
+//		Achievers existingAchiever = achieverRepository.findOne(achiever.getAchieverId());
+//		if (existingAchiever == null) {
+//			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.ACHIEVER_NAME_EMPTY_MSG).build();
+//		}
+//		if (image != null) {
+//			AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), image.getBytes());
+//			aiRepository.save(aImage);
+//			existingAchiever.setachieverImage(aImage);
+//			existingAchiever.setImgFileName(image.getOriginalFilename());
+//		}
+//		existingAchiever.setContact(achiever.getContact());
+//		existingAchiever.setDescription(achiever.getDescription());
+//		existingAchiever.setName(achiever.getName());
+//		existingAchiever.setYear(achiever.getYear());
+//		return Response.ok(achieverRepository.save(existingAchiever)).build();
+//	}
 
 	@Transactional
 	public void updateIsDemo(int questionPaperId, boolean isDemo) {
