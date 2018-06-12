@@ -72,9 +72,9 @@ public class AchieversService {
 		aiRepository.save(aImage);
 	}
 
-	public List<Achievers> getAllAchievers() {
+	public List<Achievers> getAchieversForHomePage() {
 		List<Achievers> lastFourAchievers = new ArrayList<Achievers>();
-		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescNameAscOrderAsc();
 
 		Random rn = new Random();
 		List<Integer> randoms = new ArrayList<Integer>();
@@ -108,7 +108,7 @@ public class AchieversService {
 		Map<String, Object> yearMap = null;
 		List<Achievers> achieversInAYear = null;
 		List<Map<String, Object>> achieversYearWise = new ArrayList<Map<String, Object>>();
-		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescNameAscOrderAsc();
 		List<Integer> years = new ArrayList<Integer>();
 		for (Achievers achiever : achievers) {
 			hasYear = false;
@@ -134,6 +134,39 @@ public class AchieversService {
 			achieversYearWise.add(yearMap);
 		}
 		return achieversYearWise;
+	}
+
+	public List<Achievers> getAllAchieversList(int year) {
+		List<Achievers> achieversInAYear = null;
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescNameAscOrderAsc();
+		if (year != 0) {
+			achieversInAYear = new ArrayList<Achievers>();
+			for (Achievers achiever : achievers) {
+				if (achiever.getYear() == year) {
+					achieversInAYear.add(achiever);
+				}
+			}
+		} else
+			return achievers;
+		return achieversInAYear;
+	}
+
+	public List<Integer> getAllAchieversYears() {
+		boolean hasYear = true;
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescNameAscOrderAsc();
+		List<Integer> years = new ArrayList<Integer>();
+		for (Achievers achiever : achievers) {
+			hasYear = false;
+			for (int year : years) {
+				if (achiever.getYear() == year) {
+					hasYear = true;
+					break;
+				}
+			}
+			if (!hasYear || years.size() == 0)
+				years.add(achiever.getYear());
+		}
+		return years;
 	}
 
 	public List<Achievers> getCurrentAchievers() {
