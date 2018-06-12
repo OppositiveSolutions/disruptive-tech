@@ -193,7 +193,11 @@ public class StudentService {
 	}
 
 	public byte[] getUserImage(int userId) {
-		return uppRepository.findOne(userId).getPicture();
+		try {
+			return uppRepository.findOne(userId).getPicture();
+		} catch (Exception e) {
+			return uppRepository.findOne(1).getPicture();
+		}
 	}
 
 	public boolean removeUserImage(int userId) {

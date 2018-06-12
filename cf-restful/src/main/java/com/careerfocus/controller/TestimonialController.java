@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/testimonial")
@@ -26,10 +27,10 @@ public class TestimonialController {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Response getAllTestimonials(HttpServletRequest request,HttpServletRequest response) throws Exception {
+	public Response getAllTestimonials(HttpServletRequest request, HttpServletRequest response) throws Exception {
 		response.setAttribute("Allow-Control-Allow-Origin", "*");
 		return Response.ok(service.getAllTestimonials()).build();
-		
+
 	}
 
 	@RequestMapping(value = "/{testimonialId}", method = RequestMethod.DELETE)
@@ -40,6 +41,12 @@ public class TestimonialController {
 	@RequestMapping(value = "/self", method = RequestMethod.GET)
 	public Response getAllTestimonialsOfUser(HttpServletRequest request) throws Exception {
 		return Response.ok(service.getAllTestimonialsOfUser(request)).build();
+	}
+
+	@RequestMapping(value = "/{testimonialId}/image", method = RequestMethod.GET)
+	public byte[] getAchieverImage(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("testimonialId") int testimonialId) throws Exception {
+		return service.getTestimonialImage(testimonialId);
 	}
 
 }

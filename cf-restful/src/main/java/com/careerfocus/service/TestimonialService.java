@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,7 +42,13 @@ public class TestimonialService {
 	}
 
 	public List<TestimonialVO> getAllTestimonials() {
-		return testimonialRepo.getAllTestimonials();
+		List<TestimonialVO> testimonials = new ArrayList<TestimonialVO>();
+		List<TestimonialVO> testimonialVOs = testimonialRepo.getAllTestimonials();
+		for (TestimonialVO vo : testimonialVOs) {
+			vo.setImage(null);
+			testimonials.add(vo);
+		}
+		return testimonials;
 	}
 
 	public List<TestimonialVO> getAllTestimonialsOfUser(HttpServletRequest request) {
@@ -60,6 +67,10 @@ public class TestimonialService {
 			return false;
 		}
 		return true;
+	}
+
+	public byte[] getTestimonialImage(int testimonialId) {
+		return tiRepository.findOne(testimonialId).getImage();
 	}
 
 }
