@@ -268,7 +268,8 @@ public class QuestionPaperService {
 					questionVO.getQuestionPaperSubCategoryId(), questionVO.getQuestionNo()));
 
 			Question question = qpQuestion.getQuestion();
-			question.setQuestionId(questionVO.getQuestionId());
+			System.out.println("QId = " + question.getQuestionId());
+			// question.setQuestionId(questionVO.getQuestionId());
 			question.setQuestion(questionVO.getQuestion());
 			question.setCorrectOptionNo(question.getCorrectOptionNo());
 
@@ -281,7 +282,7 @@ public class QuestionPaperService {
 
 					option.setOption(optionVO.getOption());
 					option.setOptionNo(optionVO.getOptionNo());
-					option.setQuestionId(questionVO.getQuestionId());
+					option.setQuestionId(question.getQuestionId());
 				}
 			}
 			qpQuestionList.add(qpQuestion);
@@ -290,25 +291,30 @@ public class QuestionPaperService {
 		questionPaperQuestionRepository.save(qpQuestionList);
 		return qList;
 	}
-	
-//	public Response editAchiever(String achieverJson, MultipartFile image) throws IOException {
-//		Achievers achiever = new ObjectMapper().readValue(achieverJson, Achievers.class);
-//		Achievers existingAchiever = achieverRepository.findOne(achiever.getAchieverId());
-//		if (existingAchiever == null) {
-//			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.ACHIEVER_NAME_EMPTY_MSG).build();
-//		}
-//		if (image != null) {
-//			AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), image.getBytes());
-//			aiRepository.save(aImage);
-//			existingAchiever.setachieverImage(aImage);
-//			existingAchiever.setImgFileName(image.getOriginalFilename());
-//		}
-//		existingAchiever.setContact(achiever.getContact());
-//		existingAchiever.setDescription(achiever.getDescription());
-//		existingAchiever.setName(achiever.getName());
-//		existingAchiever.setYear(achiever.getYear());
-//		return Response.ok(achieverRepository.save(existingAchiever)).build();
-//	}
+
+	// public Response editQuestion(String questionVOJson, MultipartFile image)
+	// throws IOException {
+	// QuestionVO questionVO = new ObjectMapper().readValue(questionVOJson,
+	// QuestionVO.class);
+	// Achievers existingAchiever =
+	// achieverRepository.findOne(achiever.getAchieverId());
+	// if (existingAchiever == null) {
+	// return
+	// Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.ACHIEVER_NAME_EMPTY_MSG).build();
+	// }
+	// if (image != null) {
+	// AchieverImage aImage = new AchieverImage(achiever.getAchieverId(),
+	// image.getBytes());
+	// aiRepository.save(aImage);
+	// existingAchiever.setachieverImage(aImage);
+	// existingAchiever.setImgFileName(image.getOriginalFilename());
+	// }
+	// existingAchiever.setContact(achiever.getContact());
+	// existingAchiever.setDescription(achiever.getDescription());
+	// existingAchiever.setName(achiever.getName());
+	// existingAchiever.setYear(achiever.getYear());
+	// return Response.ok(achieverRepository.save(existingAchiever)).build();
+	// }
 
 	@Transactional
 	public void updateIsDemo(int questionPaperId, boolean isDemo) {

@@ -25,6 +25,12 @@ public class TestimonialController {
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
 		return Response.ok(service.saveTestimonials(request, testimonial, image)).build();
 	}
+	
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+	public Response editTestimonials(HttpServletRequest request, @RequestPart String testimonial,
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
+		return Response.ok(service.editTestimonials(testimonial, image)).build();
+	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Response getAllTestimonials(HttpServletRequest request, HttpServletRequest response) throws Exception {
