@@ -415,4 +415,15 @@ public class QuestionPaperService {
 		QuestionImage qImage = new QuestionImage(userId, image.getBytes(), description);
 		return Response.ok(questionImageRepository.save(qImage)).build();
 	}
+
+	public boolean deleteQuestion(int questionId) {
+		try {
+			questionPaperQuestionRepository.delete(questionPaperQuestionRepository.findOne(
+					new QuestionPaperQuestionId(qPaperDAO.getQuestionPaperSubCategoryIdFromQuestionId(questionId),
+							qPaperDAO.getQuestionNoFromQuestionId(questionId))));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

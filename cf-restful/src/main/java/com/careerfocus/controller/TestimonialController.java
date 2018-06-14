@@ -33,6 +33,13 @@ public class TestimonialController {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
+	public Response getTestimonials(HttpServletRequest request, HttpServletRequest response) throws Exception {
+		response.setAttribute("Allow-Control-Allow-Origin", "*");
+		return Response.ok(service.getTestimonials()).build();
+
+	}
+	
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public Response getAllTestimonials(HttpServletRequest request, HttpServletRequest response) throws Exception {
 		response.setAttribute("Allow-Control-Allow-Origin", "*");
 		return Response.ok(service.getAllTestimonials()).build();

@@ -118,6 +118,12 @@ public class QuestionPaperController {
 	public Response editQuestion(@RequestBody List<QuestionVO> qList) throws Exception {
 		return Response.ok(qPaperService.editQuestion(qList)).build();
 	}
+	
+	@RequestMapping(value = "/{questionId}/question", method = RequestMethod.DELETE)
+	public Response deleteQuestion(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("questionId") int questionId) throws Exception {
+		return Response.ok(qPaperService.deleteQuestion(questionId)).build();
+	}
 
 	@RequestMapping(value = "/sub-category/{subCategoryId}/questions", method = RequestMethod.GET)
 	public Response getQuestions(@PathVariable("subCategoryId") int subCategoryId) throws Exception {

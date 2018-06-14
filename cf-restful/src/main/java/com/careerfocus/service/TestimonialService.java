@@ -74,6 +74,10 @@ public class TestimonialService {
 		return testimonials;
 	}
 
+	public List<TestimonialVO> getTestimonials() {
+		return testimonialRepo.getAllTestimonials();
+	}
+
 	public List<TestimonialVO> getAllTestimonialsOfUser(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		int userId = Integer
