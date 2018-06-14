@@ -23,7 +23,7 @@ public class MailDAO {
 	private static final String FROM_ADDRESS = "noreply@careerfocus.in";
 	private static final String EMAIL_LOGO = "https://www.careerfocus.in/CF_UI/img/mail_logo.png";
 
-	public void welcomeMailUser(String studentEmailId, String password, String welcomeMessage)
+	public void welcomeMailUser(String studentEmailId, String password, String welcomeMessage, int status)
 			throws EmailException, MalformedURLException {
 		HtmlEmail email = new HtmlEmail();
 		email.setHostName(HOSTNAME);
@@ -52,7 +52,9 @@ public class MailDAO {
 		htmlBody.append("<div style=\"background:#ffffff;padding:10px 0; clear: both;\">");
 		htmlBody.append("<p style=\"margin-top: 10px; margin-bottom: 10px;\">Hello</p>");
 		htmlBody.append("<p style=\"margin-top: 10px; margin-bottom: 10px;\">" + welcomeMessage + "</p>");
-
+		if (status == 0)
+			htmlBody.append(
+					"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can activate full privilages for your account by contacting career focus management, which provides you with an access to our unlimited number of mock tests.<br/></p>");
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You may begin using this service by logging on to <a href=\"https://www.careerfocus.in\">https://www.careerfocus.in</a> with the following credentials:</p>");
 		htmlBody.append(

@@ -1,6 +1,5 @@
 package com.careerfocus.service;
 
-import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.BundleDAO;
 import com.careerfocus.dao.QuestionPaperDAO;
 import com.careerfocus.dao.TestDAO;
@@ -13,7 +12,6 @@ import com.careerfocus.model.response.QuestionPaperVO;
 import com.careerfocus.repository.*;
 import com.careerfocus.util.QuestionPaperUtils;
 import com.careerfocus.util.response.Response;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,16 +100,15 @@ public class QuestionPaperService {
 		return qPaperRepository.save(paper);
 	}
 
-	public Map<String, Object> enableQuestionPaper(int questionPaperId, int isDemo) {
-		boolean status = true;
+	public Map<String, Object> enableQuestionPaper(int bundleQPId, int questionPaperId, int isDemo) {
 		Map<String, Object> returnMap = new HashMap<String, Object>();
-		int bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, questionPaperId);
+		if (bundleQPId == 0) {
+			bundleQPId = bundleDAO.addQptoBundle(DEFAUL_QP_BUNDLE, questionPaperId);
+			testDAO.createTestDefault(bundleQPId, isDemo == 1 ? true : false);
+		}
 		if (bundleQPId > 0)
-			status = testDAO.createTestDefault(bundleQPId, isDemo == 1 ? true : false);
-		if (status && qPaperDAO.changeQPStatus(questionPaperId, BUNDLE_STATUS_ENABLED)) {
-			returnMap.put("status", true);
-			returnMap.put("message", "Successfully Enabled Question Paper.");
-		} else {
+			return qPaperDAO.changeQPStatus(questionPaperId, BUNDLE_STATUS_ENABLED);
+		else {
 			returnMap.put("status", false);
 			returnMap.put("message", "Failed to Enable Question Paper.");
 		}
@@ -155,23 +152,21 @@ public class QuestionPaperService {
 	}
 
 	public boolean deleteQP(int questionPaperId) {
-		return qPaperDAO.changeQPStatus(questionPaperId, BUNDLE_STATUS_DELETED);
+		Map<String, Object> statusMap = qPaperDAO.changeQPStatus(questionPaperId, BUNDLE_STATUS_DELETED);
+		return Boolean.parseBoolean(statusMap.get("status").toString());
 	}
 
 	public Map<String, Object> changeQPStatus(int questionPaperId, int status) {
-		if (status == 1)
-			return enableQuestionPaper(questionPaperId, qPaperDAO.getIsDemoQP(questionPaperId));
-		else {
-			Map<String, Object> returnMap = new HashMap<String, Object>();
-			if (qPaperDAO.changeQPStatus(questionPaperId, status)) {
-				returnMap.put("status", true);
-				returnMap.put("message", "Successfully Disabled Question Paper.");
-			} else {
-				returnMap.put("status", false);
-				returnMap.put("message", "Failed to Disable Question Paper.");
-			}
-			return returnMap;
-		}
+		if (status == 1) {
+			int bundleQPId = 0;
+			bundleQPId = qPaperDAO.getBundleQPId(questionPaperId);
+				return enableQuestionPaper(bundleQPId, questionPaperId, qPaperDAO.getIsDemoQP(questionPaperId));
+		} else
+			return qPaperDAO.changeQPStatus(questionPaperId, status);
+	}
+	
+	public Map<String, Object> changeQPIsDemo(int questionPaperId, int isDemo) {
+			return qPaperDAO.changeQPIsDemo(questionPaperId, isDemo);
 	}
 
 	@Transactional

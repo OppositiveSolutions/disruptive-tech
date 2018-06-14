@@ -69,7 +69,7 @@ public class ProfileDAO {
 		boolean status = template.update(query, password, username) > 0 ? true : false;
 		if (status)
 			try {
-				mailDAO.welcomeMailUser(username, password, "Password Reset for Career Focus Account.");
+				mailDAO.welcomeMailUser(username, password, "Password Reset for Career Focus Account.", commonDAO.getStatusFromEmailId(username));
 			} catch (MalformedURLException | EmailException e) {
 				e.printStackTrace();
 			}
