@@ -21,6 +21,6 @@ public class Constants {
 	
 	public static final int DEFAULT_CENTER_ID = 1;
 	
-	public static final int IS_LIVE = 0;
+	public static final int IS_LIVE = 1;
 
 }
