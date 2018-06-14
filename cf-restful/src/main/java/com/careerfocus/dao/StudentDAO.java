@@ -37,9 +37,10 @@ public class StudentDAO {
 				+ " created_date as createdDate, expiry_date as expiryDate, username, u.status, dob,"
 				+ " qualification, gender, street_address as streetAdress, place, city,"
 				+ " state_id as stateId, pin_code as pinCode, phone_no as phoneNo FROM student s"
-				+ " INNER JOIN user u ON s.user_id = u.user_id"
+				+ " INNER JOIN user u ON s.user_id = u.user_id and u.role = 1"
 				+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
-				+ " LEFT JOIN address a on s.user_id = a.user_id ORDER BY first_name, last_name";
+				+ " LEFT JOIN address a on s.user_id = a.user_id WHERE s.status != 2"
+				+ " GROUP BY s.user_id ORDER BY first_name, last_name";
 
 		if (pageSize > 0 && pageNo > 0) {
 			query += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
@@ -63,7 +64,7 @@ public class StudentDAO {
 				map.put("streetAdress", rs.getString("streetAdress"));
 				map.put("qualification", rs.getString("qualification"));
 				map.put("place", rs.getString("place"));
-				map.put("dob", rs.getString("dob"));
+				map.put("dob", rs.getDate("dob") != null ? DateUtils.toFormat(rs.getDate("dob"), "MM/dd/yyyy") : null);
 				map.put("city", rs.getString("city"));
 				map.put("stateId", rs.getInt("stateId"));
 				map.put("pinCode", rs.getInt("pinCode"));
@@ -129,11 +130,25 @@ public class StudentDAO {
 
 	public boolean deleteUserAddress(int userId) {
 		String query = "delete from user_address where user_id = ?";
-		return template.update(query) > 0 ? true : false;
+		return template.update(query, userId) > 0 ? true : false;
 	}
 
-	public boolean activateStudent(int userId) {
+	public boolean deleteUserPhone(int userId) {
+		String query = "delete from user_phone where user_id = ?";
+		return template.update(query, userId) > 0 ? true : false;
+	}
+
+	public int activateStudent(int userId) {
 		String query = "update user set status = 1 - status where user_id = ?";
+		if (template.update(query, userId) > 0) {
+			query = "select status from user where user_id = ?";
+			return template.queryForObject(query, Integer.class, userId);
+		}
+		return 0;
+	}
+
+	public boolean deleteStudent(int userId) {
+		String query = "update student set status = 2 where user_id = ?";
 		return template.update(query, userId) > 0 ? true : false;
 	}
 
@@ -157,11 +172,18 @@ public class StudentDAO {
 			ps.setString(5, user.getLastName());
 			ps.setDate(6, new java.sql.Date(user.getDob().getTime()));
 			ps.setString(7, user.getGender());
-			ps.setString(8, "1");
+			ps.setInt(8, user.getStatus());
 			return ps;
 		}, holder);
 		user.setUserId(holder.getKey().intValue());
 		return user;
+	}
+
+	public boolean editUser(User user) {
+		String query = "UPDATE user SET username =?, first_name = ?,"
+				+ " last_name = ?, dob = ?, gender = ? WHERE user_id = ?";
+		return template.update(query, user.getUsername(), user.getFirstName(), user.getLastName(),
+				new java.sql.Date(user.getDob().getTime()), user.getGender(), user.getUserId()) > 0 ? true : false;
 	}
 
 	public Address saveAddress(Address address) {

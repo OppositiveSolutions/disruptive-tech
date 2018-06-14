@@ -98,20 +98,20 @@ public class StudentService {
 		}
 
 		Student student = new Student(user.getUserId(), studentVO.getQualification(), 1, studentVO.getCenterId() + "",
-				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType());
+				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType() != 2 ? 1 : 2);
 		studentRepository.save(student);
 		if (image != null && image.getBytes() != null) {
 			UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
 			uppRepository.save(pic);
 		}
-		if (studentVO.getType() == 1)// 2 - online reg
+		if (studentVO.getType() != 2)// 2 - online reg
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId(), 0);
 		else
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId(), 1);
 		try {
 			System.out.println("Email = " + studentVO.getEmailId());
 			mailDAO.welcomeMailUser(studentVO.getEmailId(), commonDAO.getPasswordForAUser(user.getUserId()),
-					"Welcome to Career Focus. We enhance your confidence.");
+					"Welcome to Career Focus. We enhance your confidence.", user.getStatus());
 		} catch (MalformedURLException | EmailException e) {
 			e.printStackTrace();
 		}
@@ -119,43 +119,42 @@ public class StudentService {
 		return Response.ok(studentVO).build();
 	}
 
-	public Response editStudent(AddStudentVO studentVO, int userId) {
+	public Response editStudent(AddStudentVO studentVO, MultipartFile image) {
 
-		User user = userRepository.findOne(userId);
+		User user = userRepository.findOne(studentVO.getUserId());
 		Student student = studentRepository.findOne(studentVO.getUserId());
 		if (user == null || student == null) {
 			throw new RuntimeException();
 		}
 
-		// user.setUsername(studentVO.getEmailId());
+		user.setUsername(studentVO.getEmailId());
 		user.setFirstName(studentVO.getFirstName());
 		user.setLastName(studentVO.getLastName());
 		user.setGender(studentVO.getGender());
 		user.setDob(DateUtils.convertMMDDYYYYToJavaDate(studentVO.getDob()));
 
-		// studentDAO.deleteUserAddress(studentVO.getUserId());
 		Address address = new Address(studentVO.getAddress(), studentVO.getPlace(), studentVO.getCity(),
 				studentVO.getState(), studentVO.getPinCode(), studentVO.getUserId());
 		address.setUser(user);
+		studentDAO.deleteUserAddress(studentVO.getUserId());
+		studentDAO.saveAddress(address);
 
-		user.getAddress().clear();
-
-		Set<Address> addressSet = new HashSet<>();
-		addressSet.add(address);
-		user.getAddress().addAll(addressSet);
+		try {
+			if (image != null && image.getBytes() != null) {
+				UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
+				uppRepository.save(pic);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		if (studentVO.getMobileNo() != null && !studentVO.getMobileNo().isEmpty()) {
 			UserPhone phone = new UserPhone(studentVO.getMobileNo(), 1, true);
 			phone.setUser(user);
-
-			Set<UserPhone> phones = new HashSet<>();
-			phones.add(phone);
-
-			user.getUserPhones().clear();
-			user.getUserPhones().addAll(phones);
+			studentDAO.deleteUserPhone(studentVO.getUserId());
+			studentDAO.savePhone(phone);
 		}
-		user = userRepository.save(user);
-
+		studentDAO.editUser(user);
 		student.setQualification(studentVO.getQualification());
 		// student.setCenter(new Center(studentVO.getCenterId()));
 		// student.setCenterId(studentVO.getCenterId());
@@ -174,8 +173,7 @@ public class StudentService {
 
 	public boolean removeStudent(int userId) {
 		try {
-			studentRepository.delete(userId);
-			return true;
+			return studentDAO.deleteStudent(userId);
 		} catch (Exception e) {
 			return false;
 		}
@@ -215,7 +213,12 @@ public class StudentService {
 	}
 
 	public boolean activateStudent(int userId) {
-		return studentDAO.activateStudent(userId);
+		if (studentDAO.activateStudent(userId) == 1) {
+			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, userId, 0);
+			return testDAO.updateTestIsEnabledForAUser(userId, 1);
+		}
+		else
+			return testDAO.updateTestIsEnabledForAUser(userId, 0);
 	}
 
 }

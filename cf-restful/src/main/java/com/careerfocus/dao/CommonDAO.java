@@ -78,6 +78,11 @@ public class CommonDAO {
 		String query = "SELECT user_id FROM user WHERE username = ?";
 		return template.queryForObject(query, Integer.class, emailId);
 	}
+	
+	public int getStatusFromEmailId(String emailId) {
+		String query = "SELECT status FROM user WHERE username = ?";
+		return template.queryForObject(query, Integer.class, emailId);
+	}
 
 	// public DateTime getCurrentIST() {
 	// String TIME_SERVER = "time-a.nist.gov";

@@ -31,12 +31,14 @@ public class StudentController {
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
-	public Response editStudent(@RequestBody AddStudentVO student, HttpServletRequest request) throws Exception {
+	public Response editStudent(HttpServletRequest request, HttpServletResponse response,
+			@RequestPart(required = true) String studentJson,
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
 		HttpSession session = request.getSession();
-		int userId = Integer.parseInt(session.getAttribute("userId").toString());
-		return Response.ok(studentService.editStudent(student, userId)).build();
+		AddStudentVO student = new ObjectMapper().readValue(studentJson, AddStudentVO.class);
+		return Response.ok(studentService.editStudent(student, image)).build();
 	}
-	
+
 	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
 	public Response removeStudent(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("userId") int userId) throws Exception {
@@ -48,7 +50,7 @@ public class StudentController {
 			@PathVariable("userId") int userId) throws Exception {
 		return Response.ok(studentService.activateStudent(userId)).build();
 	}
-	
+
 	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
 	public Response getStudent(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {

@@ -44,6 +44,12 @@ public class QuestionPaperController {
 		return Response.ok(qPaperService.changeQPStatus(questionPaperId, status)).build();
 	}
 
+	@RequestMapping(value = "/{questionPaperId}/isdemo/{isDemo}", method = RequestMethod.GET)
+	public Response changeQPIsDemo(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("questionPaperId") int questionPaperId, @PathVariable("isDemo") int isDemo) throws Exception {
+		return Response.ok(qPaperService.changeQPIsDemo(questionPaperId, isDemo)).build();
+	}
+
 	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
 	public Response getAllQuestionPapers(@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo)
 			throws Exception {
@@ -118,7 +124,7 @@ public class QuestionPaperController {
 	public Response editQuestion(@RequestBody List<QuestionVO> qList) throws Exception {
 		return Response.ok(qPaperService.editQuestion(qList)).build();
 	}
-	
+
 	@RequestMapping(value = "/{questionId}/question", method = RequestMethod.DELETE)
 	public Response deleteQuestion(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("questionId") int questionId) throws Exception {

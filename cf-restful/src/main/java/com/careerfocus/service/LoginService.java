@@ -45,11 +45,11 @@ public class LoginService {
 		logger.info("password: " + password);
 
 		User user = userRepository.findByUsernameAndPassword(username, password);
-		if (user == null || user.getStatus() != 1 || user.getUserId() == Constants.FALSE) {
+		logger.info("user: " + user.toString());
+		if (user == null || user.getUserId() == Constants.FALSE) {//|| user.getStatus() != 1 - for online registered students
 			throw new AuthenticationCredentialsNotFoundException("");
 		}
 
-		logger.info("user: " + user.toString());
 
 		HttpSession session = request.getSession(true);
 

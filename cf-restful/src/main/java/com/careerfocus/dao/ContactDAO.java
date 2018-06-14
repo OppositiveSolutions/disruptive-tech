@@ -24,6 +24,9 @@ public class ContactDAO {
 
 	@Autowired
 	MailDAO mailDAO;
+	
+	@Autowired
+	CommonDAO commonDAO;
 
 	public boolean changePassword(int userId, String password) {
 		String query = "UPDATE user SET password = ? WHERE user_id  = ?";
@@ -35,7 +38,7 @@ public class ContactDAO {
 		boolean status = template.update(query, password, username) > 0 ? true : false;
 		if (status)
 			try {
-				mailDAO.welcomeMailUser(username, password, "Password Reset for Career Focus Account.");
+				mailDAO.welcomeMailUser(username, password, "Password Reset for Career Focus Account.", commonDAO.getStatusFromEmailId(username));
 			} catch (MalformedURLException | EmailException e) {
 				e.printStackTrace();
 			}
