@@ -47,8 +47,9 @@ public class AchieversController {
 
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	public Response editAchiever(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Achievers achiever) throws Exception {
-		return Response.ok(service.editAchiever(achiever)).build();
+			@RequestPart(required = true) String achiever,
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
+		return Response.ok(service.editAchiever(achiever, image)).build();
 	}
 
 	@RequestMapping(value = "/all", method = RequestMethod.PUT)
@@ -62,9 +63,20 @@ public class AchieversController {
 		return Response.ok(service.getAllAchieversByYear()).build();
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Response getAllAchievers(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return Response.ok(service.getAllAchievers()).build();
+	@RequestMapping(value = "/{year}/list", method = RequestMethod.GET)
+	public Response getAllAchieversList(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("year") int year) throws Exception {
+		return Response.ok(service.getAllAchieversList(year)).build();
+	}
+
+	@RequestMapping(value = "/years", method = RequestMethod.GET)
+	public Response getAllAchieversYears(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return Response.ok(service.getAllAchieversYears()).build();
+	}
+
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public Response getAchieversForHomePage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return Response.ok(service.getAchieversForHomePage()).build();
 	}
 
 	@RequestMapping(value = "/{achieverId}/image", method = RequestMethod.GET)

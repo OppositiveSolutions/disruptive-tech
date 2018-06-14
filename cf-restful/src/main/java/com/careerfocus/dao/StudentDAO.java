@@ -35,12 +35,11 @@ public class StudentDAO {
 
 		String query = "SELECT u.user_id as userId, first_name as firstName, last_name as lastName,"
 				+ " created_date as createdDate, expiry_date as expiryDate, username, u.status, dob,"
-				+ " gender,street_address as streetAdress, place, city,"
+				+ " qualification, gender, street_address as streetAdress, place, city,"
 				+ " state_id as stateId, pin_code as pinCode, phone_no as phoneNo FROM student s"
 				+ " INNER JOIN user u ON s.user_id = u.user_id"
 				+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
-				+ " LEFT JOIN user_address ua on s.user_id = ua.user_id "
-				+ " LEFT JOIN address a on ua.address_id = a.address_id ORDER BY first_name, last_name ";
+				+ " LEFT JOIN address a on s.user_id = a.user_id ORDER BY first_name, last_name";
 
 		if (pageSize > 0 && pageNo > 0) {
 			query += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
@@ -62,7 +61,9 @@ public class StudentDAO {
 					map.put("expiryDate", DateUtils.toFormat(rs.getDate("expiryDate"), "MM/dd/yyyy"));
 				map.put("username", rs.getString("username"));
 				map.put("streetAdress", rs.getString("streetAdress"));
+				map.put("qualification", rs.getString("qualification"));
 				map.put("place", rs.getString("place"));
+				map.put("dob", rs.getString("dob"));
 				map.put("city", rs.getString("city"));
 				map.put("stateId", rs.getInt("stateId"));
 				map.put("pinCode", rs.getInt("pinCode"));

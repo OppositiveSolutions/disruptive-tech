@@ -121,8 +121,8 @@ public class BundleController {
 	}
 	
 	@RequestMapping(value = "/{bundleId}/image", method = RequestMethod.GET)
-	public byte[] getAchieverImage(HttpServletRequest request, HttpServletResponse response,
+	public byte[] getBundleImage(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("bundleId") int bundleId) throws Exception {
-		return service.getUserImage(bundleId);
+		return service.getBundleImage(bundleId);
 	}
 }

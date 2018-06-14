@@ -14,6 +14,7 @@ import com.careerfocus.entity.Bundle;
 import com.careerfocus.entity.BundleImage;
 import com.careerfocus.repository.BundleImageRepository;
 import com.careerfocus.repository.BundleRepository;
+import com.careerfocus.repository.UserProfilePicRepository;
 import com.careerfocus.util.response.Response;
 
 /**
@@ -30,6 +31,9 @@ public class BundleService {
 
 	@Autowired
 	BundleImageRepository biRepository;
+
+	@Autowired
+	UserProfilePicRepository uppRepository;
 
 	public Bundle saveBundle(Bundle bundle, MultipartFile image) throws IOException {
 		bundle.setImgFileName(image.getOriginalFilename());
@@ -51,8 +55,8 @@ public class BundleService {
 		return bundleDAO.getCoachingTypeList();
 	}
 
-	public static int NOT_AVAILABLE = 0;//disabled
-	public static int AVAILABLE = 1;//enabled
+	public static int NOT_AVAILABLE = 0;// disabled
+	public static int AVAILABLE = 1;// enabled
 	public static int DELETED = 2;
 
 	public Response editBundle(Bundle bundle, MultipartFile image) throws IOException {
@@ -63,6 +67,7 @@ public class BundleService {
 		if (image != null) {
 			BundleImage bImage = new BundleImage(bundle.getBundleId(), image.getBytes());
 			biRepository.save(bImage);
+			existingBundle.setBundleImage(bImage);
 		}
 		existingBundle.setIsAvailable(bundle.getIsAvailable());
 		existingBundle.setBundleId(bundle.getBundleId());
@@ -125,7 +130,11 @@ public class BundleService {
 		return bundleDAO.getPurchasedQPBundleList(userId);
 	}
 
-	public byte[] getUserImage(int bundleId) {
-		return biRepository.findOne(bundleId).getImage();
+	public byte[] getBundleImage(int bundleId) {
+		try {
+			return biRepository.findOne(bundleId).getImage();
+		} catch (Exception e) {
+			return uppRepository.findOne(1).getPicture();
+		}
 	}
 }

@@ -5,6 +5,7 @@ import com.careerfocus.entity.AnnouncementImage;
 import com.careerfocus.entity.Announcements;
 import com.careerfocus.repository.AnnouncementImageRepository;
 import com.careerfocus.repository.AnnouncementRepository;
+import com.careerfocus.repository.UserProfilePicRepository;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +29,9 @@ public class AnnouncementService {
 
 	@Autowired
 	AnnouncementImageRepository aiRepository;
+
+	@Autowired
+	UserProfilePicRepository uppRepository;
 
 	@Transactional
 	public Response saveAnnouncement(String announcementJson, MultipartFile image) throws IOException {
@@ -81,7 +85,11 @@ public class AnnouncementService {
 	}
 
 	public byte[] getAnnouncementImage(int announcementId) {
-		return aiRepository.findOne(announcementId).getImage();
+		try {
+			return aiRepository.findOne(announcementId).getImage();
+		} catch (Exception e) {
+			return uppRepository.findOne(1).getPicture();
+		}
 	}
 
 	private List<Error> validateAnnouncement(Announcements announcement) {

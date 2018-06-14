@@ -24,10 +24,11 @@ public class BundleDAO {
 	}
 
 	public List<Map<String, Object>> getBundles() {
-		String query = "SELECT bundle_id as bundleId, name, description, mrp, selling_price as sellingPrice,"
-				+ " is_available as isAvailavble, discount_percent as discountPercent, coaching_type as coachingType,"
-				+ " created_date as createdDate, validity_days as validityDays, img_file_name as imgFileName"
-				+ " FROM bundle where is_available != " + BundleService.DELETED;
+		String query = "SELECT bundle_id as bundleId, b.name, description, mrp, selling_price as sellingPrice,"
+				+ " is_available as isAvailavble, discount_percent as discountPercent, b.coaching_type as coachingType,"
+				+ " created_date as createdDate, validity_days as validityDays, img_file_name as imgFileName,"
+				+ " ct.name as coachingTypeName FROM bundle b inner join coaching_type ct"
+				+ " on b.coaching_type = ct.coaching_type_id where is_available != " + BundleService.DELETED;
 		return template.queryForList(query);
 	}
 

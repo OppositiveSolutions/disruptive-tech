@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.entity.AchieverImage;
 import com.careerfocus.entity.Achievers;
+import com.careerfocus.entity.Bundle;
+import com.careerfocus.entity.BundleImage;
 import com.careerfocus.repository.AchieversImageRepository;
 import com.careerfocus.repository.AchieversRepository;
 import com.careerfocus.util.response.Error;
@@ -54,6 +57,25 @@ public class AchieversService {
 		return Response.ok(achiever).build();
 	}
 
+	public Response editAchiever(String achieverJson, MultipartFile image) throws IOException {
+		Achievers achiever = new ObjectMapper().readValue(achieverJson, Achievers.class);
+		Achievers existingAchiever = achieverRepository.findOne(achiever.getAchieverId());
+		if (existingAchiever == null) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.ACHIEVER_NAME_EMPTY_MSG).build();
+		}
+		if (image != null) {
+			AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), image.getBytes());
+			aiRepository.save(aImage);
+			existingAchiever.setachieverImage(aImage);
+			existingAchiever.setImgFileName(image.getOriginalFilename());
+		}
+		existingAchiever.setContact(achiever.getContact());
+		existingAchiever.setDescription(achiever.getDescription());
+		existingAchiever.setName(achiever.getName());
+		existingAchiever.setYear(achiever.getYear());
+		return Response.ok(achieverRepository.save(existingAchiever)).build();
+	}
+
 	public Achievers editAchiever(Achievers achiever) {
 		achiever = achieverRepository.save(achiever);
 		if (achiever.isIsCurrent()) {
@@ -71,10 +93,29 @@ public class AchieversService {
 		aiRepository.save(aImage);
 	}
 
-	public List<Achievers> getAllAchievers() {
+	public List<Achievers> getAchieversForHomePage() {
 		List<Achievers> lastFourAchievers = new ArrayList<Achievers>();
-		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
-		for (int i = 0; i < 4; i++) {
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescNameAscOrderAsc();
+
+		Random rn = new Random();
+		List<Integer> randoms = new ArrayList<Integer>();
+		int answer = 0;
+		int size = 4;
+		if (achievers.size() > 4)
+			size = 4;
+		else
+			size = achievers.size();
+		do {
+			answer = rn.nextInt(achievers.size());
+			if (randoms.size() == 0)
+				randoms.add(answer);
+			for (int r : randoms)
+				if (r != answer) {
+					randoms.add(answer);
+					break;
+				}
+		} while (randoms.size() < size);
+		for (int i : randoms) {
 			Achievers achiever = achievers.get(i);
 			if (achiever.getachieverImage() == null)
 				achiever.setachieverImage(aiRepository.findOne(achiever.getAchieverId()));
@@ -88,7 +129,7 @@ public class AchieversService {
 		Map<String, Object> yearMap = null;
 		List<Achievers> achieversInAYear = null;
 		List<Map<String, Object>> achieversYearWise = new ArrayList<Map<String, Object>>();
-		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescOrderAsc();
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescNameAscOrderAsc();
 		List<Integer> years = new ArrayList<Integer>();
 		for (Achievers achiever : achievers) {
 			hasYear = false;
@@ -114,6 +155,39 @@ public class AchieversService {
 			achieversYearWise.add(yearMap);
 		}
 		return achieversYearWise;
+	}
+
+	public List<Achievers> getAllAchieversList(int year) {
+		List<Achievers> achieversInAYear = null;
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescNameAscOrderAsc();
+		if (year != 0) {
+			achieversInAYear = new ArrayList<Achievers>();
+			for (Achievers achiever : achievers) {
+				if (achiever.getYear() == year) {
+					achieversInAYear.add(achiever);
+				}
+			}
+		} else
+			return achievers;
+		return achieversInAYear;
+	}
+
+	public List<Integer> getAllAchieversYears() {
+		boolean hasYear = true;
+		List<Achievers> achievers = achieverRepository.findAllByOrderByYearDescNameAscOrderAsc();
+		List<Integer> years = new ArrayList<Integer>();
+		for (Achievers achiever : achievers) {
+			hasYear = false;
+			for (int year : years) {
+				if (achiever.getYear() == year) {
+					hasYear = true;
+					break;
+				}
+			}
+			if (!hasYear || years.size() == 0)
+				years.add(achiever.getYear());
+		}
+		return years;
 	}
 
 	public List<Achievers> getCurrentAchievers() {

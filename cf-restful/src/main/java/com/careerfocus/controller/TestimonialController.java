@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/testimonial")
@@ -24,12 +25,25 @@ public class TestimonialController {
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
 		return Response.ok(service.saveTestimonials(request, testimonial, image)).build();
 	}
+	
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+	public Response editTestimonials(HttpServletRequest request, @RequestPart String testimonial,
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
+		return Response.ok(service.editTestimonials(testimonial, image)).build();
+	}
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Response getAllTestimonials(HttpServletRequest request,HttpServletRequest response) throws Exception {
+	public Response getTestimonials(HttpServletRequest request, HttpServletRequest response) throws Exception {
+		response.setAttribute("Allow-Control-Allow-Origin", "*");
+		return Response.ok(service.getTestimonials()).build();
+
+	}
+	
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public Response getAllTestimonials(HttpServletRequest request, HttpServletRequest response) throws Exception {
 		response.setAttribute("Allow-Control-Allow-Origin", "*");
 		return Response.ok(service.getAllTestimonials()).build();
-		
+
 	}
 
 	@RequestMapping(value = "/{testimonialId}", method = RequestMethod.DELETE)
@@ -40,6 +54,12 @@ public class TestimonialController {
 	@RequestMapping(value = "/self", method = RequestMethod.GET)
 	public Response getAllTestimonialsOfUser(HttpServletRequest request) throws Exception {
 		return Response.ok(service.getAllTestimonialsOfUser(request)).build();
+	}
+
+	@RequestMapping(value = "/{testimonialId}/image", method = RequestMethod.GET)
+	public byte[] getAchieverImage(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("testimonialId") int testimonialId) throws Exception {
+		return service.getTestimonialImage(testimonialId);
 	}
 
 }

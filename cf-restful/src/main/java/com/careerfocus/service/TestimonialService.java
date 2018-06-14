@@ -1,11 +1,15 @@
 package com.careerfocus.service;
 
+import com.careerfocus.constants.ErrorCodes;
+import com.careerfocus.entity.AchieverImage;
+import com.careerfocus.entity.Achievers;
 import com.careerfocus.entity.Testimonial;
 import com.careerfocus.entity.TestimonialImage;
 import com.careerfocus.entity.User;
 import com.careerfocus.model.response.TestimonialVO;
 import com.careerfocus.repository.TestimonialImageRepository;
 import com.careerfocus.repository.TestimonialRepository;
+import com.careerfocus.util.response.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,7 +45,36 @@ public class TestimonialService {
 		return testimonial;
 	}
 
+	public Response editTestimonials(String testimonialJson, MultipartFile image) throws IOException {
+		Testimonial testimonial = new ObjectMapper().readValue(testimonialJson, Testimonial.class);
+		Testimonial existingTestimonial = testimonialRepo.findOne(testimonial.getTestimonialId());
+		if (existingTestimonial == null) {
+			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.ACHIEVER_NAME_EMPTY_MSG).build();
+		}
+		if (image != null) {
+			TestimonialImage tImage = new TestimonialImage(testimonial.getTestimonialId(), image.getBytes());
+			tiRepository.save(tImage);
+			existingTestimonial.setTestimonialImage(tImage);
+			existingTestimonial.setImgFileName(image.getOriginalFilename());
+		}
+		existingTestimonial.setContact(testimonial.getContact());
+		existingTestimonial.setContent(testimonial.getContent());
+		existingTestimonial.setDescription(testimonial.getDescription());
+		existingTestimonial.setName(testimonial.getName());
+		return Response.ok(testimonialRepo.save(existingTestimonial)).build();
+	}
+
 	public List<TestimonialVO> getAllTestimonials() {
+		List<TestimonialVO> testimonials = new ArrayList<TestimonialVO>();
+		List<TestimonialVO> testimonialVOs = testimonialRepo.getAllTestimonials();
+		for (TestimonialVO vo : testimonialVOs) {
+			vo.setImage(null);
+			testimonials.add(vo);
+		}
+		return testimonials;
+	}
+
+	public List<TestimonialVO> getTestimonials() {
 		return testimonialRepo.getAllTestimonials();
 	}
 
@@ -60,6 +94,10 @@ public class TestimonialService {
 			return false;
 		}
 		return true;
+	}
+
+	public byte[] getTestimonialImage(int testimonialId) {
+		return tiRepository.findOne(testimonialId).getImage();
 	}
 
 }

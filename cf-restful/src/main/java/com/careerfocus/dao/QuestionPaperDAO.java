@@ -75,4 +75,14 @@ public class QuestionPaperDAO {
 		return jdbcTemplate.queryForObject(query, Integer.class, questionPaperId);
 	}
 
+	public int getQuestionPaperSubCategoryIdFromQuestionId(int questionId) {
+		String query = "SELECT question_paper_sub_category_id FROM question_paper_question WHERE question_id = ?";
+		return jdbcTemplate.queryForObject(query, Integer.class, questionId);
+	}
+
+	public int getQuestionNoFromQuestionId(int questionId) {
+		String query = "SELECT question_no FROM question_paper_question WHERE question_id = ?";
+		return jdbcTemplate.queryForObject(query, Integer.class, questionId);
+	}
+
 }
