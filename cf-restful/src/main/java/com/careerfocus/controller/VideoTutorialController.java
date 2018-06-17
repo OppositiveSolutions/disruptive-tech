@@ -2,7 +2,6 @@ package com.careerfocus.controller;
 
 import com.careerfocus.constants.UIMessages;
 import com.careerfocus.entity.VideoTutorial;
-import com.careerfocus.service.QuestionPaperService;
 import com.careerfocus.service.VideoTutorialService;
 import com.careerfocus.util.response.Response;
 

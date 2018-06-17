@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/student")
@@ -34,7 +33,6 @@ public class StudentController {
 	public Response editStudent(HttpServletRequest request, HttpServletResponse response,
 			@RequestPart(required = true) String studentJson,
 			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
-		HttpSession session = request.getSession();
 		AddStudentVO student = new ObjectMapper().readValue(studentJson, AddStudentVO.class);
 		return Response.ok(studentService.editStudent(student, image)).build();
 	}

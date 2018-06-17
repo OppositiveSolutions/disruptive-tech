@@ -1,7 +1,7 @@
 package com.careerfocus.service;
 
 import com.careerfocus.constants.Constants;
-import com.careerfocus.constants.ErrorCodes;
+//import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.CommonDAO;
 import com.careerfocus.dao.MailDAO;
 import com.careerfocus.dao.StudentDAO;
@@ -19,11 +19,11 @@ import com.careerfocus.repository.UserProfilePicRepository;
 import com.careerfocus.repository.UserRepository;
 import com.careerfocus.util.DateUtils;
 import com.careerfocus.util.StudentUtils;
-import com.careerfocus.util.response.Error;
+//import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
 
 import org.apache.commons.mail.EmailException;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,10 +36,8 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 public class StudentService {

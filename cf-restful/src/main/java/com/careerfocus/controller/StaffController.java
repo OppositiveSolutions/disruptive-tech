@@ -1,7 +1,6 @@
 package com.careerfocus.controller;
 
 import com.careerfocus.model.request.AddStaffVO;
-import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StaffService;
 import com.careerfocus.util.response.Response;
 

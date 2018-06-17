@@ -4,7 +4,6 @@ import com.careerfocus.dao.ProfileDAO;
 import com.careerfocus.entity.Student;
 import com.careerfocus.repository.StudentRepository;
 import com.careerfocus.repository.UserRepository;
-import com.careerfocus.util.PasswordGenerator;
 
 import java.util.Map;
 

@@ -156,4 +156,18 @@ public class QuestionPaperDAO {
 		}
 	}
 
+	public boolean saveQuestionPaperSubCategoryContent(int questionPaperSubCategoryId, String content) {
+		String query = "UPDATE question_paper_sub_category set content = ? WHERE question_paper_sub_category_id = ?";
+		return jdbcTemplate.update(query, content, questionPaperSubCategoryId) > 0 ? true : false;
+	}
+
+	public String getQuestionPaperSubCategoryContent(int questionPaperSubCategoryId) {
+		String query = "SELECT content FROM question_paper_sub_category WHERE question_paper_sub_category_id = ?";
+		return jdbcTemplate.queryForObject(query, String.class, questionPaperSubCategoryId);
+	}
+
+	public boolean deleteQuestionPaperSubCategoryContent(int questionPaperSubCategoryId) {
+		return saveQuestionPaperSubCategoryContent(questionPaperSubCategoryId, null);
+	}
+
 }

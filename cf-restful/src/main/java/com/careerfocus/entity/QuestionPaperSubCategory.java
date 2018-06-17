@@ -12,107 +12,131 @@ import java.util.Set;
 @Table(name = "question_paper_sub_category")
 public class QuestionPaperSubCategory {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "question_paper_sub_category_id", columnDefinition = "INT")
-    private int questionPaperSubCategoryId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "question_paper_sub_category_id", columnDefinition = "INT")
+	private int questionPaperSubCategoryId;
 
-    @Column(name = "question_paper_category_id", columnDefinition = "INT")
-    private int questionPaperCategoryId;
+	@Column(name = "question_paper_category_id", columnDefinition = "INT")
+	private int questionPaperCategoryId;
 
-    @Basic
-    private String direction;
+	@Basic
+	private String content;
 
-    @Basic
-    private String description;
+	@Basic
+	private String description;
 
-    @Basic
-    @Column(name = "no_of_questions", columnDefinition = "INT")
-    private int noOfQuestions;
+	@Basic
+	@Column(name = "no_of_questions", columnDefinition = "INT")
+	private int noOfQuestions;
 
-    @Basic
-    @Column(name = "r_order", columnDefinition = "INT")
-    private int order;
+	@Basic
+	@Column(name = "order", columnDefinition = "INT")
+	private int order;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_paper_sub_category_id")
-    @OrderBy("questionNo")
-    private Set<QuestionPaperQuestion> questions = new HashSet<QuestionPaperQuestion>();
+	@Basic
+	@Column(name = "is_image")
+	private String isImage;
 
-//	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
-//	@JoinColumn(direction="question_paper_category_id", columnDefinition="INT", nullable=false)
-//	private QuestionPaperCategory questionPaperCategory;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "question_paper_sub_category_id")
+	@OrderBy("questionNo")
+	private Set<QuestionPaperQuestion> questions = new HashSet<QuestionPaperQuestion>();
 
+	@OneToMany(targetEntity = QuestionPaperSubCategoryImage.class, mappedBy = "questionPaperSubCategory", cascade = CascadeType.ALL)
+	private Set<QuestionPaperSubCategoryImage> questionPaperSubCategoryImage = new HashSet<QuestionPaperSubCategoryImage>();
 
-    public QuestionPaperSubCategory() {
-    }
+	// @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.MERGE)
+	// @JoinColumn(direction="question_paper_category_id",
+	// columnDefinition="INT", nullable=false)
+	// private QuestionPaperCategory questionPaperCategory;
 
-    public QuestionPaperSubCategory(int questionPaperSubCategoryId) {
-        this.questionPaperSubCategoryId = questionPaperSubCategoryId;
-    }
+	public QuestionPaperSubCategory() {
+	}
 
-    public int getQuestionPaperCategoryId() {
-        return questionPaperCategoryId;
-    }
+	public QuestionPaperSubCategory(int questionPaperSubCategoryId) {
+		this.questionPaperSubCategoryId = questionPaperSubCategoryId;
+	}
 
-    public void setQuestionPaperCategoryId(int questionPaperCategoryId) {
-        this.questionPaperCategoryId = questionPaperCategoryId;
-    }
+	public int getQuestionPaperCategoryId() {
+		return questionPaperCategoryId;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setQuestionPaperCategoryId(int questionPaperCategoryId) {
+		this.questionPaperCategoryId = questionPaperCategoryId;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public String getDirection() {
-        return direction;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public int getNoOfQuestions() {
-        return noOfQuestions;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public void setNoOfQuestions(int noOfQuestions) {
-        this.noOfQuestions = noOfQuestions;
-    }
+	public int getNoOfQuestions() {
+		return noOfQuestions;
+	}
 
-//	public QuestionPaperCategory getQuestionPaperCategory() {
-//		return questionPaperCategory;
-//	}
-//
-//	public void setQuestionPaperCategory(QuestionPaperCategory questionPaperCategory) {
-//		this.questionPaperCategory = questionPaperCategory;
-//	}
+	public void setNoOfQuestions(int noOfQuestions) {
+		this.noOfQuestions = noOfQuestions;
+	}
 
-    public int getQuestionPaperSubCategoryId() {
-        return questionPaperSubCategoryId;
-    }
+	// public QuestionPaperCategory getQuestionPaperCategory() {
+	// return questionPaperCategory;
+	// }
+	//
+	// public void setQuestionPaperCategory(QuestionPaperCategory
+	// questionPaperCategory) {
+	// this.questionPaperCategory = questionPaperCategory;
+	// }
 
-    public void setQuestionPaperSubCategoryId(int questionPaperSubCategoryId) {
-        this.questionPaperSubCategoryId = questionPaperSubCategoryId;
-    }
+	public int getQuestionPaperSubCategoryId() {
+		return questionPaperSubCategoryId;
+	}
 
-    public int getOrder() {
-        return order;
-    }
+	public void setQuestionPaperSubCategoryId(int questionPaperSubCategoryId) {
+		this.questionPaperSubCategoryId = questionPaperSubCategoryId;
+	}
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
+	public int getOrder() {
+		return order;
+	}
 
-    public Set<QuestionPaperQuestion> getQuestions() {
-        return questions;
-    }
+	public void setOrder(int order) {
+		this.order = order;
+	}
 
-    public void setQuestions(Set<QuestionPaperQuestion> questions) {
-        this.questions = questions;
-    }
+	public String getIsImage() {
+		return isImage;
+	}
+
+	public void setIsImage(String isImage) {
+		this.isImage = isImage;
+	}
+
+	public Set<QuestionPaperQuestion> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(Set<QuestionPaperQuestion> questions) {
+		this.questions = questions;
+	}
+
+	public Set<QuestionPaperSubCategoryImage> getQuestionPaperSubCategoryImage() {
+		return questionPaperSubCategoryImage;
+	}
+
+	public void setQuestionPaperSubCategoryImage(Set<QuestionPaperSubCategoryImage> questionPaperSubCategoryImage) {
+		this.questionPaperSubCategoryImage = questionPaperSubCategoryImage;
+	}
 
 }

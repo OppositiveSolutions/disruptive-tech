@@ -25,12 +25,6 @@ public class ExamDAO {
 	@Autowired
 	private CommonDAO commonDAO;
 
-	// @Autowired
-	// private QuestionDAO questionDAO;
-
-	@Autowired
-	private StudentDAO studentDAO;
-
 	@Autowired
 	public ExamDAO(JdbcTemplate template) {
 		this.template = template;
@@ -78,17 +72,6 @@ public class ExamDAO {
 		else
 			return false;
 	}
-
-	// public boolean stopExam(int examId) {
-	// String query = "UPDATE exam SET start_time = now(),end_time =
-	// now(),question_answered = 0,"
-	// + "question_correct = 0,mark_correct = 0,mark_negative = 0,language = ?
-	// WHERE exam_id = ?";
-	// if (template.update(query, examId) > 0)
-	// return true;
-	// else
-	// return false;
-	// }
 
 	public int createExam(int testId, int isDemo) {
 		String query = "INSERT INTO exam(test_id,is_demo) VALUES (?,?)";
@@ -143,19 +126,6 @@ public class ExamDAO {
 		List<Map<String, Object>> results = template.queryForList(query, examId);
 		return results;
 	}
-
-	// public int createExamQuestions(int examId) {
-	// Map<String, Object> qIdDetails = questionDAO.getQuestionIds(examId);
-	// int categoryId = (Integer) qIdDetails.get("category_id");
-	// int qId = (Integer) qIdDetails.get("no_of_questions");
-	// String query = "DELETE FROM exam_question WHERE exam_id = ? and
-	// exam_question_id > 0";
-	// template.update(query, examId);
-	// query = "INSERT INTO exam_question (exam_id,question_id,question_no,"
-	// + "question_status,is_correct,category_id) VALUES(?,?,?,?,?,?)";
-	// int examQId = template.update(query, examId, qId, 0, 0, 0, categoryId);
-	// return examQId;
-	// }
 
 	public boolean createExamCategoryTime(int examId, int categoryId) {
 		boolean status = true;

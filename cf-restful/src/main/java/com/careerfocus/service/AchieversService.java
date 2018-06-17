@@ -17,8 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.entity.AchieverImage;
 import com.careerfocus.entity.Achievers;
-import com.careerfocus.entity.Bundle;
-import com.careerfocus.entity.BundleImage;
 import com.careerfocus.repository.AchieversImageRepository;
 import com.careerfocus.repository.AchieversRepository;
 import com.careerfocus.util.response.Error;

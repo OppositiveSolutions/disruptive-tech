@@ -1,8 +1,6 @@
 package com.careerfocus.service;
 
 import com.careerfocus.constants.ErrorCodes;
-import com.careerfocus.entity.AchieverImage;
-import com.careerfocus.entity.Achievers;
 import com.careerfocus.entity.Testimonial;
 import com.careerfocus.entity.TestimonialImage;
 import com.careerfocus.entity.User;

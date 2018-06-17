@@ -1,6 +1,5 @@
 package com.careerfocus.controller;
 
-import com.careerfocus.entity.Achievers;
 import com.careerfocus.entity.Bundle;
 import com.careerfocus.service.BundleService;
 import com.careerfocus.util.response.Response;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
