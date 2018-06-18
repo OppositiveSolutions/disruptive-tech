@@ -31,7 +31,7 @@ public class QuestionPaperSubCategory {
 	private int noOfQuestions;
 
 	@Basic
-	@Column(name = "order", columnDefinition = "INT")
+	@Column(name = "r_order", columnDefinition = "INT")
 	private int order;
 
 	@Basic

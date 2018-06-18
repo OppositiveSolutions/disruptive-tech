@@ -62,7 +62,7 @@ public class QuestionPaperCategory {
     private float negativeMark;
 
     @Basic
-    @Column(name = "order", columnDefinition = "INT")
+    @Column(name = "r_order", columnDefinition = "INT")
     private int order;
 
     @Basic
