@@ -66,6 +66,9 @@ public class QuestionPaperService {
 	QuestionImageRepository questionImageRepository;
 
 	@Autowired
+	QuestionPaperSubCategoryImageRepository questionPaperSubCategoryImageRepository;
+
+	@Autowired
 	QuestionPaperQuestionRepository questionPaperQuestionRepository;
 
 	public QuestionPaper addQuestionPaper(QuestionPaper qPaper) {
@@ -160,13 +163,13 @@ public class QuestionPaperService {
 		if (status == 1) {
 			int bundleQPId = 0;
 			bundleQPId = qPaperDAO.getBundleQPId(questionPaperId);
-				return enableQuestionPaper(bundleQPId, questionPaperId, qPaperDAO.getIsDemoQP(questionPaperId));
+			return enableQuestionPaper(bundleQPId, questionPaperId, qPaperDAO.getIsDemoQP(questionPaperId));
 		} else
 			return qPaperDAO.changeQPStatus(questionPaperId, status);
 	}
-	
+
 	public Map<String, Object> changeQPIsDemo(int questionPaperId, int isDemo) {
-			return qPaperDAO.changeQPIsDemo(questionPaperId, isDemo);
+		return qPaperDAO.changeQPIsDemo(questionPaperId, isDemo);
 	}
 
 	@Transactional
@@ -416,6 +419,47 @@ public class QuestionPaperService {
 			questionPaperQuestionRepository.delete(questionPaperQuestionRepository.findOne(
 					new QuestionPaperQuestionId(qPaperDAO.getQuestionPaperSubCategoryIdFromQuestionId(questionId),
 							qPaperDAO.getQuestionNoFromQuestionId(questionId))));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean saveQuestionPaperSubCategoryContent(int questionPaperSubCategoryId, String content,
+			MultipartFile image, String isImage) {
+		if (Integer.parseInt(isImage.trim()) == 1) {
+			try {
+				QuestionPaperSubCategoryImage qImage = new QuestionPaperSubCategoryImage(questionPaperSubCategoryId,
+						image.getBytes());
+				questionPaperSubCategoryImageRepository.save(qImage);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		} else
+			return qPaperDAO.saveQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content);
+	}
+
+	public boolean editQuestionPaperSubCategoryContent(int questionPaperSubCategoryId, String content) {
+		return qPaperDAO.saveQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content);
+	}
+
+	public String getQuestionPaperSubCategoryContent(int questionPaperSubCategoryId) {
+		return qPaperDAO.getQuestionPaperSubCategoryContent(questionPaperSubCategoryId);
+	}
+
+	public boolean deleteQuestionPaperSubCategoryContent(int questionPaperSubCategoryId) {
+		return qPaperDAO.deleteQuestionPaperSubCategoryContent(questionPaperSubCategoryId);
+	}
+
+	public byte[] getQuestionPaperSubCategoryImage(int questionPaperSubCategoryId) {
+		return questionPaperSubCategoryImageRepository.findOne(questionPaperSubCategoryId).getImage();
+	}
+
+	public boolean deleteQuestionPaperSubCategoryImage(int questionPaperSubCategoryId) {
+		try {
+			questionPaperSubCategoryImageRepository.delete(questionPaperSubCategoryId);
 			return true;
 		} catch (Exception e) {
 			return false;

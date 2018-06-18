@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.careerfocus.dao.CommonDAO;
-import com.careerfocus.dao.FileUploadDAO;
 import com.careerfocus.entity.UploadFile;
 import com.careerfocus.repository.FileUploadRepository;
 
@@ -23,9 +22,6 @@ public class FileUploadService {
 
 	@Autowired
 	FileUploadRepository fuRepository;
-
-	@Autowired
-	FileUploadDAO fileUploadDAO;
 
 	@Autowired
 	CommonDAO commonDAO;

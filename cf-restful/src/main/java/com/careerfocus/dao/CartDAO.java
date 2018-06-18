@@ -56,8 +56,8 @@ public class CartDAO {
 		paymentVO.setFurl("");
 		paymentVO.setSurl("");
 		paymentVO.setKey("");
-		String query = "select * from user WHERE user_id = ?";
-		Map<String, Object> bundle = template.queryForMap(query, userId);
+//		String query = "select * from user WHERE user_id = ?";
+//		Map<String, Object> bundle = template.queryForMap(query, userId);
 //		paymentVO.setEmail(email);
 //		paymentVO.setFirstname(firstname);
 //		paymentVO.setPhone(phone);

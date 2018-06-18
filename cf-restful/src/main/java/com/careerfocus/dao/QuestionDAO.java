@@ -2,7 +2,6 @@ package com.careerfocus.dao;
 
 import com.careerfocus.model.request.SaveQuestionVO;
 import com.careerfocus.model.response.QuestionPopulateVO;
-import com.careerfocus.util.DateUtils;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
