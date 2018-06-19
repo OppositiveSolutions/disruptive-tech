@@ -31,7 +31,7 @@ public class StudentDAO {
 	// private final int USER_ACTIVE = 1;
 	// private final int USER_DEACTIVATED = 0;
 
-	public List<Map<String, Object>> getStudents(int pageSize, int pageNo) {
+	public List<Map<String, Object>> getStudents(int pageSize, int pageNo, int type) {
 
 		String query = "SELECT u.user_id as userId, first_name as firstName, last_name as lastName,"
 				+ " created_date as createdDate, expiry_date as expiryDate, username, u.status, dob,"
@@ -39,7 +39,7 @@ public class StudentDAO {
 				+ " state_id as stateId, pin_code as pinCode, phone_no as phoneNo FROM student s"
 				+ " INNER JOIN user u ON s.user_id = u.user_id and u.role = 1"
 				+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
-				+ " LEFT JOIN address a on s.user_id = a.user_id WHERE s.status != 2"
+				+ " LEFT JOIN address a on s.user_id = a.user_id WHERE s.status = " + type
 				+ " GROUP BY s.user_id ORDER BY first_name, last_name";
 
 		if (pageSize > 0 && pageNo > 0) {

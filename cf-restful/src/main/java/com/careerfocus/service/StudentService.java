@@ -102,10 +102,11 @@ public class StudentService {
 			UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
 			uppRepository.save(pic);
 		}
-		if (studentVO.getType() != 2)// 2 - online reg
+		if (studentVO.getType() != Constants.STUDENT_REGISTERED)// 2 - online reg
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId(), 0);
-		else
-			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId(), 1);
+		// else
+		// testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE,
+		// user.getUserId(), 1);
 		try {
 			System.out.println("Email = " + studentVO.getEmailId());
 			mailDAO.welcomeMailUser(studentVO.getEmailId(), commonDAO.getPasswordForAUser(user.getUserId()),
@@ -166,7 +167,13 @@ public class StudentService {
 	public List<Map<String, Object>> getStudent(int pageSize, int pageNo) {
 		// Pageable request = new PageRequest(pageNo - 1, pageSize);
 		// return studentRepository.findAllStudents(request);
-		return studentDAO.getStudents(pageSize, pageNo);
+		return studentDAO.getStudents(pageSize, pageNo, Constants.STUDENT_ACTIVE);
+	}
+
+	public List<Map<String, Object>> getStudentInactive(int pageSize, int pageNo) {
+		// Pageable request = new PageRequest(pageNo - 1, pageSize);
+		// return studentRepository.findAllStudents(request);
+		return studentDAO.getStudents(pageSize, pageNo, Constants.STUDENT_INACTIVE);
 	}
 
 	public boolean removeStudent(int userId) {
@@ -181,6 +188,12 @@ public class StudentService {
 
 		Pageable request = new PageRequest(pageNo - 1, pageSize);
 		return studentRepository.searchStudentsByNameOrEmail("%" + key + "%", request);
+	}
+
+	public Page<StudentVO> findStudentsByNameInactive(String key, int pageSize, int pageNo) {
+
+		Pageable request = new PageRequest(pageNo - 1, pageSize);
+		return studentRepository.searchStudentsByNameOrEmailInactive("%" + key + "%", request);
 	}
 
 	@Transactional
@@ -214,8 +227,7 @@ public class StudentService {
 		if (studentDAO.activateStudent(userId) == 1) {
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, userId, 0);
 			return testDAO.updateTestIsEnabledForAUser(userId, 1);
-		}
-		else
+		} else
 			return testDAO.updateTestIsEnabledForAUser(userId, 0);
 	}
 

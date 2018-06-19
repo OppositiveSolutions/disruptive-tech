@@ -22,5 +22,12 @@ public class Constants {
 	public static final int DEFAULT_CENTER_ID = 1;
 	
 	public static final int IS_LIVE = 0;
+	
+	public static final int STUDENT_ACTIVE = 1;
+	public static final int STUDENT_INACTIVE = 0;
+	public static final int STUDENT_DELETED = 2;
+	
+	public static final int STUDENT_ADDED = 1;
+	public static final int STUDENT_REGISTERED = 2;
 
 }
