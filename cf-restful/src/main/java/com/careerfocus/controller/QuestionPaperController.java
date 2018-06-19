@@ -130,8 +130,8 @@ public class QuestionPaperController {
 
 	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/content", method = RequestMethod.PUT)
 	public Response editQuestionPaperSubCategoryContent(
-			@RequestPart(value = "questionPaperSubCategoryId", required = false) int questionPaperSubCategoryId,
-			@RequestPart(value = "content", required = false) String content) throws Exception {
+			@PathVariable(value = "questionPaperSubCategoryId", required = false) int questionPaperSubCategoryId,
+			@RequestBody String content) throws Exception {
 		return Response.ok(qPaperService.editQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content))
 				.build();
 	}

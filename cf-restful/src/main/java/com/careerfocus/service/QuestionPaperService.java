@@ -426,19 +426,26 @@ public class QuestionPaperService {
 	}
 
 	public boolean saveQuestionPaperSubCategoryContent(int questionPaperSubCategoryId, String content,
-			MultipartFile image, String isImage) {
-		if (Integer.parseInt(isImage.trim()) == 1) {
+			MultipartFile image, String isImage) throws NumberFormatException, IOException {
+		boolean status = false;
+		if (Integer.parseInt(isImage.trim()) == 1 && image.getBytes() != null) {
 			try {
+				try {
+					deleteQuestionPaperSubCategoryImage(questionPaperSubCategoryId);
+				} catch (Exception e) {
+				}
 				QuestionPaperSubCategoryImage qImage = new QuestionPaperSubCategoryImage(questionPaperSubCategoryId,
 						image.getBytes());
 				questionPaperSubCategoryImageRepository.save(qImage);
+				status = true;
 			} catch (Exception e) {
 				e.printStackTrace();
-				return false;
+				status = false;
 			}
-			return true;
-		} else
-			return qPaperDAO.saveQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content);
+		}
+		if (content != null)
+			status = qPaperDAO.saveQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content);
+		return status;
 	}
 
 	public boolean editQuestionPaperSubCategoryContent(int questionPaperSubCategoryId, String content) {
