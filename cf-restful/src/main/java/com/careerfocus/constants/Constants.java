@@ -29,5 +29,6 @@ public class Constants {
 	
 	public static final int STUDENT_ADDED = 1;
 	public static final int STUDENT_REGISTERED = 2;
+	public static final int STUDENT_REG_AND_ONCE_ACTIVE = 3;
 
 }

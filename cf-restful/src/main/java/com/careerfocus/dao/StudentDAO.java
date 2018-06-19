@@ -1,5 +1,6 @@
 package com.careerfocus.dao;
 
+import com.careerfocus.constants.Constants;
 import com.careerfocus.entity.Address;
 import com.careerfocus.entity.User;
 import com.careerfocus.entity.UserPhone;
@@ -39,8 +40,12 @@ public class StudentDAO {
 				+ " state_id as stateId, pin_code as pinCode, phone_no as phoneNo FROM student s"
 				+ " INNER JOIN user u ON s.user_id = u.user_id and u.role = 1"
 				+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
-				+ " LEFT JOIN address a on s.user_id = a.user_id WHERE s.status = " + type
-				+ " GROUP BY s.user_id ORDER BY first_name, last_name";
+				+ " LEFT JOIN address a on s.user_id = a.user_id WHERE s.status != " + Constants.STUDENT_DELETED
+				+ " AND u.status = " + type;
+		if (type == 0)
+			query += " AND (s.type != " + Constants.STUDENT_REGISTERED
+					+ " OR (u.created_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() AND s.type = " + Constants.STUDENT_REGISTERED + "))";
+		query += " GROUP BY s.user_id ORDER BY first_name, last_name";
 
 		if (pageSize > 0 && pageNo > 0) {
 			query += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
@@ -50,7 +55,6 @@ public class StudentDAO {
 
 			@Override
 			public Map<String, Object> mapRow(ResultSet rs, int rowNum) throws SQLException {
-				// TODO Auto-generated method stub
 				Map<String, Object> map = new HashMap<>();
 				map.put("userId", rs.getInt("userId"));
 				map.put("status", rs.getString("status"));
@@ -140,6 +144,9 @@ public class StudentDAO {
 	public int activateStudent(int userId) {
 		String query = "update user set status = 1 - status where user_id = ?";
 		if (template.update(query, userId) > 0) {
+			query = "update student set type = " + Constants.STUDENT_REG_AND_ONCE_ACTIVE
+					+ " where user_id = ? AND type = " + Constants.STUDENT_REGISTERED;
+			template.update(query, userId);
 			query = "select status from user where user_id = ?";
 			return template.queryForObject(query, Integer.class, userId);
 		}

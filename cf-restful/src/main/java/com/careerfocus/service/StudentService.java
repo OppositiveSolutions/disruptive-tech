@@ -102,7 +102,8 @@ public class StudentService {
 			UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
 			uppRepository.save(pic);
 		}
-		if (studentVO.getType() != Constants.STUDENT_REGISTERED)// 2 - online reg
+		if (studentVO.getType() != Constants.STUDENT_REGISTERED)// 2 - online
+																// reg
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, user.getUserId(), 0);
 		// else
 		// testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE,
@@ -110,7 +111,7 @@ public class StudentService {
 		try {
 			System.out.println("Email = " + studentVO.getEmailId());
 			mailDAO.welcomeMailUser(studentVO.getEmailId(), commonDAO.getPasswordForAUser(user.getUserId()),
-					"Welcome to Career Focus. We enhance your confidence.", user.getStatus());
+					"Welcome to Career Focus. We enhance your confidence.", student.getType() == 2 ? 0 : 1);
 		} catch (MalformedURLException | EmailException e) {
 			e.printStackTrace();
 		}
@@ -226,6 +227,13 @@ public class StudentService {
 	public boolean activateStudent(int userId) {
 		if (studentDAO.activateStudent(userId) == 1) {
 			testDAO.createTestDefaultForANewUser(QuestionPaperService.DEFAUL_QP_BUNDLE, userId, 0);
+			try {
+				System.out.println("Email = " + commonDAO.getEmailIdFromUserId(userId));
+				mailDAO.welcomeMailUser(commonDAO.getEmailIdFromUserId(userId), commonDAO.getPasswordForAUser(userId),
+						"Your Career Focus Account has been Activated.", 1);
+			} catch (MalformedURLException | EmailException e) {
+				e.printStackTrace();
+			}
 			return testDAO.updateTestIsEnabledForAUser(userId, 1);
 		} else
 			return testDAO.updateTestIsEnabledForAUser(userId, 0);

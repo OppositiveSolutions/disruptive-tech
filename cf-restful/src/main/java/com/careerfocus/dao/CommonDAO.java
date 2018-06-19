@@ -74,11 +74,16 @@ public class CommonDAO {
 		return template.queryForObject(query, String.class, userId);
 	}
 
+	public String getEmailIdFromUserId(int userId) {
+		String query = "SELECT username FROM user WHERE user_id = ?";
+		return template.queryForObject(query, String.class, userId);
+	}
+
 	public int getUserIdFromEmailId(String emailId) {
 		String query = "SELECT user_id FROM user WHERE username = ?";
 		return template.queryForObject(query, Integer.class, emailId);
 	}
-	
+
 	public int getStatusFromEmailId(String emailId) {
 		String query = "SELECT status FROM user WHERE username = ?";
 		return template.queryForObject(query, Integer.class, emailId);

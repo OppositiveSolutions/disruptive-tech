@@ -54,18 +54,20 @@ public class MailDAO {
 		htmlBody.append("<p style=\"margin-top: 10px; margin-bottom: 10px;\">" + welcomeMessage + "</p>");
 		if (status == 0)
 			htmlBody.append(
-					"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can activate full privilages for your account by contacting career focus management, which provides you with an access to our unlimited number of mock tests.<br/></p>");
-		htmlBody.append(
-				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You may begin using this service by logging on to <a href=\"https://www.careerfocus.in\">https://www.careerfocus.in</a> with the following credentials:</p>");
-		htmlBody.append(
-				"<p style=\"margin-top: 10px; margin-bottom: 10px;\">Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		htmlBody.append(studentEmailId);
-		htmlBody.append("<br>");
-		htmlBody.append("Password: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-		htmlBody.append(password);
-		htmlBody.append("</p>");
-		htmlBody.append(
-				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> You can change your password after logging into your account.</p>");
+					"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You can activate your account by contacting career focus management, which provides you with an access to our unlimited number of mock tests.<br/></p>");
+		else {
+			htmlBody.append(
+					"<p style=\"margin-top: 10px; margin-bottom: 10px;\">You may begin using this service by logging on to <a href=\"https://www.careerfocus.in\">https://www.careerfocus.in</a> with the following credentials:</p>");
+			htmlBody.append(
+					"<p style=\"margin-top: 10px; margin-bottom: 10px;\">Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+			htmlBody.append(studentEmailId);
+			htmlBody.append("<br>");
+			htmlBody.append("Password: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+			htmlBody.append(password);
+			htmlBody.append("</p>");
+			htmlBody.append(
+					"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> You can change your password after logging into your account.</p>");
+		}
 		htmlBody.append(
 				"<p style=\"margin-top: 10px; margin-bottom: 10px;\"> For any questions that you may have, write to us at <a href=\"mailto:career.focus@ymail.com\">career.focus@ymail.com</a></p>");
 		htmlBody.append("<p style=\"margin-top: 25px; margin-bottom: 10px;\">");

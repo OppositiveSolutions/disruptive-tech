@@ -67,7 +67,7 @@ public class TestDAO {
 		boolean status = true;
 		try {
 			String query = "INSERT INTO test (bundle_question_paper_id,user_id,expiry_date,is_enabled,is_written,is_demo)"
-					+ " SELECT bundle_question_paper_id, ?, now(), '1', '0', qp.is_demo"
+					+ " SELECT bqp.bundle_question_paper_id, ?, now(), '1', '0', qp.is_demo"
 					+ " FROM bundle_question_paper bqp inner join question_paper qp on bqp.question_paper_id = qp.question_paper_id"
 					+ " left join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id AND t.user_id = ?"
 					+ " where bundle_id = ? and qp.status = 1 and t.test_id is NULL";

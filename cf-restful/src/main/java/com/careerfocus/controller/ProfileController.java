@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.dao.ProfileDAO;
+import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.ProfileService;
 import com.careerfocus.util.response.Response;
 
@@ -36,6 +37,12 @@ public class ProfileController {
 		HttpSession session = request.getSession();
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		return Response.ok(profileService.getStudentDetails(userId)).build();
+	}
+	
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+	public Response editStudent(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody AddStudentVO student) throws Exception {
+		return Response.ok(profileService.editProfile(student)).build();
 	}
 
 	@RequestMapping(value = "/password/change", method = RequestMethod.POST)
