@@ -106,17 +106,12 @@ public class ProfileService {
 		System.out.println(passwordMap);
 		String message = "Failed to update Password.Try again after some time.";
 		Map<String, Object> retunMap = new HashMap<String, Object>();
-		String password = null;
 		if (userId > 0 && passwordMap != null) {
 			String oldPassword = passwordMap.get("oldPassword").toString();
 			String newPassword = passwordMap.get("newPassword").toString();
-			String confirmPassword = passwordMap.get("confirmPassword").toString();
-			if (profileDAO.checkOldPassword(userId, oldPassword)) {
-				if (newPassword.equals(confirmPassword)) {
-					return profileDAO.changePassword(userId, newPassword);
-				} else
-					message = "New and Confirm passwords entered donot match";
-			} else
+			if (profileDAO.checkOldPassword(userId, oldPassword))
+				return profileDAO.changePassword(userId, newPassword);
+			else
 				message = "Old password entered is incorrect";
 		}
 		retunMap.put("status", false);

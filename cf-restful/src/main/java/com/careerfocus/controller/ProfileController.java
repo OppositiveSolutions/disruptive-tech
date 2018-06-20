@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.dao.ProfileDAO;
 import com.careerfocus.model.request.AddStudentVO;
+import com.careerfocus.service.LoginService;
 import com.careerfocus.service.ProfileService;
 import com.careerfocus.util.response.Response;
 
@@ -31,6 +32,9 @@ public class ProfileController {
 
 	@Autowired
 	ProfileDAO profileDAO;
+	
+	@Autowired
+    LoginService loginService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Response getStudentDetails(HttpServletRequest request) throws Exception {
@@ -79,8 +83,10 @@ public class ProfileController {
 			@RequestBody Map<String, Object> passwordMap) throws Exception {
 		HttpSession session = request.getSession();
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
-
-		return profileService.changePasswordByUser(userId, passwordMap);
+		Map<String, Object> returnMap = profileService.changePasswordByUser(userId, passwordMap);
+		if (Boolean.parseBoolean(returnMap.get("status").toString()))
+		    loginService.logout(request);
+		return returnMap;
 	}
 
 	@RequestMapping(value = "/password/reset", method = RequestMethod.GET)
