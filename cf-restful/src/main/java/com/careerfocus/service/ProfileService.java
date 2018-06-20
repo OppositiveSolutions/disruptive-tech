@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -99,6 +100,28 @@ public class ProfileService {
 		studentVO.setUserId(user.getUserId());
 
 		return Response.ok(studentVO).build();
+	}
+
+	public Map<String, Object> changePasswordByUser(int userId, Map<String, Object> passwordMap) {
+		System.out.println(passwordMap);
+		String message = "Failed to update Password.Try again after some time.";
+		Map<String, Object> retunMap = new HashMap<String, Object>();
+		String password = null;
+		if (userId > 0 && passwordMap != null) {
+			String oldPassword = passwordMap.get("oldPassword").toString();
+			String newPassword = passwordMap.get("newPassword").toString();
+			String confirmPassword = passwordMap.get("confirmPassword").toString();
+			if (profileDAO.checkOldPassword(userId, oldPassword)) {
+				if (newPassword.equals(confirmPassword)) {
+					return profileDAO.changePassword(userId, newPassword);
+				} else
+					message = "New and Confirm passwords entered donot match";
+			} else
+				message = "Old password entered is incorrect";
+		}
+		retunMap.put("status", false);
+		retunMap.put("message", message);
+		return retunMap;
 	}
 
 }

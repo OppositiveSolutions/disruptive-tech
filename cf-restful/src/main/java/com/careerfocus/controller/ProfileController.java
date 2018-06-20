@@ -51,7 +51,6 @@ public class ProfileController {
 			@RequestBody Map<String, Object> passwordMap,
 			@RequestParam(value = "uq_", defaultValue = "0", required = false) String uq_) throws Exception {
 		int uId = 0;
-		System.out.println(passwordMap);
 		String password = "0";
 		if (passwordMap != null) {
 			password = passwordMap.get("password").toString();
@@ -72,12 +71,16 @@ public class ProfileController {
 		}
 		if (userId != null)
 			uId = Integer.parseInt(userId);
-		else {
-			HttpSession session = request.getSession();
-			uId = Integer.parseInt(session.getAttribute("userId").toString());
-		}
-
 		return profileService.changePassword(uId, password);
+	}
+
+	@RequestMapping(value = "/password/user/change", method = RequestMethod.POST)
+	public Map<String, Object> changePasswordByUser(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> passwordMap) throws Exception {
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
+
+		return profileService.changePasswordByUser(userId, passwordMap);
 	}
 
 	@RequestMapping(value = "/password/reset", method = RequestMethod.GET)
