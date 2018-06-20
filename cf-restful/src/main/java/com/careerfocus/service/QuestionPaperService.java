@@ -470,7 +470,7 @@ public class QuestionPaperService {
 
 	public boolean deleteQuestionPaperSubCategoryImage(int questionPaperSubCategoryId) {
 		try {
-			questionPaperSubCategoryImageRepository.delete(questionPaperSubCategoryId);
+			qPaperDAO.deleteQuestionPaperSubCategoryImage(questionPaperSubCategoryId);
 			return true;
 		} catch (Exception e) {
 			return false;

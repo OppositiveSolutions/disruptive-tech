@@ -170,4 +170,9 @@ public class QuestionPaperDAO {
 		return saveQuestionPaperSubCategoryContent(questionPaperSubCategoryId, null);
 	}
 
+	public boolean deleteQuestionPaperSubCategoryImage(int questionPaperSubCategoryId) {
+		String query = "DELETE FROM question_paper_sub_category_image WHERE question_paper_sub_category_id = ?";
+		return jdbcTemplate.update(query, questionPaperSubCategoryId) > 0 ? true : false;
+	}
+
 }
