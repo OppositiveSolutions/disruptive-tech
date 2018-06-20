@@ -45,9 +45,9 @@ public class ProfileService {
 		if (student.getUser().getDob() != null) {
 			System.out.println(student.getUser().getDob());
 			try {
-				SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
-			    String strDate = sm.format(student.getUser().getDob());
-			    date = sm.parse(strDate);
+				// date = sm.parse(strDate);
+				date = DateUtils.convertMYSQLDateTimeToMMddyyyy(student.getUser().getDob());
+				System.out.println("Date = " + date);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

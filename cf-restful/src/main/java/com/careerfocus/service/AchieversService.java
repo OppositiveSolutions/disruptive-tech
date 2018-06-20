@@ -1,19 +1,30 @@
 package com.careerfocus.service;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.careerfocus.constants.Constants;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.entity.AchieverImage;
 import com.careerfocus.entity.Achievers;
@@ -227,6 +238,58 @@ public class AchieversService {
 			return false;
 		}
 		return true;
+	}
+
+	public File resizeAchieverImage(MultipartFile image, boolean preserveAlpha) throws Exception {
+		byte[] imageInByte = image.getBytes();
+		String imageName = image.getOriginalFilename();
+		int scaledWidth = Constants.SCALED_WIDTH;
+		int scaledHeight = Constants.SCALED_HEIGHT;
+
+		InputStream is = new ByteArrayInputStream(imageInByte);
+		BufferedImage originalImage = ImageIO.read(is);
+		float ratio = (float) originalImage.getWidth() / originalImage.getHeight();
+
+		if (ratio <= Constants.DEFAULT_ASPECT_RATIO) {
+			scaledWidth = (int) (ratio * scaledWidth);
+			scaledHeight = Constants.SCALED_HEIGHT;
+		} else {
+			scaledWidth = Constants.SCALED_WIDTH;
+			scaledHeight = (int) (scaledHeight / ratio);
+		}
+
+		int imageType = preserveAlpha ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+		BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
+		Graphics2D g = scaledBI.createGraphics();
+		if (preserveAlpha) {
+			g.setComposite(AlphaComposite.Src);
+		}
+		g.drawImage(originalImage, Constants.FALSE, Constants.FALSE, scaledWidth, scaledHeight, null);
+		g.dispose();
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		String extension = ".jpg";
+		if (scaledBI.getType() == Constants.IMAGE_TYPE_PNG) {
+			ImageIO.write(scaledBI, "png", os);
+			extension = "png";
+		} else {
+			ImageIO.write(scaledBI, "jpg", os);
+		}
+
+		InputStream in = new ByteArrayInputStream(os.toByteArray());
+		File tempFile = stream2file(in, imageName, extension);
+		return tempFile;
+	}
+
+	public static File stream2file(InputStream in, String imageName, String extension) throws IOException {
+		final File tempFile = File.createTempFile(imageName, extension);
+		tempFile.deleteOnExit();
+		try {
+			FileOutputStream out = new FileOutputStream(tempFile);
+			IOUtils.copy(in, out);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tempFile;
 	}
 
 }

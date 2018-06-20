@@ -428,12 +428,12 @@ public class QuestionPaperService {
 	public boolean saveQuestionPaperSubCategoryContent(int questionPaperSubCategoryId, String content,
 			MultipartFile image, String isImage) throws NumberFormatException, IOException {
 		boolean status = false;
+		try {
+			deleteQuestionPaperSubCategoryImage(questionPaperSubCategoryId);
+		} catch (Exception e) {
+		}
 		if (Integer.parseInt(isImage.trim()) == 1 && image.getBytes() != null) {
 			try {
-				try {
-					deleteQuestionPaperSubCategoryImage(questionPaperSubCategoryId);
-				} catch (Exception e) {
-				}
 				QuestionPaperSubCategoryImage qImage = new QuestionPaperSubCategoryImage(questionPaperSubCategoryId,
 						image.getBytes());
 				questionPaperSubCategoryImageRepository.save(qImage);
@@ -457,6 +457,10 @@ public class QuestionPaperService {
 	}
 
 	public boolean deleteQuestionPaperSubCategoryContent(int questionPaperSubCategoryId) {
+		try {
+			deleteQuestionPaperSubCategoryImage(questionPaperSubCategoryId);
+		} catch (Exception e) {
+		}
 		return qPaperDAO.deleteQuestionPaperSubCategoryContent(questionPaperSubCategoryId);
 	}
 

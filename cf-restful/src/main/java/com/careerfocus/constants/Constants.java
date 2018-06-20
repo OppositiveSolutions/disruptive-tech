@@ -30,5 +30,10 @@ public class Constants {
 	public static final int STUDENT_ADDED = 1;
 	public static final int STUDENT_REGISTERED = 2;
 	public static final int STUDENT_REG_AND_ONCE_ACTIVE = 3;
+	
+	public static final double DEFAULT_ASPECT_RATIO = 1.0;
+	public static final int SCALED_WIDTH = 150;
+	public static final int SCALED_HEIGHT = 150;
+	public static final int IMAGE_TYPE_PNG = 6;
 
 }
