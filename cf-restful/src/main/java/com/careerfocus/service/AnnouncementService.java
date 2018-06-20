@@ -1,6 +1,7 @@
 package com.careerfocus.service;
 
 import com.careerfocus.constants.ErrorCodes;
+import com.careerfocus.dao.CommonDAO;
 import com.careerfocus.entity.AnnouncementImage;
 import com.careerfocus.entity.Announcements;
 import com.careerfocus.repository.AnnouncementImageRepository;
@@ -32,6 +33,9 @@ public class AnnouncementService {
 
 	@Autowired
 	UserProfilePicRepository uppRepository;
+	
+	@Autowired
+	CommonDAO commonDAO;
 
 	@Transactional
 	public Response saveAnnouncement(String announcementJson, MultipartFile image) throws IOException {
@@ -46,7 +50,7 @@ public class AnnouncementService {
 
 		announcement = announcementRepository.save(announcement);
 		if (image != null) {
-			AnnouncementImage aImage = new AnnouncementImage(announcement.getAnnouncementId(), image.getBytes());
+			AnnouncementImage aImage = new AnnouncementImage(announcement.getAnnouncementId(), commonDAO.resizeImage(image, true));
 			aiRepository.save(aImage);
 		}
 		if (announcement.isIsCurrent()) {
@@ -68,7 +72,7 @@ public class AnnouncementService {
 	}
 
 	public void editAnnouncementImage(int announcementId, MultipartFile image) throws IOException {
-		AnnouncementImage aImage = new AnnouncementImage(announcementId, image.getBytes());
+		AnnouncementImage aImage = new AnnouncementImage(announcementId, commonDAO.resizeImage(image, true));
 		aiRepository.save(aImage);
 	}
 

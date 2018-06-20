@@ -38,7 +38,7 @@ public class ProfileController {
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		return Response.ok(profileService.getStudentDetails(userId)).build();
 	}
-	
+
 	@RequestMapping(value = "", method = RequestMethod.PUT)
 	public Response editStudent(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody AddStudentVO student) throws Exception {
@@ -72,6 +72,11 @@ public class ProfileController {
 		}
 		if (userId != null)
 			uId = Integer.parseInt(userId);
+		else {
+			HttpSession session = request.getSession();
+			uId = Integer.parseInt(session.getAttribute("userId").toString());
+		}
+
 		return profileService.changePassword(uId, password);
 	}
 

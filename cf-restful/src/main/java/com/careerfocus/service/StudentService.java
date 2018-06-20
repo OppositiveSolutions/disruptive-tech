@@ -99,7 +99,7 @@ public class StudentService {
 				"paid", new Date(), new Center(studentVO.getCenterId()), studentVO.getType() != 2 ? 1 : 2);
 		studentRepository.save(student);
 		if (image != null && image.getBytes() != null) {
-			UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
+			UserProfilePic pic = new UserProfilePic(user.getUserId(), commonDAO.resizeImage(image, true));
 			uppRepository.save(pic);
 		}
 		if (studentVO.getType() != Constants.STUDENT_REGISTERED)// 2 - online
@@ -141,7 +141,7 @@ public class StudentService {
 
 		try {
 			if (image != null && image.getBytes() != null) {
-				UserProfilePic pic = new UserProfilePic(user.getUserId(), image.getBytes());
+				UserProfilePic pic = new UserProfilePic(user.getUserId(), commonDAO.resizeImage(image, true));
 				uppRepository.save(pic);
 			}
 		} catch (IOException e) {
@@ -220,7 +220,7 @@ public class StudentService {
 	}
 
 	public Response editUserImage(int userId, MultipartFile image) throws IOException {
-		UserProfilePic pic = new UserProfilePic(userId, image.getBytes());
+		UserProfilePic pic = new UserProfilePic(userId, commonDAO.resizeImage(image, true));
 		return Response.ok(uppRepository.save(pic)).build();
 	}
 

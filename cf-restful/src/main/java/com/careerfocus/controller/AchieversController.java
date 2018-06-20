@@ -34,14 +34,14 @@ public class AchieversController {
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
 		log.debug("achiever: " + achiever.toString());
 		log.debug("image: " + image.toString());
-		return service.saveAchiever(achiever, (MultipartFile) service.resizeAchieverImage(image, true));
+		return service.saveAchiever(achiever, image);
 	}
 
 	@RequestMapping(value = "/{achieverId}/image", method = RequestMethod.PUT)
 	public Response saveAchieverImage(HttpServletRequest request, HttpServletResponse response,
 			@RequestPart(required = true) String achieverId,
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
-		service.editAchieverImage(Integer.valueOf(achieverId), (MultipartFile) service.resizeAchieverImage(image, true));
+		service.editAchieverImage(Integer.valueOf(achieverId), image);
 		return Response.ok().build();
 	}
 

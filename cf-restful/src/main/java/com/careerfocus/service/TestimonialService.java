@@ -1,6 +1,7 @@
 package com.careerfocus.service;
 
 import com.careerfocus.constants.ErrorCodes;
+import com.careerfocus.dao.CommonDAO;
 import com.careerfocus.entity.Testimonial;
 import com.careerfocus.entity.TestimonialImage;
 import com.careerfocus.entity.User;
@@ -30,6 +31,9 @@ public class TestimonialService {
 
 	@Autowired
 	TestimonialImageRepository tiRepository;
+	
+	@Autowired
+	CommonDAO commonDAO;
 
 	public Testimonial saveTestimonials(HttpServletRequest request, String testimonialJson, MultipartFile image)
 			throws IOException {
@@ -38,7 +42,7 @@ public class TestimonialService {
 		testimonial.setUser(new User(Integer
 				.valueOf(session.getAttribute(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME).toString())));
 		testimonialRepo.save(testimonial);
-		TestimonialImage aImage = new TestimonialImage(testimonial.getTestimonialId(), image.getBytes());
+		TestimonialImage aImage = new TestimonialImage(testimonial.getTestimonialId(), commonDAO.resizeImage(image, true));
 		tiRepository.save(aImage);
 		return testimonial;
 	}
@@ -50,7 +54,7 @@ public class TestimonialService {
 			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.ACHIEVER_NAME_EMPTY_MSG).build();
 		}
 		if (image != null) {
-			TestimonialImage tImage = new TestimonialImage(testimonial.getTestimonialId(), image.getBytes());
+			TestimonialImage tImage = new TestimonialImage(testimonial.getTestimonialId(), commonDAO.resizeImage(image, true));
 			tiRepository.save(tImage);
 			existingTestimonial.setTestimonialImage(tImage);
 			existingTestimonial.setImgFileName(image.getOriginalFilename());
