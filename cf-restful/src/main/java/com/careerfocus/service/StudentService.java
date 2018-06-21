@@ -172,8 +172,10 @@ public class StudentService {
 	}
 
 	public List<Map<String, Object>> getStudentInactive(int pageSize, int pageNo) {
-		// Pageable request = new PageRequest(pageNo - 1, pageSize);
-		// return studentRepository.findAllStudents(request);
+		return studentDAO.getStudents(pageSize, pageNo, Constants.STUDENT_REG_AND_ONCE_ACTIVE);
+	}
+	
+	public List<Map<String, Object>> getStudentRegistered(int pageSize, int pageNo) {
 		return studentDAO.getStudents(pageSize, pageNo, Constants.STUDENT_INACTIVE);
 	}
 
@@ -195,6 +197,12 @@ public class StudentService {
 
 		Pageable request = new PageRequest(pageNo - 1, pageSize);
 		return studentRepository.searchStudentsByNameOrEmailInactive("%" + key + "%", request);
+	}
+	
+	public Page<StudentVO> findStudentsByNameRegistered(String key, int pageSize, int pageNo) {
+
+		Pageable request = new PageRequest(pageNo - 1, pageSize);
+		return studentRepository.searchStudentsByNameOrEmailRegistered("%" + key + "%", request);
 	}
 
 	@Transactional
