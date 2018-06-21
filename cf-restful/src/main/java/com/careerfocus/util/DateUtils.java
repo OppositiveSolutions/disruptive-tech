@@ -45,6 +45,21 @@ public class DateUtils {
 		return date;
 	}
 
+	public static Date convertMYSQLDateTimeToMMddyyyy(Date dateTime) {
+		Date date = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		try {
+			String dateString = sdf.format(dateTime);
+			System.out.println("MM/dd/yyyy String = " + dateString);
+			date = sdf.parse(dateString);
+			System.out.println("MM/dd/yyyy = " + date);
+		} catch (Exception e) {
+			log.error("convertMYSQLDateTimeToMMddyyyy" + e);
+		}
+		return date;
+
+	}
+
 	public static String toFormat(java.sql.Date date, String format) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		return dateFormat.format(date);

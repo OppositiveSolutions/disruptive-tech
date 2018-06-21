@@ -118,50 +118,51 @@ public class QuestionPaperController {
 
 	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/content", method = RequestMethod.POST)
 	public Response saveQuestionPaperSubCategoryContent(
-			@RequestPart(value = "questionPaperSubCategoryId", required = false) int questionPaperSubCategoryId,
-			@RequestPart(value = "content", required = false) String content,
-			@RequestPart(value = "file", required = false) final MultipartFile image,
-			@RequestPart(value = "isImage", required = true) String isImage) throws Exception {
+			@PathVariable("questionPaperSubCategoryId") int questionPaperSubCategoryId,
+			@RequestPart(value = "contents", required = false) String content,
+			// @RequestPart(value = "isImage", required = true) String isImage,
+			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
+		String isImage = image.getBytes() != null ? "1" : "0";
 		return Response.ok(
 				qPaperService.saveQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content, image, isImage))
 				.build();
 	}
 
-	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/content", method = RequestMethod.PUT)
-	public Response editQuestionPaperSubCategoryContent(
-			@RequestPart(value = "questionPaperSubCategoryId", required = false) int questionPaperSubCategoryId,
-			@RequestPart(value = "content", required = false) String content) throws Exception {
-		return Response.ok(qPaperService.editQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content))
-				.build();
-	}
+//	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/content", method = RequestMethod.PUT)
+//	public Response editQuestionPaperSubCategoryContent(
+//			@PathVariable(value = "questionPaperSubCategoryId", required = false) int questionPaperSubCategoryId,
+//			@RequestBody String content) throws Exception {
+//		return Response.ok(qPaperService.editQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content))
+//				.build();
+//	}
 
 	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/content", method = RequestMethod.GET)
-	public Response getQuestionPaperSubCategoryContent(HttpServletRequest request, HttpServletResponse response,
+	public Response getQuestionPaperSubCategoryContent(
 			@PathVariable(value = "questionPaperSubCategoryId", required = true) int questionPaperSubCategoryId)
 			throws Exception {
 		return Response.ok(qPaperService.getQuestionPaperSubCategoryContent(questionPaperSubCategoryId)).build();
 	}
 
 	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/content", method = RequestMethod.DELETE)
-	public Response deleteQuestionPaperSubCategoryContent(HttpServletRequest request, HttpServletResponse response,
+	public Response deleteQuestionPaperSubCategoryContent(
 			@PathVariable(value = "questionPaperSubCategoryId", required = true) int questionPaperSubCategoryId)
 			throws Exception {
 		return Response.ok(qPaperService.deleteQuestionPaperSubCategoryContent(questionPaperSubCategoryId)).build();
 	}
 
 	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/image", method = RequestMethod.GET)
-	public Response getQuestionPaperSubCategoryImage(HttpServletRequest request, HttpServletResponse response,
+	public Response getQuestionPaperSubCategoryImage(
 			@PathVariable(value = "questionPaperSubCategoryId", required = true) int questionPaperSubCategoryId)
 			throws Exception {
 		return Response.ok(qPaperService.getQuestionPaperSubCategoryImage(questionPaperSubCategoryId)).build();
 	}
 
-	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/image", method = RequestMethod.DELETE)
-	public Response deleteQuestionPaperSubCategoryImage(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable(value = "questionPaperSubCategoryId", required = true) int questionPaperSubCategoryId)
-			throws Exception {
-		return Response.ok(qPaperService.deleteQuestionPaperSubCategoryImage(questionPaperSubCategoryId)).build();
-	}
+//	@RequestMapping(value = "/sub-category/{questionPaperSubCategoryId}/image", method = RequestMethod.DELETE)
+//	public Response deleteQuestionPaperSubCategoryImage(
+//			@PathVariable(value = "questionPaperSubCategoryId", required = true) int questionPaperSubCategoryId)
+//			throws Exception {
+//		return Response.ok(qPaperService.deleteQuestionPaperSubCategoryImage(questionPaperSubCategoryId)).build();
+//	}
 
 	@RequestMapping(value = "/question", method = RequestMethod.POST)
 	public Response saveQuestion(@RequestBody List<QuestionVO> qList) throws Exception {

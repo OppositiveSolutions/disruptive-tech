@@ -61,6 +61,19 @@ public class StudentController {
 			@PathVariable("pageNo") int pageNo) throws Exception {
 		return Response.ok(studentService.findStudentsByName(key, pageSize, pageNo)).build();
 	}
+	
+	@RequestMapping(value = "/reg/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
+	public Response getStudentInactive(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
+		return Response.ok(studentService.getStudentInactive(pageSize, pageNo)).build();
+	}
+
+	@RequestMapping(value = "/reg/pageSize/{pageSize}/pageNo/{pageNo}/search", method = RequestMethod.GET)
+	public Response searchByNameInactive(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "key") String key, @PathVariable("pageSize") int pageSize,
+			@PathVariable("pageNo") int pageNo) throws Exception {
+		return Response.ok(studentService.findStudentsByNameInactive(key, pageSize, pageNo)).build();
+	}
 
 	@RequestMapping(value = "/{userId}/expiry", method = RequestMethod.PUT, consumes = { "text/plain" })
 	public Response updateStudentExpiry(HttpServletRequest request, HttpServletResponse response,

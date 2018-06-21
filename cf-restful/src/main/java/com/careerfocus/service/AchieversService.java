@@ -1,20 +1,33 @@
 package com.careerfocus.service;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.careerfocus.constants.Constants;
 import com.careerfocus.constants.ErrorCodes;
+import com.careerfocus.dao.CommonDAO;
 import com.careerfocus.entity.AchieverImage;
 import com.careerfocus.entity.Achievers;
 import com.careerfocus.repository.AchieversImageRepository;
@@ -33,6 +46,9 @@ public class AchieversService {
 
 	@Autowired
 	AchieversImageRepository aiRepository;
+	
+	@Autowired
+	CommonDAO commonDAO;
 
 	@Transactional
 	public Response saveAchiever(String achieverJson, MultipartFile image) throws IOException {
@@ -46,7 +62,7 @@ public class AchieversService {
 
 		achiever = achieverRepository.save(achiever);
 
-		AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), image.getBytes());
+		AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), commonDAO.resizeImage(image, true));
 		aiRepository.save(aImage);
 
 		if (achiever.isIsCurrent()) {
@@ -62,7 +78,7 @@ public class AchieversService {
 			return Response.status(ErrorCodes.VALIDATION_FAILED).message(ErrorCodes.ACHIEVER_NAME_EMPTY_MSG).build();
 		}
 		if (image != null) {
-			AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), image.getBytes());
+			AchieverImage aImage = new AchieverImage(achiever.getAchieverId(), commonDAO.resizeImage(image, true));
 			aiRepository.save(aImage);
 			existingAchiever.setachieverImage(aImage);
 			existingAchiever.setImgFileName(image.getOriginalFilename());

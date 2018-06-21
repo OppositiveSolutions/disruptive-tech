@@ -28,8 +28,16 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 			+ "u.createdDate, s.expiryDate, u.username, p.phoneNo, s.status, s.centerId, s.type) FROM Student s"
 			+ " INNER JOIN s.user u LEFT JOIN u.userPhones p"
 			+ " WHERE (p.isPrimary=1 OR p.isPrimary IS NULL) AND u.role = " + Constants.ROLE_STUDENT
-			+ " AND (LOWER(CONCAT(u.firstName, ' ', u.lastName))"
+			+ " AND s.status = " + Constants.STUDENT_ACTIVE + " AND (LOWER(CONCAT(u.firstName, ' ', u.lastName))"
 			+ " LIKE LOWER(:key) OR LOWER(u.username) LIKE LOWER(:key))" + " ORDER BY u.firstName, u.lastName")
 	Page<StudentVO> searchStudentsByNameOrEmail(@Param("key") String key, Pageable page);
+
+	@Query(value = "SELECT new com.careerfocus.model.response.StudentVO(u.userId, CONCAT(u.firstName, ' ', u.lastName), "
+			+ "u.createdDate, s.expiryDate, u.username, p.phoneNo, s.status, s.centerId, s.type) FROM Student s"
+			+ " INNER JOIN s.user u LEFT JOIN u.userPhones p"
+			+ " WHERE (p.isPrimary=1 OR p.isPrimary IS NULL) AND u.role = " + Constants.ROLE_STUDENT
+			+ " AND s.status = " + Constants.STUDENT_INACTIVE + " AND (LOWER(CONCAT(u.firstName, ' ', u.lastName))"
+			+ " LIKE LOWER(:key) OR LOWER(u.username) LIKE LOWER(:key))" + " ORDER BY u.firstName, u.lastName")
+	Page<StudentVO> searchStudentsByNameOrEmailInactive(@Param("key") String key, Pageable page);
 
 }

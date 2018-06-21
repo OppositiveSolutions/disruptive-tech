@@ -53,12 +53,12 @@ public class ProfileDAO {
 				returnMap.put("message", "Your password changed successfully. Log in using your new password.");
 			} else {
 				returnMap.put("status", false);
-				returnMap.put("message", "Password reset failed.Try again after some time.");
+				returnMap.put("message", "Failed to update Password.Try again after some time.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnMap.put("status", false);
-			returnMap.put("message", "Password reset failed.Try again after some time.");
+			returnMap.put("message", "Failed to update Password.Try again after some time.");
 			return returnMap;
 		}
 		return returnMap;
@@ -69,7 +69,8 @@ public class ProfileDAO {
 		boolean status = template.update(query, password, username) > 0 ? true : false;
 		if (status)
 			try {
-				mailDAO.welcomeMailUser(username, password, "Password Reset for Career Focus Account.", commonDAO.getStatusFromEmailId(username));
+				mailDAO.welcomeMailUser(username, password, "Password Reset for Career Focus Account.",
+						commonDAO.getStatusFromEmailId(username));
 			} catch (MalformedURLException | EmailException e) {
 				e.printStackTrace();
 			}
@@ -130,6 +131,11 @@ public class ProfileDAO {
 			result[i] = characterSet[randomCharIndex];
 		}
 		return new String(result);
+	}
+
+	public boolean checkOldPassword(int userId, String oldPassword) {
+		String query = "SELECT user_id from user WHERE user_id = ? and password = ?";
+		return template.queryForObject(query, Integer.class, userId, oldPassword) > 0 ? true : false;
 	}
 
 }

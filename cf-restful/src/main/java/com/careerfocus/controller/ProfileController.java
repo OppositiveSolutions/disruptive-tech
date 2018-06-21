@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.careerfocus.dao.ProfileDAO;
+import com.careerfocus.model.request.AddStudentVO;
+import com.careerfocus.service.LoginService;
 import com.careerfocus.service.ProfileService;
 import com.careerfocus.util.response.Response;
 
@@ -30,6 +32,9 @@ public class ProfileController {
 
 	@Autowired
 	ProfileDAO profileDAO;
+	
+	@Autowired
+    LoginService loginService;
 
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Response getStudentDetails(HttpServletRequest request) throws Exception {
@@ -38,13 +43,18 @@ public class ProfileController {
 		return Response.ok(profileService.getStudentDetails(userId)).build();
 	}
 
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+	public Response editStudent(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody AddStudentVO student) throws Exception {
+		return Response.ok(profileService.editProfile(student)).build();
+	}
+
 	@RequestMapping(value = "/password/change", method = RequestMethod.POST)
 	public Map<String, Object> changePassword(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "userId", required = false) String userId,
 			@RequestBody Map<String, Object> passwordMap,
 			@RequestParam(value = "uq_", defaultValue = "0", required = false) String uq_) throws Exception {
 		int uId = 0;
-		System.out.println(passwordMap);
 		String password = "0";
 		if (passwordMap != null) {
 			password = passwordMap.get("password").toString();
@@ -66,6 +76,17 @@ public class ProfileController {
 		if (userId != null)
 			uId = Integer.parseInt(userId);
 		return profileService.changePassword(uId, password);
+	}
+
+	@RequestMapping(value = "/password/user/change", method = RequestMethod.POST)
+	public Map<String, Object> changePasswordByUser(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> passwordMap) throws Exception {
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
+		Map<String, Object> returnMap = profileService.changePasswordByUser(userId, passwordMap);
+		if (Boolean.parseBoolean(returnMap.get("status").toString()))
+		    loginService.logout(request);
+		return returnMap;
 	}
 
 	@RequestMapping(value = "/password/reset", method = RequestMethod.GET)

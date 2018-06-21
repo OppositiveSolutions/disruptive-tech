@@ -46,7 +46,7 @@ public class LoginService {
 
 		User user = userRepository.findByUsernameAndPassword(username, password);
 		logger.info("user: " + user.toString());
-		if (user == null || user.getUserId() == Constants.FALSE) {//|| user.getStatus() != 1 - for online registered students
+		if (user == null || user.getUserId() == Constants.FALSE || user.getStatus() != 1) {//|| user.getStatus() != 1 - for online registered students
 			throw new AuthenticationCredentialsNotFoundException("");
 		}
 
