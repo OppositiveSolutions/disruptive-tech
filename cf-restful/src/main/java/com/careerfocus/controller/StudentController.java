@@ -63,12 +63,25 @@ public class StudentController {
 	}
 	
 	@RequestMapping(value = "/reg/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
+	public Response getStudentRegistered(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
+		return Response.ok(studentService.getStudentRegistered(pageSize, pageNo)).build();
+	}
+
+	@RequestMapping(value = "/reg/pageSize/{pageSize}/pageNo/{pageNo}/search", method = RequestMethod.GET)
+	public Response searchByNameRegistered(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "key") String key, @PathVariable("pageSize") int pageSize,
+			@PathVariable("pageNo") int pageNo) throws Exception {
+		return Response.ok(studentService.findStudentsByNameRegistered(key, pageSize, pageNo)).build();
+	}
+	
+	@RequestMapping(value = "/inactive/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
 	public Response getStudentInactive(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
 		return Response.ok(studentService.getStudentInactive(pageSize, pageNo)).build();
 	}
 
-	@RequestMapping(value = "/reg/pageSize/{pageSize}/pageNo/{pageNo}/search", method = RequestMethod.GET)
+	@RequestMapping(value = "/inactive/pageSize/{pageSize}/pageNo/{pageNo}/search", method = RequestMethod.GET)
 	public Response searchByNameInactive(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "key") String key, @PathVariable("pageSize") int pageSize,
 			@PathVariable("pageNo") int pageNo) throws Exception {

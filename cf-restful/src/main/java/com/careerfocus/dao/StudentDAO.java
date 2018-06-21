@@ -41,10 +41,14 @@ public class StudentDAO {
 				+ " INNER JOIN user u ON s.user_id = u.user_id and u.role = 1"
 				+ " LEFT JOIN user_phone up on s.user_id = up.user_id and up.is_primary = 1"
 				+ " LEFT JOIN address a on s.user_id = a.user_id WHERE s.status != " + Constants.STUDENT_DELETED
-				+ " AND u.status = " + type;
+				+ " AND u.status = ";
+		query += type == 3 ? 0 : type;
 		if (type == 0)
-			query += " AND (s.type != " + Constants.STUDENT_REGISTERED
-					+ " OR (u.created_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() AND s.type = " + Constants.STUDENT_REGISTERED + "))";
+			query += " AND (s.type = " + Constants.STUDENT_REGISTERED
+					+ " OR (u.created_date BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW() AND s.type = "
+					+ Constants.STUDENT_REGISTERED + "))";
+		if (type == Constants.STUDENT_REG_AND_ONCE_ACTIVE)
+			query += " AND s.type = " + Constants.STUDENT_REG_AND_ONCE_ACTIVE;
 		query += " GROUP BY s.user_id ORDER BY first_name, last_name";
 
 		if (pageSize > 0 && pageNo > 0) {
