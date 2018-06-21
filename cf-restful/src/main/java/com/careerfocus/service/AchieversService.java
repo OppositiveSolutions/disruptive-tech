@@ -102,6 +102,16 @@ public class AchieversService {
 		return achieverRepository.save(achievers);
 	}
 
+	public boolean resizeAchieverImage() throws IOException {
+		List<AchieverImage> ais = aiRepository.findAll();
+		for (AchieverImage ai : ais)  {
+			System.out.println(ai.getachieverId());
+		AchieverImage aImage = new AchieverImage(ai.getachieverId(), commonDAO.resizeImage(ai.getImage(), "temp", true));
+		aiRepository.save(aImage);
+		}
+		return true;
+	}
+	
 	public void editAchieverImage(int achieverId, MultipartFile image) throws IOException {
 		AchieverImage aImage = new AchieverImage(achieverId, image.getBytes());
 		aiRepository.save(aImage);
