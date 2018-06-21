@@ -139,7 +139,7 @@ public class CommonDAO {
 			String extension = ".jpg";
 			if (scaledBI.getType() == Constants.IMAGE_TYPE_PNG) {
 				ImageIO.write(scaledBI, "png", os);
-				extension = "png";
+				extension = ".png";
 			} else {
 				ImageIO.write(scaledBI, "jpg", os);
 			}
@@ -202,5 +202,49 @@ public class CommonDAO {
 	// }
 	// return time;
 	// }
+	
+	public byte[] resizeImage(byte[] imageInByte, String imageName, boolean preserveAlpha) {
+		byte[] tempFile = null;
+		try {
+			System.out.println("imageName = " + imageName);
+			int scaledWidth = Constants.SCALED_WIDTH;
+			int scaledHeight = Constants.SCALED_HEIGHT;
+
+			InputStream is = new ByteArrayInputStream(imageInByte);
+			BufferedImage originalImage = ImageIO.read(is);
+			float ratio = (float) originalImage.getWidth() / originalImage.getHeight();
+
+			if (ratio <= Constants.DEFAULT_ASPECT_RATIO) {
+				scaledWidth = (int) (ratio * scaledWidth);
+				scaledHeight = Constants.SCALED_HEIGHT;
+			} else {
+				scaledWidth = Constants.SCALED_WIDTH;
+				scaledHeight = (int) (scaledHeight / ratio);
+			}
+
+			int imageType = preserveAlpha ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
+			BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
+			Graphics2D g = scaledBI.createGraphics();
+			if (preserveAlpha) {
+				g.setComposite(AlphaComposite.Src);
+			}
+			g.drawImage(originalImage, Constants.FALSE, Constants.FALSE, scaledWidth, scaledHeight, null);
+			g.dispose();
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			String extension = ".jpg";
+			if (scaledBI.getType() == Constants.IMAGE_TYPE_PNG) {
+				ImageIO.write(scaledBI, "png", os);
+				extension = "png";
+			} else {
+				ImageIO.write(scaledBI, "jpg", os);
+			}
+
+			InputStream in = new ByteArrayInputStream(os.toByteArray());
+			tempFile = stream2file(in, imageName, extension);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return tempFile;
+	}
 
 }

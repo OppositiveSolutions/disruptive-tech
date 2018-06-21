@@ -51,6 +51,11 @@ public class AchieversController {
 			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
 		return Response.ok(service.editAchiever(achiever, image)).build();
 	}
+	
+	@RequestMapping(value = "portimage", method = RequestMethod.GET)
+	public Response resizeAchieverImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return Response.ok(service.resizeAchieverImage()).build();
+	}
 
 	@RequestMapping(value = "/all", method = RequestMethod.PUT)
 	public Response editAchievers(HttpServletRequest request, HttpServletResponse response,
