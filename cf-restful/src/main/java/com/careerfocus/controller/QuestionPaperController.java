@@ -122,7 +122,7 @@ public class QuestionPaperController {
 			@RequestPart(value = "contents", required = false) String content,
 			// @RequestPart(value = "isImage", required = true) String isImage,
 			@RequestPart(value = "file", required = false) final MultipartFile image) throws Exception {
-		String isImage = image.getBytes() != null ? "1" : "0";
+		String isImage = image != null && image.getBytes() != null ? "1" : "0";
 		return Response.ok(
 				qPaperService.saveQuestionPaperSubCategoryContent(questionPaperSubCategoryId, content, image, isImage))
 				.build();
