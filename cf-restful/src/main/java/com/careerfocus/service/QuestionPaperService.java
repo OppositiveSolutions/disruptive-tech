@@ -416,10 +416,7 @@ public class QuestionPaperService {
 
 	public boolean deleteQuestion(int questionId) {
 		try {
-			questionPaperQuestionRepository.delete(questionPaperQuestionRepository.findOne(
-					new QuestionPaperQuestionId(qPaperDAO.getQuestionPaperSubCategoryIdFromQuestionId(questionId),
-							qPaperDAO.getQuestionNoFromQuestionId(questionId))));
-			return true;
+			return qPaperDAO.deleteQuestion(questionId);
 		} catch (Exception e) {
 			return false;
 		}
