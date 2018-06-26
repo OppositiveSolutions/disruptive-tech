@@ -50,7 +50,7 @@ public class QuestionPaperCategory {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "question_paper_category_id")
-    @OrderBy("order")
+    @OrderBy("question_paper_sub_category_id")
     private Set<QuestionPaperSubCategory> questionPaperSubCategorys = new HashSet<>();
 
     @Basic
