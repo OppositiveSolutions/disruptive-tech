@@ -175,4 +175,15 @@ public class QuestionPaperDAO {
 		return jdbcTemplate.update(query, questionPaperSubCategoryId) > 0 ? true : false;
 	}
 
+	public boolean deleteQuestion(int questionId) {
+		String query = "DELETE qi.*, qo.*, qpq.* FROM question q left join question_paper_question qpq on"
+				+ " q.question_id = qpq.question_id left join question_option qo on qo.question_id = q.question_id"
+				+ " left join question_image qi on qi.question_id = q.question_id WHERE q.question_id = ?";
+		if (jdbcTemplate.update(query, questionId) > 0) {
+			query = "DELETE q.* FROM question q WHERE q.question_id = ?";
+			return jdbcTemplate.update(query, questionId) > 0 ? true : false;
+		}
+		return false;
+	}
+
 }
