@@ -34,7 +34,7 @@ public class CoachingTypeCategorySub {
 	private String imgFileName;
 
 	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "coaching_type_category_sub", cascade = CascadeType.MERGE)
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "coachingTypeCategorySub", cascade = CascadeType.MERGE)
 	private CoachingTypeCategorySubImage coachingTypeCategorySubImage;
 
 	public CoachingTypeCategorySub() {
