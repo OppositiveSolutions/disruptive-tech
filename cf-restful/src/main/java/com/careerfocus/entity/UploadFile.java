@@ -12,7 +12,7 @@ public class UploadFile {
 	private int id;
 	private String fileName;
 	private byte[] data;
-	private int coachingType;
+	private int coachingType = 0;
 	private int isCurrent = 1;
 
 	public UploadFile() {

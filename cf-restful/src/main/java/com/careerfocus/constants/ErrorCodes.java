@@ -38,4 +38,7 @@ public class ErrorCodes {
     public static int ACHIEVER_NAME_EMPTY = 709;
     public static String ACHIEVER_NAME_EMPTY_MSG = "Achiever name cannot be empty";
     
+    public static int MATERIAL_NAME_EMPTY = 710;
+    public static String MATERIAL_NAME_EMPTY_MSG = "Material type name cannot be empty";
+    
 }
