@@ -32,6 +32,8 @@ public class Question {
 	@Basic
 	@Column(name = "correct_option_no", nullable = false, length = 2000)
 	int correctOptionNo;
+	
+	private int optionEntered;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id")
@@ -94,6 +96,14 @@ public class Question {
 
 	public void setQuestionImage(Set<QuestionImage> questionImages) {
 		this.questionImages = questionImages;
+	}
+
+	public int getOptionEntered() {
+		return optionEntered;
+	}
+
+	public void setOptionEntered(int optionEntered) {
+		this.optionEntered = optionEntered;
 	}
 
 }

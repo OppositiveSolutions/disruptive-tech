@@ -46,7 +46,6 @@ public class QuestionDAO {
 	}
 
 	public Map<String, Object> getQuestionIds(int examId) {
-		// TODO Auto-generated method stub
 		String query = "select category_id, question_id, question_no from question_paper_question qpq"
 				+ " inner join question_paper_sub_category qpsc on qpq.question_paper_sub_category_id=qpsc.question_paper_sub_category_id"
 				+ " inner join question_paper_category qpc on qpc.question_paper_category_id = qpsc.question_paper_category_id"
@@ -55,6 +54,13 @@ public class QuestionDAO {
 				+ " inner join test t on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 				+ " inner join exam e on t.test_id = e.test_id where e.exam_id = ?";
 		Map<String, Object> result = template.queryForMap(query, examId);
+		return result;
+	}
+
+	public int getOptionEnteredUsingQuestionId(int qId, int userId) {
+		String query = "select option_entered from exam_question eq inner join exam e on e.exam_id = eq.exam_id"
+				+ " inner join test t on e.test_id = t.test_id where eq.question_id = ? and t.user_id = ?";
+		int result = template.queryForObject(query, Integer.class, qId, userId);
 		return result;
 	}
 

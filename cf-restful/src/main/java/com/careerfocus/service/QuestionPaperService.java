@@ -1,6 +1,8 @@
 package com.careerfocus.service;
 
 import com.careerfocus.dao.BundleDAO;
+import com.careerfocus.dao.ExamDAO;
+import com.careerfocus.dao.QuestionDAO;
 import com.careerfocus.dao.QuestionPaperDAO;
 import com.careerfocus.dao.TestDAO;
 import com.careerfocus.entity.*;
@@ -49,6 +51,12 @@ public class QuestionPaperService {
 
 	@Autowired
 	QuestionPaperDAO qPaperDAO;
+
+	@Autowired
+	QuestionDAO qDAO;
+
+	@Autowired
+	ExamDAO examDAO;
 
 	@Autowired
 	BundleDAO bundleDAO;
@@ -134,6 +142,26 @@ public class QuestionPaperService {
 					returnList.add(qp);
 		}
 		return returnList;
+	}
+
+	public QuestionPaper getAQuestionPaperWithFullDetails(int examId) {
+		QuestionPaper qp = qPaperRepository.findByQuestionPaperId(examDAO.getQuestionPaperIdFromExamId(examId));
+		return qp;
+	}
+
+	public QuestionPaper getAQuestionPaperWithFullDetailsAndAnswer(int examId, int userId) {
+		QuestionPaper qp = qPaperRepository.findByQuestionPaperId(examDAO.getQuestionPaperIdFromExamId(examId));
+		for (QuestionPaperCategory questionPaperCategory : qp.getQuestionPaperCategorys()) {
+			for (QuestionPaperSubCategory questionPaperSubCategory : questionPaperCategory
+					.getQuestionPaperSubCategorys()) {
+				for (QuestionPaperQuestion question : questionPaperSubCategory.getQuestions()) {
+					Question q = question.getQuestion();
+					int qId = q.getQuestionId();
+					q.setOptionEntered(qDAO.getOptionEnteredUsingQuestionId(qId, userId));
+				}
+			}
+		}
+		return qp;
 	}
 
 	public List<Map<String, Object>> getAllQuestionPapers(int coachingType) {

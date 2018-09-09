@@ -2,6 +2,7 @@ package com.careerfocus.repository;
 
 import com.careerfocus.entity.QuestionPaper;
 import com.careerfocus.model.response.QuestionPaperVO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,4 +27,5 @@ public interface QuestionPaperRepository extends JpaRepository<QuestionPaper, In
             + "WHERE LOWER(q.examCode) LIKE LOWER(:key) OR LOWER(q.courseName) LIKE LOWER(:key) OR LOWER(q.name) LIKE LOWER(:key)")
     Page<QuestionPaperVO> searchQuestionsPaper(@Param("key") String key, Pageable page);
 
+    public QuestionPaper findByQuestionPaperId(int qpId);
 }

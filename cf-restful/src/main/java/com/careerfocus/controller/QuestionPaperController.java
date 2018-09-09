@@ -70,6 +70,21 @@ public class QuestionPaperController {
 		return Response.ok(qPaperService.getAllQuestionPapersWithFullDetails(coachingType)).build();
 	}
 
+	@RequestMapping(value = "/individual", method = RequestMethod.GET)
+	public Response getAQuestionPaperFullDetails(
+			@RequestParam(value = "qpId", required = false, defaultValue = "0") String qpId) throws Exception {
+		int qpIdInt = Integer.parseInt(qpId);
+		return Response.ok(qPaperService.getAQuestionPaperWithFullDetails(qpIdInt)).build();
+	}
+
+	@RequestMapping(value = "/individual/{userId}/answers", method = RequestMethod.GET)
+	public Response getAQuestionPaperFullDetailsWithAnswers(
+			@RequestParam(value = "qpId", required = false, defaultValue = "0") String qpId,
+			@PathVariable("userId") int userId) throws Exception {
+		int qpIdInt = Integer.parseInt(qpId);
+		return Response.ok(qPaperService.getAQuestionPaperWithFullDetailsAndAnswer(qpIdInt, userId)).build();
+	}
+
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public Response getAllQuestionPapers(
 			@RequestParam(value = "coachingType", required = false, defaultValue = "0") int coachingType)
