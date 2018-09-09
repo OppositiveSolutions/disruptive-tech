@@ -169,6 +169,13 @@ public class StudentDAO {
 		type = template.queryForObject(query, Integer.class);
 		return type;
 	}
+	
+	public int getStudentCount() {
+		String query = "select count(*) from student";
+		int count = 1000;
+		count = template.queryForObject(query, Integer.class);
+		return count;
+	}
 
 	public User saveUser(User user) {
 		String query = "insert into user (username, password, created_date, role, first_name,"

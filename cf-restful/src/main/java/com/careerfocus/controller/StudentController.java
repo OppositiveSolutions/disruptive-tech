@@ -1,5 +1,6 @@
 package com.careerfocus.controller;
 
+import com.careerfocus.dao.StudentDAO;
 import com.careerfocus.model.request.AddStudentVO;
 import com.careerfocus.service.StudentService;
 import com.careerfocus.util.response.Response;
@@ -18,6 +19,9 @@ public class StudentController {
 
 	@Autowired
 	StudentService studentService;
+	
+	@Autowired
+	StudentDAO studentDAO;
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public Response addStudent(HttpServletRequest request, HttpServletResponse response,
@@ -52,6 +56,7 @@ public class StudentController {
 	@RequestMapping(value = "/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
 	public Response getStudent(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
+		pageSize = studentDAO.getStudentCount();
 		return Response.ok(studentService.getStudent(pageSize, pageNo)).build();
 	}
 
@@ -65,6 +70,7 @@ public class StudentController {
 	@RequestMapping(value = "/reg/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
 	public Response getStudentRegistered(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
+		pageSize = studentDAO.getStudentCount();
 		return Response.ok(studentService.getStudentRegistered(pageSize, pageNo)).build();
 	}
 
@@ -78,6 +84,7 @@ public class StudentController {
 	@RequestMapping(value = "/inactive/pageSize/{pageSize}/pageNo/{pageNo}", method = RequestMethod.GET)
 	public Response getStudentInactive(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable("pageSize") int pageSize, @PathVariable("pageNo") int pageNo) throws Exception {
+		pageSize = studentDAO.getStudentCount();
 		return Response.ok(studentService.getStudentInactive(pageSize, pageNo)).build();
 	}
 
