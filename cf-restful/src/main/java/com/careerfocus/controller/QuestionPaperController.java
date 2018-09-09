@@ -79,10 +79,10 @@ public class QuestionPaperController {
 
 	@RequestMapping(value = "/individual/{userId}/answers", method = RequestMethod.GET)
 	public Response getAQuestionPaperFullDetailsWithAnswers(
-			@RequestParam(value = "qpId", required = false, defaultValue = "0") String qpId,
+			@RequestParam(value = "examId", required = false, defaultValue = "0") String examId,
 			@PathVariable("userId") int userId) throws Exception {
-		int qpIdInt = Integer.parseInt(qpId);
-		return Response.ok(qPaperService.getAQuestionPaperWithFullDetailsAndAnswer(qpIdInt, userId)).build();
+		int examIdInt = Integer.parseInt(examId);
+		return Response.ok(qPaperService.getAQuestionPaperWithFullDetailsAndAnswer(examIdInt, userId)).build();
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
