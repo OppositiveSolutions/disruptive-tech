@@ -15,13 +15,12 @@ public class UploadFile {
 	private int coachingType = 1;
 	private int isCurrent = 1;
 	private int isFree = 1;
-	private int level = 1;
 
 	public UploadFile() {
 		super();
 	}
 
-	public UploadFile(String fileName, byte[] data, int coachingType, int isCurrent) {
+	public UploadFile(String fileName, byte[] data, int coachingType, int isFree, int isCurrent) {
 		super();
 		this.coachingType = coachingType;
 		this.fileName = fileName;
@@ -85,12 +84,4 @@ public class UploadFile {
 		this.isFree = isFree;
 	}
 
-	@Column(name = "level")
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
 }

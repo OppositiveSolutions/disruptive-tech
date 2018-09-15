@@ -22,11 +22,6 @@ public class CoachingTypeCategorySubUnitImage {
 	@Column(columnDefinition = "BLOB", nullable = false)
 	private byte[] image;
 
-//    @JsonIgnore
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-//    @JoinColumn(name = "coaching_type_category_sub_unit_id", columnDefinition = "INT")
-//    private CoachingTypeCategorySubUnit coachingTypeCategorySubUnit;
-
 	@JsonIgnore
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "coachingTypeCategorySubUnitId", scope = CoachingTypeCategorySubUnit.class)
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

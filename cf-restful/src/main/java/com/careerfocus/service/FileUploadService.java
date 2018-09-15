@@ -218,6 +218,10 @@ public class FileUploadService {
 		}
 		return subErrors;
 	}
+	
+	public boolean tagFileToCoachingType(int coachingType, int fileId) {
+		return fileDAO.tagFileToCoachingType(coachingType, fileId) > 0 ? true : false;
+	}
 
 	public boolean tagFileToCoachingTypeCategory(int coachingTypeCategory, int fileId) {
 		return fileDAO.tagFileToCoachingTypeCategory(coachingTypeCategory, fileId) > 0 ? true : false;

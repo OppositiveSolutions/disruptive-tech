@@ -1,7 +1,5 @@
 package com.careerfocus.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,10 +33,6 @@ public class CoachingTypeCategorySub {
 	@Basic
 	@Column(name = "img_file_name")
 	private String imgFileName;
-
-//	@JsonIgnore
-//	@OneToOne(fetch = FetchType.LAZY, mappedBy = "coachingTypeCategorySub", cascade = CascadeType.MERGE)
-//	private CoachingTypeCategorySubImage coachingTypeCategorySubImage;
 	
 	@OneToMany(targetEntity = CoachingTypeCategorySubImage.class, mappedBy = "coachingTypeCategorySub", cascade = CascadeType.ALL)
 	private Set<CoachingTypeCategorySubImage> coachingTypeCategorySubImage = new HashSet<CoachingTypeCategorySubImage>();
