@@ -1,6 +1,8 @@
 package com.careerfocus.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
@@ -20,10 +22,16 @@ public class CoachingTypeCategoryImage {
     @Column(columnDefinition = "BLOB", nullable = false)
     private byte[] image;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "coaching_type_category_id", columnDefinition = "INT")
-    private CoachingTypeCategory coachingTypeCategory;
+//    @JsonIgnore
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "coaching_type_category_id", columnDefinition = "INT")
+//    private CoachingTypeCategory coachingTypeCategory;
+    
+	@JsonIgnore
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "coachingTypeCategoryId", scope = CoachingTypeCategory.class)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "coaching_type_category_id", columnDefinition = "INT", nullable = false, insertable = false, updatable = false)
+	private CoachingTypeCategory coachingTypeCategory;
 
     public CoachingTypeCategoryImage() {
     }

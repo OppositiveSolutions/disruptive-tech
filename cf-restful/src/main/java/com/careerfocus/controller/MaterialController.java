@@ -40,7 +40,7 @@ public class MaterialController {
 		return "Success";
 	}
 
-	@RequestMapping(value = "/category/upload/{coachingType}", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload/category/{coachingType}", method = RequestMethod.POST)
 	public String handleCategoryFileUpload(HttpServletRequest request, @PathVariable(required = true) int coachingType,
 			@RequestPart(value = "file", required = true) final MultipartFile fileUpload) throws Exception {
 
@@ -56,7 +56,7 @@ public class MaterialController {
 		return "Failed";
 	}
 
-	@RequestMapping(value = "/category/sub/upload/{coachingType}", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload/category/sub/{coachingType}", method = RequestMethod.POST)
 	public String handleCategorySubFileUpload(HttpServletRequest request,
 			@PathVariable(required = true) int coachingType,
 			@RequestPart(value = "file", required = true) final MultipartFile fileUpload) throws Exception {
@@ -73,7 +73,7 @@ public class MaterialController {
 		return "Failed";
 	}
 
-	@RequestMapping(value = "/category/sub/unit/upload/{coachingType}", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload/category/sub/unit/{coachingType}", method = RequestMethod.POST)
 	public String handleCategorySubUnitFileUpload(HttpServletRequest request,
 			@PathVariable(required = true) int coachingType,
 			@RequestPart(value = "file", required = true) final MultipartFile fileUpload) throws Exception {
@@ -117,22 +117,56 @@ public class MaterialController {
 		return service.saveCoachingTypeCategorySubUnit(coachingTypeCategorySubUnit, image);
 	}
 
-	@RequestMapping(value = "/category/{coachingTypeId}", method = RequestMethod.GET)
-	public Response getAllCoachingTypeCategory(HttpServletRequest request, HttpServletResponse response,
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public Response getAllMaterials() throws Exception {
+		return Response.ok(service.getAllCoachingType()).build();
+	}
+
+	@RequestMapping(value = "/coachingtypes", method = RequestMethod.GET)
+	public Response getCoachingTypes() throws Exception {
+		return Response.ok(service.getCoachingTypes()).build();
+	}
+
+	@RequestMapping(value = "/coachingtypes/category/{coachingTypeId}", method = RequestMethod.GET)
+	public Response getCoachingTypeCategorys(HttpServletRequest request,
+			@PathVariable(required = true) int coachingTypeId) throws Exception {
+		return Response.ok(service.getCoachingTypeCategorys(coachingTypeId)).build();
+	}
+
+	@RequestMapping(value = "/coachingtypes/category/sub/{coachingTypeCategoryId}", method = RequestMethod.GET)
+	public Response getCoachingTypeCategorySubs(HttpServletRequest request,
+			@PathVariable(required = true) int coachingTypeCategoryId) throws Exception {
+		return Response.ok(service.getCoachingTypeCategorySubs(coachingTypeCategoryId)).build();
+	}
+
+	@RequestMapping(value = "/coachingtypes/category/sub/unit/{coachingTypeCategorySubId}", method = RequestMethod.GET)
+	public Response getCoachingTypeCategorySubUnits(HttpServletRequest request,
+			@PathVariable(required = true) int coachingTypeCategorySubId) throws Exception {
+		return Response.ok(service.getCoachingTypeCategorySubUnits(coachingTypeCategorySubId)).build();
+	}
+
+//	@RequestMapping(value = "/category/{coachingTypeId}", method = RequestMethod.GET)
+//	public Response getAllCoachingTypeCategory(HttpServletRequest request, HttpServletResponse response,
+//			@PathVariable(required = true) Integer coachingTypeId) throws Exception {
+//		return Response.ok(service.getAllCoachingTypeCategory(coachingTypeId)).build();
+//	}
+//
+//	@RequestMapping(value = "/category/sub/{coachingTypeCategoryId}", method = RequestMethod.GET)
+//	public Response getAllCoachingTypeCategorySub(HttpServletRequest request, HttpServletResponse response,
+//			@PathVariable(required = true) Integer coachingTypeCategoryId) throws Exception {
+//		return Response.ok(service.getAllCoachingTypeCategorySub(coachingTypeCategoryId)).build();
+//	}
+//
+//	@RequestMapping(value = "/category/sub/unit/{coachingTypeCategorySubId}", method = RequestMethod.GET)
+//	public Response getAllCoachingTypeCategorySubUnit(HttpServletRequest request, HttpServletResponse response,
+//			@PathVariable(required = true) Integer coachingTypeCategorySubId) throws Exception {
+//		return Response.ok(service.getAllCoachingTypeCategorySubUnit(coachingTypeCategorySubId)).build();
+//	}
+
+	@RequestMapping(value = "/{coachingTypeId}/all", method = RequestMethod.GET)
+	public Response getAllCoachingTypeMaterials(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable(required = true) Integer coachingTypeId) throws Exception {
-		return Response.ok(service.getAllCoachingTypeCategory(coachingTypeId)).build();
-	}
-
-	@RequestMapping(value = "/category/sub/{coachingTypeCategoryId}", method = RequestMethod.GET)
-	public Response getAllCoachingTypeCategorySub(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable(required = true) Integer coachingTypeCategoryId) throws Exception {
-		return Response.ok(service.getAllCoachingTypeCategorySub(coachingTypeCategoryId)).build();
-	}
-
-	@RequestMapping(value = "/category/sub/unit/{coachingTypeCategorySubId}", method = RequestMethod.GET)
-	public Response getAllCoachingTypeCategorySubUnit(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable(required = true) Integer coachingTypeCategorySubId) throws Exception {
-		return Response.ok(service.getAllCoachingTypeCategorySubUnit(coachingTypeCategorySubId)).build();
+		return Response.ok(service.getAllCoachingTypeMaterials(coachingTypeId)).build();
 	}
 
 	@RequestMapping(value = "/category/{coachingTypeCategoryId}/all", method = RequestMethod.GET)

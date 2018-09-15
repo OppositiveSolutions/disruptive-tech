@@ -1,6 +1,8 @@
 package com.careerfocus.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
@@ -12,29 +14,35 @@ import javax.persistence.*;
 @Table(name = "coaching_type_category_sub_unit_image")
 public class CoachingTypeCategorySubUnitImage {
 
-    @Id
-    @Column(name = "coaching_type_category_sub_unit_id", columnDefinition = "INT")
-    private int coachingTypeCategorySubUnitId;
+	@Id
+	@Column(name = "coaching_type_category_sub_unit_id", columnDefinition = "INT")
+	private int coachingTypeCategorySubUnitId;
 
-    @Basic
-    @Column(columnDefinition = "BLOB", nullable = false)
-    private byte[] image;
+	@Basic
+	@Column(columnDefinition = "BLOB", nullable = false)
+	private byte[] image;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "coaching_type_category_sub_unit_id", columnDefinition = "INT")
-    private CoachingTypeCategorySubUnit coachingTypeCategorySubUnit;
+//    @JsonIgnore
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "coaching_type_category_sub_unit_id", columnDefinition = "INT")
+//    private CoachingTypeCategorySubUnit coachingTypeCategorySubUnit;
 
-    public CoachingTypeCategorySubUnitImage() {
-    }
+	@JsonIgnore
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "coachingTypeCategorySubUnitId", scope = CoachingTypeCategorySubUnit.class)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "coaching_type_category_sub_unit_id", columnDefinition = "INT", nullable = false, insertable = false, updatable = false)
+	private CoachingTypeCategorySubUnit coachingTypeCategorySubUnit;
 
-    public CoachingTypeCategorySubUnitImage(int coachingTypeCategorySubUnitId) {
-        this.coachingTypeCategorySubUnitId = coachingTypeCategorySubUnitId;
-    }
+	public CoachingTypeCategorySubUnitImage() {
+	}
 
-    public CoachingTypeCategorySubUnitImage(int coachingTypeCategorySubUnitId, byte[] image) {
-        this.coachingTypeCategorySubUnitId = coachingTypeCategorySubUnitId;
-        this.image = image;
-    }
+	public CoachingTypeCategorySubUnitImage(int coachingTypeCategorySubUnitId) {
+		this.coachingTypeCategorySubUnitId = coachingTypeCategorySubUnitId;
+	}
+
+	public CoachingTypeCategorySubUnitImage(int coachingTypeCategorySubUnitId, byte[] image) {
+		this.coachingTypeCategorySubUnitId = coachingTypeCategorySubUnitId;
+		this.image = image;
+	}
 
 }

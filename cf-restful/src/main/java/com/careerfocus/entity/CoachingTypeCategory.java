@@ -2,6 +2,9 @@ package com.careerfocus.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 /**
@@ -33,9 +36,17 @@ public class CoachingTypeCategory {
 	@Column(name = "img_file_name")
 	private String imgFileName;
 
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "coachingTypeCategory", cascade = CascadeType.MERGE)
-	private CoachingTypeCategoryImage coachingTypeCategoryImage;
+//	@JsonIgnore
+//	@OneToOne(fetch = FetchType.LAZY, mappedBy = "coachingTypeCategory", cascade = CascadeType.MERGE)
+//	private CoachingTypeCategoryImage coachingTypeCategoryImage;
+	
+	@OneToMany(targetEntity = CoachingTypeCategoryImage.class, mappedBy = "coachingTypeCategory", cascade = CascadeType.ALL)
+	private Set<CoachingTypeCategoryImage> coachingTypeCategoryImage = new HashSet<CoachingTypeCategoryImage>();
+	
+	@OneToMany
+    @JoinColumn(name = "coaching_type_category_id")
+    @OrderBy("coaching_type_category_id")
+    private Set<CoachingTypeCategorySub> coachingTypeCategorySubs = new HashSet<CoachingTypeCategorySub>();
 
 	public CoachingTypeCategory() {
 	}
@@ -84,17 +95,24 @@ public class CoachingTypeCategory {
 		this.imgFileName = imgFileName;
 	}
 
-	public CoachingTypeCategoryImage getCoachingTypeCategoryImage() {
+	public Set<CoachingTypeCategoryImage> getCoachingTypeCategoryImage() {
 		return coachingTypeCategoryImage;
 	}
 
-	public void setCoachingTypeCategoryImage(CoachingTypeCategoryImage coachingTypeCategoryImage) {
+	public void setCoachingTypeCategoryImage(Set<CoachingTypeCategoryImage> coachingTypeCategoryImage) {
 		this.coachingTypeCategoryImage = coachingTypeCategoryImage;
+	}
+	
+	public Set<CoachingTypeCategorySub> getCoachingTypeCategorySubs() {
+        return coachingTypeCategorySubs;
+	}
+
+	public void setCoachingTypeCategorySubs(Set<CoachingTypeCategorySub> coachingTypeCategorySubs) {
+        this.coachingTypeCategorySubs = coachingTypeCategorySubs;
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return String.format("coachingTypeCategoryId: %d | name: %s | isDelete: %d", coachingTypeCategoryId, name,
 				isDelete);
 	}
