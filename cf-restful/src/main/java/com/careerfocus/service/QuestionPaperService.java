@@ -501,4 +501,9 @@ public class QuestionPaperService {
 			return false;
 		}
 	}
+
+	public List<Map<String, Object>> getAllStudentResults(int questionPaperId) {
+		List<Map<String, Object>> resultList = qPaperDAO.getStudentsResult(questionPaperId);
+		return resultList;
+	}
 }

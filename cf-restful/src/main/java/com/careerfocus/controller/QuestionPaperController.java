@@ -239,4 +239,10 @@ public class QuestionPaperController {
 		return Response.ok(qPaperService.removeQuestionImage(questionId)).build();
 	}
 
+	@RequestMapping(value = "/results/{qpId}", method = RequestMethod.GET)
+	public Response getAllStudentResults(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(required = true) int qpId) throws Exception {
+		return Response.ok(qPaperService.getAllStudentResults(qpId)).build();
+	}
+
 }

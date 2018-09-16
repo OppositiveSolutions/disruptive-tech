@@ -110,11 +110,11 @@ public class MainInterceptor extends HandlerInterceptorAdapter {
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile/password")
 				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/question-paper")
 				|| (pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/announcement")
-						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/advertisement")
-						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/achievers")
-						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile")
-						|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
-								&& requestMethod.equalsIgnoreCase("GET"));
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/advertisement")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/achievers")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/profile")
+				|| pathMatcher.matchStart(uri, Constants.RESTFUL_PATH_PREFIX + "/common")
+				&& requestMethod.equalsIgnoreCase("GET"));
 	}
 
 	private boolean checkAuthorizationForSuperAdmin(String uri, String requestMethod) {
