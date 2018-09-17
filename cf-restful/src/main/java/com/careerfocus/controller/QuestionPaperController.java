@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/question-paper")
@@ -77,12 +78,12 @@ public class QuestionPaperController {
 		return Response.ok(qPaperService.getAQuestionPaperWithFullDetails(qpIdInt)).build();
 	}
 
-	@RequestMapping(value = "/individual/{userId}/answers", method = RequestMethod.GET)
-	public Response getAQuestionPaperFullDetailsWithAnswers(
-			@RequestParam(value = "examId", required = false, defaultValue = "0") String examId,
-			@PathVariable("userId") int userId) throws Exception {
-		int examIdInt = Integer.parseInt(examId);
-		return Response.ok(qPaperService.getAQuestionPaperWithFullDetailsAndAnswer(examIdInt, userId)).build();
+	@RequestMapping(value = "/individual/{examId}/answers", method = RequestMethod.GET)
+	public Response getAQuestionPaperFullDetailsWithAnswers(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable("examId") int examId) throws Exception {
+		HttpSession session = request.getSession();
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
+		return Response.ok(qPaperService.getAQuestionPaperWithFullDetailsAndAnswer(examId, userId)).build();
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
