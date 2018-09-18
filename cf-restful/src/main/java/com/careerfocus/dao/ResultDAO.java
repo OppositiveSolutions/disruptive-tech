@@ -42,7 +42,7 @@ public class ResultDAO {
 	}
 
 	public Map<String, Object> getExamAttendedAndTotalCount(int examId) {
-		String query = "SELECT total_attended as totalAttended,qpc.no_of_questions as noOfQuestions from exam_category_mark WHERE exam_id = ?";
+		String query = "SELECT total_attended as totalAttended, no_of_questions as noOfQuestions from exam_category_mark WHERE exam_id = ?";
 		List<Map<String, Object>> categoryMarkList = template.queryForList(query, examId);
 		int totalAttended = 0;
 		int totalNoOfQuestions = 0;
