@@ -88,11 +88,12 @@ public class ResultDAO {
 
 	public List<Map<String, Object>> getExamCategoriesScoreGraph(int examId) {
 		String query = "SELECT e.exam_id as examId,qp.name as examName,qp.exam_code as examCode,"
-				+ "c.category_id as categoryId, c.name as categoryName,ect.total_time div 60 as timeTakenMin,"
-				+ "ect.total_time mod 60 as timeTakenSec,qpc.duration as durationMin,ecm.correct_mark as correctMark,"
-				+ "ecm.negative_mark as negativeMark,ecm.total_mark as totalMark,"
-				+ "qpc.no_of_questions * qpc.correct_answer_mark as totalPossibleMark, ecm.total_attended as totalAttended,"
-				+ "qpc.no_of_questions as noOfQuestions FROM exam_category_mark ecm"
+				+ " c.category_id as categoryId, c.name as categoryName,ect.total_time div 60 as timeTakenMin,"
+				+ " ect.total_time mod 60 as timeTakenSec,qpc.duration as durationMin,ecm.correct_mark as correctMark,"
+				+ " ecm.negative_mark as negativeMark,ecm.total_mark as totalMark,"
+				+ " qpc.no_of_questions * qpc.correct_answer_mark as totalPossibleMark, ecm.total_attended as totalAttended,"
+				+ " qpc.no_of_questions as noOfQuestions, qpc.negative_mark as negativeMarkPerAnswer,"
+				+ " qpc.correct_answer_mark as correctMarkPerAnswer FROM exam_category_mark ecm"
 				+ " inner join exam e on e.exam_id = ecm.exam_id inner join test t on t.test_id = e.test_id"
 				+ " inner join bundle_question_paper bqp on bqp.bundle_question_paper_id = t.bundle_question_paper_id"
 				+ " inner join question_paper_category qpc on qpc.question_paper_id = bqp.question_paper_id"
@@ -106,6 +107,19 @@ public class ResultDAO {
 			int noOfQuestions = Integer.parseInt(t.get("noOfQuestions").toString());
 			if (Integer.parseInt(t.get("totalAttended").toString()) > noOfQuestions) {
 				t.put("totalAttended", noOfQuestions);
+			}
+			try {
+				if (Integer.parseInt(t.get("correctMark").toString()) > Integer
+						.parseInt(t.get("totalPossibleMark").toString())) {
+
+					t.put("correctMark",
+							Integer.parseInt(t.get("correctMark").toString())
+									- ((Integer.parseInt(t.get("negativeMark").toString())
+											/ Integer.parseInt(t.get("negativeMarkPerAnswer").toString()))
+											* Integer.parseInt(t.get("correctMarkPerAnswer").toString())));
+				}
+			} catch (Exception e) {
+
 			}
 			returnCategoryMarkList.add(t);
 		}
