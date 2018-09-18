@@ -42,7 +42,12 @@ public class ResultDAO {
 	}
 
 	public Map<String, Object> getExamAttendedAndTotalCount(int examId) {
-		String query = "SELECT total_attended as totalAttended, no_of_questions as noOfQuestions from exam_category_mark WHERE exam_id = ?";
+		String query = "SELECT total_attended as totalAttended, qpc.no_of_questions as noOfQuestions from exam_category_mark ecm"
+				+ " inner join exam e on ecm.exam_id = e.exam_id inner join test t on t.test_id = e.test_id"
+				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+				+ " inner join question_paper qp on bqp.question_paper_id = qp.question_paper_id "
+				+ " inner join question_paper_category qpc on qpc.question_paper_id = qp.question_paper_id"
+				+ " and ecm.category_id = qpc.category_id WHERE ecm.exam_id = ?";
 		List<Map<String, Object>> categoryMarkList = template.queryForList(query, examId);
 		int totalAttended = 0;
 		int totalNoOfQuestions = 0;
