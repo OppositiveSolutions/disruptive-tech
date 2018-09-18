@@ -186,4 +186,13 @@ public class QuestionPaperDAO {
 		return false;
 	}
 
+	public List<Map<String, Object>> getStudentsResult(int questionPaperId) {
+		String query = "select t.user_id as userId, concat(u.first_name, ' ', u.last_name) as name, max(e.total_mark)"
+				+ " as mark from test t inner join exam e on t.test_id = e.test_id"
+				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
+				+ " inner join user u on u.user_id = t.user_id where bqp.question_paper_id = ?"
+				+ " and (e.total_mark > 0 or e.total_mark < 0) group by u.user_id order by max(e.total_mark) desc";
+		return jdbcTemplate.queryForList(query, questionPaperId);
+	}
+
 }

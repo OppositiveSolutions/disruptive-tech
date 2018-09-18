@@ -2,6 +2,7 @@ package com.careerfocus.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.careerfocus.constants.ErrorCodes;
 import com.careerfocus.dao.CommonDAO;
 import com.careerfocus.dao.FileUploadDAO;
+import com.careerfocus.entity.CoachingType;
 import com.careerfocus.entity.CoachingTypeCategory;
 import com.careerfocus.entity.CoachingTypeCategoryImage;
 import com.careerfocus.entity.CoachingTypeCategorySub;
@@ -31,6 +33,7 @@ import com.careerfocus.repository.CoachingTypeCategorySubImageRepository;
 import com.careerfocus.repository.CoachingTypeCategorySubRepository;
 import com.careerfocus.repository.CoachingTypeCategorySubUnitImageRepository;
 import com.careerfocus.repository.CoachingTypeCategorySubUnitRepository;
+import com.careerfocus.repository.CoachingTypeRepository;
 import com.careerfocus.repository.FileUploadRepository;
 import com.careerfocus.util.response.Error;
 import com.careerfocus.util.response.Response;
@@ -47,6 +50,9 @@ public class FileUploadService {
 
 	@Autowired
 	CommonDAO commonDAO;
+
+	@Autowired
+	CoachingTypeRepository coachingTypeRepository;
 
 	@Autowired
 	CoachingTypeCategoryRepository coachingTypeCategoryRepository;
@@ -212,6 +218,10 @@ public class FileUploadService {
 		}
 		return subErrors;
 	}
+	
+	public boolean tagFileToCoachingType(int coachingType, int fileId) {
+		return fileDAO.tagFileToCoachingType(coachingType, fileId) > 0 ? true : false;
+	}
 
 	public boolean tagFileToCoachingTypeCategory(int coachingTypeCategory, int fileId) {
 		return fileDAO.tagFileToCoachingTypeCategory(coachingTypeCategory, fileId) > 0 ? true : false;
@@ -225,22 +235,31 @@ public class FileUploadService {
 		return fileDAO.tagFileToCoachingTypeCategorySubUnit(coachingTypeCategorySubUnit, fileId) > 0 ? true : false;
 	}
 
+	public Collection<CoachingType> getAllCoachingType() {
+		List<CoachingType> coachingTypes = coachingTypeRepository.findAll();
+		return coachingTypes;
+	}
+
 	public List<CoachingTypeCategory> getAllCoachingTypeCategory(int coachingTypeId) {
 		List<CoachingTypeCategory> coachingTypes = coachingTypeCategoryRepository
 				.findByCoachingTypeIdOrderByCoachingTypeIdDesc(coachingTypeId);
 		return coachingTypes;
 	}
-	
+
 	public List<CoachingTypeCategorySub> getAllCoachingTypeCategorySub(int coachingTypeCategoryId) {
 		List<CoachingTypeCategorySub> coachingTypes = coachingTypeCategorySubRepository
 				.findByCoachingTypeCategoryIdOrderByCoachingTypeCategoryIdDesc(coachingTypeCategoryId);
 		return coachingTypes;
 	}
-	
+
 	public List<CoachingTypeCategorySubUnit> getAllCoachingTypeCategorySubUnit(int coachingTypeCategorySubId) {
 		List<CoachingTypeCategorySubUnit> coachingTypes = coachingTypeCategorySubUnitRepository
 				.findByCoachingTypeCategorySubIdOrderByCoachingTypeCategorySubIdDesc(coachingTypeCategorySubId);
 		return coachingTypes;
+	}
+
+	public List<Map<String, Object>> getAllCoachingTypeMaterials(Integer coachingTypeId) {
+		return fileDAO.getAllCoachingTypeMaterials(coachingTypeId);
 	}
 
 	public List<Map<String, Object>> getAllCoachingTypeCategoryMaterials(Integer coachingTypeCategoryId) {
@@ -253,5 +272,25 @@ public class FileUploadService {
 
 	public List<Map<String, Object>> getAllCoachingTypeCategorySubUnitMaterials(Integer coachingTypeCategorySubUnitId) {
 		return fileDAO.getAllCoachingTypeCategorySubUnitMaterials(coachingTypeCategorySubUnitId);
+	}
+
+	public List<Map<String, Object>> getCoachingTypes() {
+		List<Map<String, Object>> coachingTypes = commonDAO.getCoachingTypes();
+		return coachingTypes;
+	}
+
+	public List<Map<String, Object>> getCoachingTypeCategorys(int coachingTypeId) {
+		List<Map<String, Object>> coachingTypes = fileDAO.getCoachingTypeCategorys(coachingTypeId);
+		return coachingTypes;
+	}
+
+	public List<Map<String, Object>> getCoachingTypeCategorySubs(int coachingTypeCategoryId) {
+		List<Map<String, Object>> coachingTypes = fileDAO.getCoachingTypeCategorySubs(coachingTypeCategoryId);
+		return coachingTypes;
+	}
+
+	public List<Map<String, Object>> getCoachingTypeCategorySubUnits(int coachingTypeCategorySubId) {
+		List<Map<String, Object>> coachingTypes = fileDAO.getCoachingTypeCategorySubUnits(coachingTypeCategorySubId);
+		return coachingTypes;
 	}
 }

@@ -1,6 +1,7 @@
 package com.careerfocus.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -33,10 +34,9 @@ public class CoachingTypeCategorySubUnit {
 	@Column(name = "img_file_name")
 	private String imgFileName;
 
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "coachingTypeCategorySubUnit", cascade = CascadeType.MERGE)
-	private CoachingTypeCategorySubUnitImage coachingTypeCategorySubUnitImage;
-
+	@OneToMany(targetEntity = CoachingTypeCategorySubUnitImage.class, mappedBy = "coachingTypeCategorySubUnit", cascade = CascadeType.ALL)
+	private Set<CoachingTypeCategorySubUnitImage> coachingTypeCategorySubUnitImage = new HashSet<CoachingTypeCategorySubUnitImage>();
+	
 	public CoachingTypeCategorySubUnit() {
 	}
 
@@ -84,17 +84,16 @@ public class CoachingTypeCategorySubUnit {
 		this.imgFileName = imgFileName;
 	}
 
-	public CoachingTypeCategorySubUnitImage getCoachingTypeCategorySubUnitImage() {
+	public Set<CoachingTypeCategorySubUnitImage> getCoachingTypeCategorySubUnitImage() {
 		return coachingTypeCategorySubUnitImage;
 	}
 
-	public void setCoachingTypeCategorySubUnitImage(CoachingTypeCategorySubUnitImage coachingTypeCategorySubUnitImage) {
+	public void setCoachingTypeCategorySubUnitImage(Set<CoachingTypeCategorySubUnitImage> coachingTypeCategorySubUnitImage) {
 		this.coachingTypeCategorySubUnitImage = coachingTypeCategorySubUnitImage;
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return String.format("coachingTypeCategorySubUnitId: %d | name: %s | isDelete: %d",
 				coachingTypeCategorySubUnitId, name, isDelete);
 	}

@@ -12,14 +12,15 @@ public class UploadFile {
 	private int id;
 	private String fileName;
 	private byte[] data;
-	private int coachingType = 0;
+	private int coachingType = 1;
 	private int isCurrent = 1;
+	private int isFree = 1;
 
 	public UploadFile() {
 		super();
 	}
 
-	public UploadFile(String fileName, byte[] data, int coachingType, int isCurrent) {
+	public UploadFile(String fileName, byte[] data, int coachingType, int isFree, int isCurrent) {
 		super();
 		this.coachingType = coachingType;
 		this.fileName = fileName;
@@ -65,6 +66,7 @@ public class UploadFile {
 		this.coachingType = coachingType;
 	}
 
+	@Column(name = "is_current")
 	public int getIsCurrent() {
 		return isCurrent;
 	}
@@ -72,4 +74,14 @@ public class UploadFile {
 	public void setIsCurrent(int isCurrent) {
 		this.isCurrent = isCurrent;
 	}
+
+	@Column(name = "is_free")
+	public int getIsFree() {
+		return isFree;
+	}
+
+	public void setIsFree(int isFree) {
+		this.isFree = isFree;
+	}
+
 }

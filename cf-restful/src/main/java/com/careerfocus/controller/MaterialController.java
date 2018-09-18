@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,28 +27,34 @@ public class MaterialController {
 	@Autowired
 	FileUploadService service;
 
-	@RequestMapping(value = "/upload/{coachingType}", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload/{coachingTypeId}", method = RequestMethod.POST)
 	public String handleFileUpload(HttpServletRequest request, @PathVariable(required = true) int coachingType,
-			@RequestPart(value = "file", required = true) final MultipartFile fileUpload) throws Exception {
+			@RequestPart(value = "file", required = true) final MultipartFile fileUpload,
+			@RequestParam(value = "isFree", required = false, defaultValue = "0") int isFree) throws Exception {
 
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType, 1);
-			service.saveFile(file);
+			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType,
+					isFree, 1);
+			file = service.saveFile(file);
+			if (file.getId() > 0)
+				if (service.tagFileToCoachingType(coachingType, file.getId()))
+					return "Success";
 		}
-
-		return "Success";
+		return "Failed";
 	}
 
-	@RequestMapping(value = "/category/upload/{coachingType}", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload/category/{coachingTypeCategoryId}", method = RequestMethod.POST)
 	public String handleCategoryFileUpload(HttpServletRequest request, @PathVariable(required = true) int coachingType,
-			@RequestPart(value = "file", required = true) final MultipartFile fileUpload) throws Exception {
+			@RequestPart(value = "file", required = true) final MultipartFile fileUpload,
+			@RequestParam(value = "isFree", required = false, defaultValue = "0") int isFree) throws Exception {
 
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), 0, 1);
+			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType,
+					isFree, 1);
 			file = service.saveFile(file);
 			if (file.getId() > 0)
 				if (service.tagFileToCoachingTypeCategory(coachingType, file.getId()))
@@ -56,15 +63,17 @@ public class MaterialController {
 		return "Failed";
 	}
 
-	@RequestMapping(value = "/category/sub/upload/{coachingType}", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload/category/sub/{coachingTypeCategorySubId}", method = RequestMethod.POST)
 	public String handleCategorySubFileUpload(HttpServletRequest request,
 			@PathVariable(required = true) int coachingType,
-			@RequestPart(value = "file", required = true) final MultipartFile fileUpload) throws Exception {
+			@RequestPart(value = "file", required = true) final MultipartFile fileUpload,
+			@RequestParam(value = "isFree", required = false, defaultValue = "0") int isFree) throws Exception {
 
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType, 1);
+			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType,
+					isFree, 1);
 			file = service.saveFile(file);
 			if (file.getId() > 0)
 				if (service.tagFileToCoachingTypeCategorySub(coachingType, file.getId()))
@@ -73,15 +82,17 @@ public class MaterialController {
 		return "Failed";
 	}
 
-	@RequestMapping(value = "/category/sub/unit/upload/{coachingType}", method = RequestMethod.POST)
+	@RequestMapping(value = "/upload/category/sub/unit/{coachingTypeCategorySubUnitId}", method = RequestMethod.POST)
 	public String handleCategorySubUnitFileUpload(HttpServletRequest request,
 			@PathVariable(required = true) int coachingType,
-			@RequestPart(value = "file", required = true) final MultipartFile fileUpload) throws Exception {
+			@RequestPart(value = "file", required = true) final MultipartFile fileUpload,
+			@RequestParam(value = "isFree", required = false, defaultValue = "0") int isFree) throws Exception {
 
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType, 1);
+			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType,
+					isFree, 1);
 			file = service.saveFile(file);
 			if (file.getId() > 0)
 				if (service.tagFileToCoachingTypeCategorySubUnit(coachingType, file.getId()))
@@ -92,29 +103,34 @@ public class MaterialController {
 
 	@RequestMapping(value = "/category", method = RequestMethod.POST)
 	public Response saveCoachingTypeCategory(HttpServletRequest request, HttpServletResponse response,
-			@RequestPart(required = true) String coachingTypeCategory,
+			@RequestPart(required = true) String name,
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
-		log.debug("coachingTypeCategory: " + coachingTypeCategory.toString());
+		log.debug("coachingTypeCategory: " + name.toString());
 		log.debug("image: " + image.toString());
-		return service.saveCoachingTypeCategory(coachingTypeCategory, image);
+		return service.saveCoachingTypeCategory(name, image);
 	}
 
 	@RequestMapping(value = "/category/sub", method = RequestMethod.POST)
 	public Response saveCoachingTypeCategorySub(HttpServletRequest request, HttpServletResponse response,
-			@RequestPart(required = true) String coachingTypeCategorySub,
+			@RequestPart(required = true) String name,
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
-		log.debug("coachingTypeCategorySub: " + coachingTypeCategorySub.toString());
+		log.debug("coachingTypeCategorySub: " + name.toString());
 		log.debug("image: " + image.toString());
-		return service.saveCoachingTypeCategorySub(coachingTypeCategorySub, image);
+		return service.saveCoachingTypeCategorySub(name, image);
 	}
 
 	@RequestMapping(value = "/category/sub/unit", method = RequestMethod.POST)
 	public Response saveCoachingTypeCategorySubUnit(HttpServletRequest request, HttpServletResponse response,
-			@RequestPart(required = true) String coachingTypeCategorySubUnit,
+			@RequestPart(required = true) String name,
 			@RequestPart(value = "file", required = true) final MultipartFile image) throws Exception {
-		log.debug("coachingTypeCategorySubUnit: " + coachingTypeCategorySubUnit.toString());
+		log.debug("coachingTypeCategorySubUnit: " + name.toString());
 		log.debug("image: " + image.toString());
-		return service.saveCoachingTypeCategorySubUnit(coachingTypeCategorySubUnit, image);
+		return service.saveCoachingTypeCategorySubUnit(name, image);
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public Response getAllMaterials() throws Exception {
+		return Response.ok(service.getAllCoachingType()).build();
 	}
 
 	@RequestMapping(value = "/category/{coachingTypeId}", method = RequestMethod.GET)
@@ -133,6 +149,35 @@ public class MaterialController {
 	public Response getAllCoachingTypeCategorySubUnit(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable(required = true) Integer coachingTypeCategorySubId) throws Exception {
 		return Response.ok(service.getAllCoachingTypeCategorySubUnit(coachingTypeCategorySubId)).build();
+	}
+
+	@RequestMapping(value = "/coachingtypes", method = RequestMethod.GET)
+	public Response getCoachingTypes() throws Exception {
+		return Response.ok(service.getCoachingTypes()).build();
+	}
+
+	@RequestMapping(value = "/coachingtypes/category/{coachingTypeId}", method = RequestMethod.GET)
+	public Response getCoachingTypeCategorys(HttpServletRequest request,
+			@PathVariable(required = true) int coachingTypeId) throws Exception {
+		return Response.ok(service.getCoachingTypeCategorys(coachingTypeId)).build();
+	}
+
+	@RequestMapping(value = "/coachingtypes/category/sub/{coachingTypeCategoryId}", method = RequestMethod.GET)
+	public Response getCoachingTypeCategorySubs(HttpServletRequest request,
+			@PathVariable(required = true) int coachingTypeCategoryId) throws Exception {
+		return Response.ok(service.getCoachingTypeCategorySubs(coachingTypeCategoryId)).build();
+	}
+
+	@RequestMapping(value = "/coachingtypes/category/sub/unit/{coachingTypeCategorySubId}", method = RequestMethod.GET)
+	public Response getCoachingTypeCategorySubUnits(HttpServletRequest request,
+			@PathVariable(required = true) int coachingTypeCategorySubId) throws Exception {
+		return Response.ok(service.getCoachingTypeCategorySubUnits(coachingTypeCategorySubId)).build();
+	}
+
+	@RequestMapping(value = "/{coachingTypeId}/all", method = RequestMethod.GET)
+	public Response getAllCoachingTypeMaterials(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(required = true) Integer coachingTypeId) throws Exception {
+		return Response.ok(service.getAllCoachingTypeMaterials(coachingTypeId)).build();
 	}
 
 	@RequestMapping(value = "/category/{coachingTypeCategoryId}/all", method = RequestMethod.GET)

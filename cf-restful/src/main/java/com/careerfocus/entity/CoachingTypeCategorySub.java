@@ -1,6 +1,7 @@
 package com.careerfocus.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -32,10 +33,14 @@ public class CoachingTypeCategorySub {
 	@Basic
 	@Column(name = "img_file_name")
 	private String imgFileName;
-
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "coachingTypeCategorySub", cascade = CascadeType.MERGE)
-	private CoachingTypeCategorySubImage coachingTypeCategorySubImage;
+	
+	@OneToMany(targetEntity = CoachingTypeCategorySubImage.class, mappedBy = "coachingTypeCategorySub", cascade = CascadeType.ALL)
+	private Set<CoachingTypeCategorySubImage> coachingTypeCategorySubImage = new HashSet<CoachingTypeCategorySubImage>();
+	
+	@OneToMany
+    @JoinColumn(name = "coaching_type_category_sub_id")
+    @OrderBy("coaching_type_category_sub_id")
+    private Set<CoachingTypeCategorySubUnit> coachingTypeCategorySubUnits = new HashSet<CoachingTypeCategorySubUnit>();
 
 	public CoachingTypeCategorySub() {
 	}
@@ -84,17 +89,24 @@ public class CoachingTypeCategorySub {
 		this.imgFileName = imgFileName;
 	}
 
-	public CoachingTypeCategorySubImage getCoachingTypeCategorySubImage() {
+	public Set<CoachingTypeCategorySubImage> getCoachingTypeCategorySubImage() {
 		return coachingTypeCategorySubImage;
 	}
 
-	public void setCoachingTypeCategorySubImage(CoachingTypeCategorySubImage coachingTypeCategorySubImage) {
+	public void setCoachingTypeCategorySubImage(Set<CoachingTypeCategorySubImage> coachingTypeCategorySubImage) {
 		this.coachingTypeCategorySubImage = coachingTypeCategorySubImage;
+	}
+	
+	public Set<CoachingTypeCategorySubUnit> getCoachingTypeCategorySubUnits() {
+        return coachingTypeCategorySubUnits;
+	}
+
+	public void setCoachingTypeCategorySubUnits(Set<CoachingTypeCategorySubUnit> coachingTypeCategorySubUnits) {
+        this.coachingTypeCategorySubUnits = coachingTypeCategorySubUnits;
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return String.format("coachingTypeCategorySubId: %d | name: %s | isDelete: %d", coachingTypeCategorySubId, name,
 				isDelete);
 	}
