@@ -52,12 +52,21 @@ public class ResultDAO {
 		int totalAttended = 0;
 		int totalNoOfQuestions = 0;
 		for (Map<String, Object> t : categoryMarkList) {
-			int noOfQuestions = Integer.parseInt(t.get("noOfQuestions").toString());
+			int noOfQuestions = 0;
+			try {
+				noOfQuestions = Integer.parseInt(t.get("noOfQuestions").toString());
+			} catch (Exception e) {
+				noOfQuestions = 0;
+			}
 			if (Integer.parseInt(t.get("totalAttempted").toString()) > noOfQuestions) {
 				t.put("totalAttempted", noOfQuestions);
 			}
 			totalNoOfQuestions += noOfQuestions;
-			totalAttended += Integer.parseInt(t.get("totalAttended").toString());
+			try {
+				totalAttended += Integer.parseInt(t.get("totalAttended").toString());
+			} catch (Exception e) {
+				totalAttended = 0;
+			}
 		}
 		Map<String, Object> count = new HashMap<String, Object>();
 		count.put("totalNoOfQuestions", totalNoOfQuestions);
