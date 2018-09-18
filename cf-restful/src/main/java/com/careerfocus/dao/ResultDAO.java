@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,34 @@ public class ResultDAO {
 				+ " inner join question_paper qp on qp.question_paper_id = bqp.question_paper_id"
 				+ " where t.user_id = ? order by e.start_time desc";
 		List<Map<String, Object>> scoreCardList = template.queryForList(query, userId);
-		return scoreCardList;
+		List<Map<String, Object>> returnScoreCardList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> scoreCard = new HashMap<String, Object>();
+		for (Map<String, Object> t : scoreCardList) {
+			scoreCard = getExamAttendedAndTotalCount(Integer.parseInt(t.get("examId").toString()));
+			t.put("totalAttended", scoreCard.get("totalAttended"));
+			t.put("totalNoOfQuestions", scoreCard.get("totalNoOfQuestions"));
+			returnScoreCardList.add(scoreCard);
+		}
+		return returnScoreCardList;
+	}
+
+	public Map<String, Object> getExamAttendedAndTotalCount(int examId) {
+		String query = "SELECT total_attended as totalAttended,qpc.no_of_questions as noOfQuestions from exam_category_mark WHERE exam_id = ?";
+		List<Map<String, Object>> categoryMarkList = template.queryForList(query, examId);
+		int totalAttended = 0;
+		int totalNoOfQuestions = 0;
+		for (Map<String, Object> t : categoryMarkList) {
+			int noOfQuestions = Integer.parseInt(t.get("noOfQuestions").toString());
+			if (Integer.parseInt(t.get("totalAttended").toString()) > noOfQuestions) {
+				t.put("totalAttended", noOfQuestions);
+			}
+			totalNoOfQuestions += noOfQuestions;
+			totalAttended += Integer.parseInt(t.get("totalAttended").toString());
+		}
+		Map<String, Object> count = new HashMap<String, Object>();
+		count.put("totalNoOfQuestions", totalNoOfQuestions);
+		count.put("totalAttended", totalAttended);
+		return count;
 	}
 
 	public List<Integer> getExamCategoryTime(int examId, int categoryId) {
@@ -58,7 +87,15 @@ public class ResultDAO {
 				+ " inner join exam_category_time ect on ect.exam_id = ecm.exam_id and ect.category_id = ecm.category_id"
 				+ " where ecm.exam_id = ? group by ecm.category_id";
 		List<Map<String, Object>> categoryMarkList = template.queryForList(query, examId);
-		return categoryMarkList;
+		List<Map<String, Object>> returnCategoryMarkList = new ArrayList<Map<String, Object>>();
+		for (Map<String, Object> t : categoryMarkList) {
+			int noOfQuestions = Integer.parseInt(t.get("noOfQuestions").toString());
+			if (Integer.parseInt(t.get("totalAttended").toString()) > noOfQuestions) {
+				t.put("totalAttended", noOfQuestions);
+			}
+			returnCategoryMarkList.add(t);
+		}
+		return returnCategoryMarkList;
 	}
 
 	public List<Map<String, Object>> getTopTenScore(int examId) {
