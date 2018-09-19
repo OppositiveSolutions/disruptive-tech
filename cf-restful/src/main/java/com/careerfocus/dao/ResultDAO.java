@@ -34,9 +34,8 @@ public class ResultDAO {
 		Map<String, Object> scoreCard = new HashMap<String, Object>();
 		for (Map<String, Object> t : scoreCardList) {
 			scoreCard = getExamAttendedAndTotalCount(Integer.parseInt(t.get("examId").toString()));
-			t.put("totalAttended",
-					Integer.parseInt(t.get("correctAnswerCount").toString())
-							+ Integer.parseInt(t.get("wrongAnswerCount").toString()));
+			t.put("totalAttended", Integer.parseInt(t.get("correctAnswerCount").toString())
+					+ Integer.parseInt(t.get("wrongAnswerCount").toString()));
 			t.put("totalNoOfQuestions", scoreCard.get("totalNoOfQuestions"));
 			returnScoreCardList.add(t);
 		}
@@ -117,28 +116,18 @@ public class ResultDAO {
 			try {
 				if (Double.parseDouble(t.get("correctMark").toString()) > Double
 						.parseDouble(t.get("totalPossibleMark").toString())) {
-					System.out.println("correctMark = " + Double.parseDouble(t.get("correctMark").toString()));
-					System.out.println(
-							"totalPossibleMark = " + Double.parseDouble(t.get("totalPossibleMark").toString()));
-					System.out.println("negativeMark = " + Double.parseDouble(t.get("negativeMark").toString()));
-					System.out.println(
-							"negativeMarkPerAnswer = " + Double.parseDouble(t.get("negativeMarkPerAnswer").toString()));
-					System.out.println(
-							"correctMarkPerAnswer = " + Double.parseDouble(t.get("correctMarkPerAnswer").toString()));
+					Double totalPossibleMark = Double.parseDouble(t.get("totalPossibleMark").toString());
+					Double negativeMark = Double.parseDouble(t.get("negativeMark").toString());
+					Double negativeMarkPerAnswer = Double.parseDouble(t.get("negativeMarkPerAnswer").toString());
+					Double correctMarkPerAnswer = Double.parseDouble(t.get("correctMarkPerAnswer").toString());
 					t.put("correctMark",
-							Double.parseDouble(t.get("totalPossibleMark").toString())
-									- ((Double.parseDouble(t.get("negativeMark").toString())
-											/ Double.parseDouble(t.get("negativeMarkPerAnswer").toString()))
-											* Double.parseDouble(t.get("correctMarkPerAnswer").toString())));
+							totalPossibleMark - ((negativeMark / negativeMarkPerAnswer) * correctMarkPerAnswer));
 					t.put("totalMark", Double.parseDouble(t.get("correctMark").toString())
 							- Double.parseDouble(t.get("negativeMark").toString()));
-					System.out.println("correctMark = " + Double.parseDouble(t.get("correctMark").toString()));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("Exception");
 			}
-			System.out.println("value = " + t.toString());
 			returnCategoryMarkList.add(t);
 		}
 		return returnCategoryMarkList;
