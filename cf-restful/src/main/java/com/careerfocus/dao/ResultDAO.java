@@ -22,7 +22,7 @@ public class ResultDAO {
 	public List<Map<String, Object>> getScoreCard(int userId) {
 		String query = "SELECT exam_id as examId,qp.name as examName,qp.exam_code as examCode,"
 				+ " TIMESTAMPDIFF(SECOND, start_time, end_time) div 60 as timeMin,"
-				+ " TIMESTAMPDIFF(SECOND, start_time, end_time) mod 60 as timeSec,question_answered as totalAttempted,"
+				+ " TIMESTAMPDIFF(SECOND, start_time, end_time) mod 60 as timeSec,question_answered as totalAttended,"
 				+ " question_correct_count as correctAnswerCount, question_wrong_count as wrongAnswerCount,"
 				+ " mark_correct as correctMark, mark_negative as negativeMark, e.is_demo as isDemo,"
 				+ " total_mark as totalMark FROM exam e inner join test t on t.test_id = e.test_id"
@@ -34,7 +34,9 @@ public class ResultDAO {
 		Map<String, Object> scoreCard = new HashMap<String, Object>();
 		for (Map<String, Object> t : scoreCardList) {
 			scoreCard = getExamAttendedAndTotalCount(Integer.parseInt(t.get("examId").toString()));
-			t.put("totalAttempted", scoreCard.get("totalAttempted"));
+			t.put("totalAttended",
+					Integer.parseInt(t.get("correctAnswerCount").toString())
+							+ Integer.parseInt(t.get("wrongAnswerCount").toString()));
 			t.put("totalNoOfQuestions", scoreCard.get("totalNoOfQuestions"));
 			returnScoreCardList.add(t);
 		}
@@ -42,7 +44,7 @@ public class ResultDAO {
 	}
 
 	public Map<String, Object> getExamAttendedAndTotalCount(int examId) {
-		String query = "SELECT total_attended as totalAttempted, qpc.no_of_questions as noOfQuestions from exam_category_mark ecm"
+		String query = "SELECT question_answered as totalAttended, qpc.no_of_questions as noOfQuestions from exam_category_mark ecm"
 				+ " inner join exam e on ecm.exam_id = e.exam_id inner join test t on t.test_id = e.test_id"
 				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
 				+ " inner join question_paper qp on bqp.question_paper_id = qp.question_paper_id "
@@ -53,18 +55,22 @@ public class ResultDAO {
 		int totalNoOfQuestions = 0;
 		for (Map<String, Object> t : categoryMarkList) {
 			int noOfQuestions = 0;
+			int attended = 0;
 			try {
 				noOfQuestions = Integer.parseInt(t.get("noOfQuestions").toString());
+				attended = Integer.parseInt(t.get("totalAttended").toString());
 			} catch (Exception e) {
+				e.printStackTrace();
 				noOfQuestions = 0;
 			}
-			if (Integer.parseInt(t.get("totalAttempted").toString()) > noOfQuestions) {
-				t.put("totalAttempted", noOfQuestions);
-			}
-			totalNoOfQuestions += noOfQuestions;
 			try {
-				totalAttended += Integer.parseInt(t.get("totalAttended").toString());
+				if (attended > noOfQuestions)
+					totalAttended += noOfQuestions;
+				else
+					totalAttended += attended;
+				totalNoOfQuestions += noOfQuestions;
 			} catch (Exception e) {
+				e.printStackTrace();
 				totalAttended = 0;
 			}
 		}
@@ -109,18 +115,30 @@ public class ResultDAO {
 				t.put("totalAttended", noOfQuestions);
 			}
 			try {
-				if (Integer.parseInt(t.get("correctMark").toString()) > Integer
-						.parseInt(t.get("totalPossibleMark").toString())) {
-
+				if (Double.parseDouble(t.get("correctMark").toString()) > Double
+						.parseDouble(t.get("totalPossibleMark").toString())) {
+					System.out.println("correctMark = " + Double.parseDouble(t.get("correctMark").toString()));
+					System.out.println(
+							"totalPossibleMark = " + Double.parseDouble(t.get("totalPossibleMark").toString()));
+					System.out.println("negativeMark = " + Double.parseDouble(t.get("negativeMark").toString()));
+					System.out.println(
+							"negativeMarkPerAnswer = " + Double.parseDouble(t.get("negativeMarkPerAnswer").toString()));
+					System.out.println(
+							"correctMarkPerAnswer = " + Double.parseDouble(t.get("correctMarkPerAnswer").toString()));
 					t.put("correctMark",
-							Integer.parseInt(t.get("correctMark").toString())
-									- ((Integer.parseInt(t.get("negativeMark").toString())
-											/ Integer.parseInt(t.get("negativeMarkPerAnswer").toString()))
-											* Integer.parseInt(t.get("correctMarkPerAnswer").toString())));
+							Double.parseDouble(t.get("totalPossibleMark").toString())
+									- ((Double.parseDouble(t.get("negativeMark").toString())
+											/ Double.parseDouble(t.get("negativeMarkPerAnswer").toString()))
+											* Double.parseDouble(t.get("correctMarkPerAnswer").toString())));
+					t.put("totalMark", Double.parseDouble(t.get("correctMark").toString())
+							- Double.parseDouble(t.get("negativeMark").toString()));
+					System.out.println("correctMark = " + Double.parseDouble(t.get("correctMark").toString()));
 				}
 			} catch (Exception e) {
-
+				e.printStackTrace();
+				System.out.println("Exception");
 			}
+			System.out.println("value = " + t.toString());
 			returnCategoryMarkList.add(t);
 		}
 		return returnCategoryMarkList;
