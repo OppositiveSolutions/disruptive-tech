@@ -25,17 +25,24 @@ public class ResultDAO {
 				+ " TIMESTAMPDIFF(SECOND, start_time, end_time) mod 60 as timeSec,question_answered as totalAttended,"
 				+ " question_correct_count as correctAnswerCount, question_wrong_count as wrongAnswerCount,"
 				+ " mark_correct as correctMark, mark_negative as negativeMark, e.is_demo as isDemo,"
+				+ " (total_mark/(qpc.no_of_questions * qpc.correct_answer_mark)) * 100 as percentage,"
 				+ " total_mark as totalMark FROM exam e inner join test t on t.test_id = e.test_id"
 				+ " inner join bundle_question_paper bqp on bqp.bundle_question_paper_id = t.bundle_question_paper_id"
+				+ " inner join question_paper_category qpc on qpc.question_paper_id = bqp.question_paper_id"
 				+ " inner join question_paper qp on qp.question_paper_id = bqp.question_paper_id"
-				+ " where t.user_id = ? order by e.start_time desc";
+				+ " where t.user_id = ? group by exam_id order by e.start_time desc";
 		List<Map<String, Object>> scoreCardList = template.queryForList(query, userId);
 		List<Map<String, Object>> returnScoreCardList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> scoreCard = new HashMap<String, Object>();
 		for (Map<String, Object> t : scoreCardList) {
 			scoreCard = getExamAttendedAndTotalCount(Integer.parseInt(t.get("examId").toString()));
-			t.put("totalAttended", Integer.parseInt(t.get("correctAnswerCount").toString())
-					+ Integer.parseInt(t.get("wrongAnswerCount").toString()));
+			int correctAnswerCount = t.get("correctAnswerCount") != null
+					? Integer.parseInt(t.get("correctAnswerCount").toString())
+					: 0;
+			int wrongAnswerCount = t.get("wrongAnswerCount") != null
+					? Integer.parseInt(t.get("wrongAnswerCount").toString())
+					: 0;
+			t.put("totalAttended", correctAnswerCount + wrongAnswerCount);
 			t.put("totalNoOfQuestions", scoreCard.get("totalNoOfQuestions"));
 			returnScoreCardList.add(t);
 		}
@@ -56,8 +63,9 @@ public class ResultDAO {
 			int noOfQuestions = 0;
 			int attended = 0;
 			try {
-				noOfQuestions = Integer.parseInt(t.get("noOfQuestions").toString());
-				attended = Integer.parseInt(t.get("totalAttended").toString());
+				noOfQuestions = t.get("noOfQuestions") != null ? Integer.parseInt(t.get("noOfQuestions").toString())
+						: 0;
+				attended = t.get("totalAttended") != null ? Integer.parseInt(t.get("totalAttended").toString()) : 0;
 			} catch (Exception e) {
 				e.printStackTrace();
 				noOfQuestions = 0;
@@ -147,9 +155,7 @@ public class ResultDAO {
 
 	public double getUserAccuracy(int userId) {
 		String query = "select (sum(question_correct_count) / sum(question_answered)) * 100 as accuracy"
-				+ " from exam e inner join test t on t.test_id = e.test_id"
-				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
-				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
+				+ " from exam e inner join test t on t.test_id = e.test_id WHERE t.user_id = ?";
 		Double value = template.queryForObject(query, Double.class, userId);
 		return value != null ? value : 0.0;
 	}
@@ -164,16 +170,14 @@ public class ResultDAO {
 	}
 
 	public double getUserTestCount(int userId) {
-		String query = "select count(t.test_id) as count from test t "
-				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
-				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
+		String query = "select count(t.test_id) as count from test t"
+				+ " left join exam e on t.test_id = e.test_id WHERE t.user_id = ?";
 		return template.queryForObject(query, Integer.class, userId);
 	}
 
 	public double getUserExamCount(int userId) {
-		String query = "select count(e.exam_id) as count from exam e inner join test t on t.test_id = e.test_id"
-				+ " inner join bundle_question_paper bqp on t.bundle_question_paper_id = bqp.bundle_question_paper_id"
-				+ " inner join bundle_purchase bp on bqp.bundle_id = bp.bundle_id WHERE bp.user_id = ?";
+		String query = "select count(e.exam_id) as count from exam e"
+				+ " inner join test t on t.test_id = e.test_id WHERE t.user_id = ?";
 		return template.queryForObject(query, Integer.class, userId);
 	}
 

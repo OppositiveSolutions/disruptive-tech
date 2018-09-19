@@ -111,7 +111,24 @@ public class ExamDAO {
 	public int getLastVisitedCategoryId(int examId, int categoryId) {
 		int lastCategoryId = 0;
 		String query = "SELECT last_category_id from exam where exam_id = ?";
-		lastCategoryId = template.queryForObject(query, Integer.class, examId);
+		try {
+			lastCategoryId = template.queryForObject(query, Integer.class, examId);
+		} catch (Exception e) {
+			query = "SELECT category_id as categoryId from exam_category_mark where exam_id = ?";
+			List<Map<String, Object>> categories = template.queryForList(query, examId);
+			for (Map<String, Object> cat : categories) {
+				if (cat.containsValue("2"))
+					lastCategoryId = 2;
+				else if (cat.containsValue("4"))
+					lastCategoryId = 4;
+				else if (cat.containsValue("5"))
+					lastCategoryId = 5;
+				else if (cat.containsValue("3"))
+					lastCategoryId = 3;
+				else if (cat.containsValue("1"))
+					lastCategoryId = 1;
+			}
+		}
 		query = "UPDATE exam set last_category_id = ? where exam_id= ?";
 		template.update(query, categoryId, examId);
 		return lastCategoryId;
