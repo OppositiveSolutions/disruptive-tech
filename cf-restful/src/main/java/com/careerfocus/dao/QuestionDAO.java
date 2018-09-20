@@ -59,7 +59,8 @@ public class QuestionDAO {
 
 	public int getOptionEnteredUsingQuestionId(int qId, int userId) {
 		String query = "select option_entered from exam_question eq inner join exam e on e.exam_id = eq.exam_id"
-				+ " inner join test t on e.test_id = t.test_id where eq.question_id = ? and t.user_id = ?";
+				+ " inner join test t on e.test_id = t.test_id where eq.question_id = ? and t.user_id = ?"
+				+ " order by exam_question_id desc limit 1";
 		int result = template.queryForObject(query, Integer.class, qId, userId);
 		return result;
 	}

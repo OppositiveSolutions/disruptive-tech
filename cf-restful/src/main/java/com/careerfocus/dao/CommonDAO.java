@@ -62,13 +62,15 @@ public class CommonDAO {
 
 		// Get msec from each, and subtract.
 		long diff = d2.getTime() - d1.getTime();
-		long diffSeconds = diff / 1000 % 60;
-		long diffMinutes = diff / (60 * 1000) % 60;
-		long diffHours = diff / (60 * 60 * 1000);
-		System.out.println("Time in seconds: " + diffSeconds + " seconds.");
-		System.out.println("Time in minutes: " + diffMinutes + " minutes.");
-		System.out.println("Time in hours: " + diffHours + " hours.");
-		return diffSeconds;
+//		long diffSeconds = diff / 1000 % 60;
+//		long diffMinutes = diff / (60 * 1000) % 60;
+//		long diffHours = diff / (60 * 60 * 1000);
+		long timeInSecods = diff/ 1000;
+//		System.out.println("Time in seconds: " + diffSeconds + " seconds.");
+//		System.out.println("Time in minutes: " + diffMinutes + " minutes.");
+//		System.out.println("Time in hours: " + diffHours + " hours.");
+		System.out.println("timeInSecods : " + timeInSecods + " seconds.");
+		return timeInSecods;
 	}
 
 	public List<Map<String, Object>> getCoachingTypes() {

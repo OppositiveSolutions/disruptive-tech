@@ -85,26 +85,48 @@ public class ExamDAO {
 		return holder.getKey().intValue();
 	}
 
-	public boolean saveTime(int examId, int categoryId) {
-		boolean status = false;
-		long totalTime = 0;
+	public int saveTime(int examId, int categoryId, int questionNo) {
+		int lastAttendedQuestion = 0;
+//		long totalTime = 0;
 		int lastCategoryId = getLastVisitedCategoryId(examId, categoryId);
 		Date timeLastUpdated = getCategoryLastUpdateTime(examId, lastCategoryId);
 		long timeInSecs = commonDAO.getTimeDifferenceInSec(timeLastUpdated);
-		totalTime = getCurrentTimeTakenPerCategory(examId, lastCategoryId) + timeInSecs;
-		String query = "UPDATE exam_category_time set total_time = ? where exam_id= ? and category_id = ?";
-		status = template.update(query, totalTime, examId, lastCategoryId) > 0 ? true : false;
+		System.out.println("timeInSecs = " + timeInSecs);
+//		totalTime = getCurrentTimeTakenPerCategory(examId, lastCategoryId) + timeInSecs;
+		String query = "UPDATE exam_category_time set total_time = (total_time + ?) where exam_id = ? and category_id = ?";
+		boolean status = template.update(query, timeInSecs, examId, lastCategoryId) > 0 ? true : false;
 		if (status) {
 			status = categoryDAO.updateCategoryLastUpdateTime(examId, categoryId);
 			status = categoryDAO.updateCategoryLastUpdateTime(examId, lastCategoryId);
 		}
-		return status;
+		if (status) {
+			lastAttendedQuestion = getLastAttendedQuestion(examId, categoryId, questionNo);
+		}
+		return lastAttendedQuestion;
+	}
+
+	private int getLastAttendedQuestion(int examId, int categoryId, int questionNo) {
+		int lastAttendedQuestion = 0;
+		String query = "SELECT last_attended_question from exam_category_time where exam_id = ? and category_id = ?";
+		try {
+			lastAttendedQuestion = template.queryForObject(query, Integer.class, examId, categoryId);
+		} catch (Exception e) {
+			lastAttendedQuestion = 0;
+		}
+		query = "UPDATE exam_category_time set last_attended_question = ? where exam_id = ? and category_id = ?";
+		template.update(query, questionNo, examId, categoryId);
+		return lastAttendedQuestion;
 	}
 
 	public long getCurrentTimeTakenPerCategory(int examId, int categoryId) {
 		long timeInSecs = 0;
 		String query = "SELECT total_time from exam_category_time where exam_id = ? and category_id = ?";
-		timeInSecs = template.queryForObject(query, Long.class, examId, categoryId);
+		try {
+			timeInSecs = template.queryForObject(query, Long.class, examId, categoryId);
+		} catch (Exception e) {
+			categoryDAO.updateCategoryLastUpdateTime(examId, categoryId);
+			timeInSecs = 0;
+		}
 		return timeInSecs;
 	}
 
@@ -131,6 +153,7 @@ public class ExamDAO {
 		}
 		query = "UPDATE exam set last_category_id = ? where exam_id= ?";
 		template.update(query, categoryId, examId);
+		System.out.println("lastCategoryId = " + lastCategoryId + " categoryId = " + categoryId);
 		return lastCategoryId;
 	}
 
@@ -263,7 +286,6 @@ public class ExamDAO {
 		for (Map<String, Object> q : examQs) {
 			query = "SELECT correct_option_no FROM question where question_id = ?";
 			try {
-				System.out.println("QId = " + q.get("question_id"));
 				correctOption = template.queryForObject(query, Integer.class, q.get("question_id"));
 			} catch (Exception e) {
 				e.printStackTrace();
