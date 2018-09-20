@@ -150,6 +150,8 @@ public class ExamDAO {
 				else if (cat.containsValue("1"))
 					lastCategoryId = 1;
 			}
+			query = "UPDATE exam_category_time SET	last_update_time = now(), total_time = 0 WHERE exam_id = ?";
+			template.update(query, examId);
 		}
 		query = "UPDATE exam set last_category_id = ? where exam_id= ?";
 		template.update(query, categoryId, examId);
