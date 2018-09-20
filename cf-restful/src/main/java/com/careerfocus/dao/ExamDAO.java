@@ -100,12 +100,12 @@ public class ExamDAO {
 			status = categoryDAO.updateCategoryLastUpdateTime(examId, lastCategoryId);
 		}
 		if (status) {
-			lastAttendedQuestion = getLastAttendedQuestion(examId, categoryId, questionNo);
+			lastAttendedQuestion = getLastAttendedQuestion(examId, categoryId, questionNo, lastCategoryId);
 		}
 		return lastAttendedQuestion;
 	}
 
-	private int getLastAttendedQuestion(int examId, int categoryId, int questionNo) {
+	private int getLastAttendedQuestion(int examId, int categoryId, int questionNo, int lastCategoryId) {
 		int lastAttendedQuestion = 0;
 		String query = "SELECT last_attended_question from exam_category_time where exam_id = ? and category_id = ?";
 		try {
@@ -114,7 +114,7 @@ public class ExamDAO {
 			lastAttendedQuestion = 0;
 		}
 		query = "UPDATE exam_category_time set last_attended_question = ? where exam_id = ? and category_id = ?";
-		template.update(query, questionNo, examId, categoryId);
+		template.update(query, questionNo, examId, lastCategoryId);
 		return lastAttendedQuestion;
 	}
 
@@ -150,6 +150,7 @@ public class ExamDAO {
 //				else if (cat.containsValue("1"))
 //					lastCategoryId = 1;
 //			}
+			lastCategoryId = 0;
 			query = "UPDATE exam_category_time SET	last_update_time = now(), total_time = 0 WHERE exam_id = ?";
 			template.update(query, examId);
 		}

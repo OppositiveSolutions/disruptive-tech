@@ -61,10 +61,10 @@ public class ExamController {
 		return Response.ok(examService.saveExam(questions, examId, userId)).build();
 	}
 
-	@RequestMapping(value = "/save/{examId}/time/{categoryId}", method = RequestMethod.POST)
-	public Response saveTime(@PathVariable("examId") int examId, @PathVariable("categoryId") int categoryId)
+	@RequestMapping(value = "{examId}/save/{categoryId}/time/{questionNo}", method = RequestMethod.POST)
+	public Response saveTime(@PathVariable("examId") int examId, @PathVariable("categoryId") int categoryId, @PathVariable("questionNo") int questionNo)
 			throws Exception {
-		return Response.ok(examService.saveTime(examId, categoryId)).build();
+		return Response.ok(examService.saveTime(examId, categoryId, questionNo)).build();
 	}
 
 	@RequestMapping(value = "/{examId}/questions", method = RequestMethod.GET)

@@ -73,9 +73,8 @@ public class ExamService {
 		return status;
 	}
 
-	public boolean saveTime(int examId, int categoryId) {
-		int questionNo = 0;
-		return examDAO.saveTime(examId, categoryId, questionNo) > 0 ? true : false;
+	public int saveTime(int examId, int categoryId, int questionNo) {
+		return examDAO.saveTime(examId, categoryId, questionNo);
 	}
 
 	public QuestionPaper getExamWithFullQuestionDetails(int examId) {
