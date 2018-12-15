@@ -28,36 +28,36 @@ public class MaterialController {
 	FileUploadService service;
 
 	@RequestMapping(value = "/upload/{coachingTypeId}", method = RequestMethod.POST)
-	public String handleFileUpload(HttpServletRequest request, @PathVariable(required = true) int coachingType,
+	public String handleFileUpload(HttpServletRequest request, @PathVariable(required = true) int coachingTypeId,
 			@RequestPart(value = "file", required = true) final MultipartFile fileUpload,
 			@RequestParam(value = "isFree", required = false, defaultValue = "0") int isFree) throws Exception {
 
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType,
+			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingTypeId,
 					isFree, 1);
 			file = service.saveFile(file);
 			if (file.getId() > 0)
-				if (service.tagFileToCoachingType(coachingType, file.getId()))
+				if (service.tagFileToCoachingType(coachingTypeId, file.getId()))
 					return "Success";
 		}
 		return "Failed";
 	}
 
 	@RequestMapping(value = "/upload/category/{coachingTypeCategoryId}", method = RequestMethod.POST)
-	public String handleCategoryFileUpload(HttpServletRequest request, @PathVariable(required = true) int coachingType,
+	public String handleCategoryFileUpload(HttpServletRequest request, @PathVariable(required = true) int coachingTypeCategoryId,
 			@RequestPart(value = "file", required = true) final MultipartFile fileUpload,
 			@RequestParam(value = "isFree", required = false, defaultValue = "0") int isFree) throws Exception {
 
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType,
+			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingTypeCategoryId,
 					isFree, 1);
 			file = service.saveFile(file);
 			if (file.getId() > 0)
-				if (service.tagFileToCoachingTypeCategory(coachingType, file.getId()))
+				if (service.tagFileToCoachingTypeCategory(coachingTypeCategoryId, file.getId()))
 					return "Success";
 		}
 		return "Failed";
@@ -65,18 +65,18 @@ public class MaterialController {
 
 	@RequestMapping(value = "/upload/category/sub/{coachingTypeCategorySubId}", method = RequestMethod.POST)
 	public String handleCategorySubFileUpload(HttpServletRequest request,
-			@PathVariable(required = true) int coachingType,
+			@PathVariable(required = true) int coachingTypeCategorySubId,
 			@RequestPart(value = "file", required = true) final MultipartFile fileUpload,
 			@RequestParam(value = "isFree", required = false, defaultValue = "0") int isFree) throws Exception {
 
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType,
+			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingTypeCategorySubId,
 					isFree, 1);
 			file = service.saveFile(file);
 			if (file.getId() > 0)
-				if (service.tagFileToCoachingTypeCategorySub(coachingType, file.getId()))
+				if (service.tagFileToCoachingTypeCategorySub(coachingTypeCategorySubId, file.getId()))
 					return "Success";
 		}
 		return "Failed";
@@ -84,18 +84,18 @@ public class MaterialController {
 
 	@RequestMapping(value = "/upload/category/sub/unit/{coachingTypeCategorySubUnitId}", method = RequestMethod.POST)
 	public String handleCategorySubUnitFileUpload(HttpServletRequest request,
-			@PathVariable(required = true) int coachingType,
+			@PathVariable(required = true) int coachingTypeCategorySubUnitId,
 			@RequestPart(value = "file", required = true) final MultipartFile fileUpload,
 			@RequestParam(value = "isFree", required = false, defaultValue = "0") int isFree) throws Exception {
 
 		if (fileUpload != null && fileUpload.getSize() > 0) {
 			System.out.println("Saving file: " + fileUpload.getOriginalFilename());
 
-			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingType,
+			UploadFile file = new UploadFile(fileUpload.getOriginalFilename(), fileUpload.getBytes(), coachingTypeCategorySubUnitId,
 					isFree, 1);
 			file = service.saveFile(file);
 			if (file.getId() > 0)
-				if (service.tagFileToCoachingTypeCategorySubUnit(coachingType, file.getId()))
+				if (service.tagFileToCoachingTypeCategorySubUnit(coachingTypeCategorySubUnitId, file.getId()))
 					return "Success";
 		}
 		return "Failed";
